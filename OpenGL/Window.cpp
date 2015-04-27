@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/27 15:15:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/27 16:10:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 #include "Window.hpp"
 #include <cmath>
 
+#define TMP_PADDING ((int)10)
 
 // * STATICS **************************************************************** //
 // * CONSTRUCTORS *********************************************************** //
@@ -31,22 +32,33 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	_tmpGridSize(gridSize),
 	_cellSize(cellSize),
-	_tmpWinSize(
+	_winSize(
 		std::make_pair(
 			static_cast<int>(std::ceilf(
 								 static_cast<float>(gridSize.first) *
-								 cellSize)) + 10 * 2,
+								 cellSize)) + TMP_PADDING * 2,
 			static_cast<int>(std::ceilf(
 								 static_cast<float>(gridSize.second) *
-								 cellSize)) + 10 * 2
-			))
+								 cellSize)) + TMP_PADDING * 2
+			)),
+	_topLeftCell(std::make_pair(
+					 static_cast<float>(TMP_PADDING) /
+					 static_cast<float>(_winSize.first) * 2.f - 1.f,
+					 static_cast<float>(TMP_PADDING) /
+					 static_cast<float>(_winSize.second) * -2.f + 1.f
+					 )),
+	_cellPadding(std::make_pair(
+					 cellSize / static_cast<float>(_winSize.first) * 2.f,
+					 cellSize / static_cast<float>(_winSize.second) * -2.f
+					 ))
 {
 	std::cout << "[Window](std::pair<int>,std::pair<int>) Ctor called" << std::endl;
 	// glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
-		exit(EXIT_FAILURE);	
-	_win = glfwCreateWindow(_tmpWinSize.first, _tmpWinSize.second,
-							"Simple example", NULL, NULL);
+		exit(EXIT_FAILURE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	_win = glfwCreateWindow(_winSize.first, _winSize.second,
+							"Nibbler", NULL, NULL);
 	if (!_win)
 	{
 		glfwTerminate();
@@ -73,18 +85,23 @@ Window::~Window()
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 void						Window::_put_grid(void) const
 {
+	int		i;
+
 	glBegin(GL_LINES);
 	glColor3f(1.f, 0.f, 0.f);
-	for (float y = -0.9f; y < 0.95f; y += 0.1)
+	i = 0;
+	for (float y = _topLeftCell.second;
+		 i <= _tmpGridSize.second; i++, y += _cellPadding.second)
 	{
-		glVertex3f(-0.9f, y, 0.f);
-		glVertex3f(0.9f, y, 0.f);
+		glVertex3f(_topLeftCell.first, y, 0.f);
+		glVertex3f(-_topLeftCell.first, y, 0.f);		
 	}
-	glBegin(GL_LINE_STRIP);
-	for (float x = -0.9f; x < 0.95f; x += 0.1)
+	i = 0;
+	for (float x = _topLeftCell.first;
+		 i <= _tmpGridSize.first; i++, x += _cellPadding.first)
 	{
-		glVertex3f(x, -0.9f, 0.f);
-		glVertex3f(x, 0.9f, 0.f);
+		glVertex3f(x, _topLeftCell.second, 0.f);
+		glVertex3f(x, -_topLeftCell.second, 0.f);		
 	}
 	return ;
 }
@@ -113,6 +130,5 @@ bool						Window::windowShouldClose(void) const
 {
 	return (glfwWindowShouldClose(_win));
 }
-
 
 // * NESTED_CLASSES ********************************************************* //
