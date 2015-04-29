@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 08:20:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 11:28:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,10 +67,6 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 					 cellSize / static_cast<float>(_winSize.second) * -2.f
 					 ))
 {
-	//
-	
-	//
-	
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
 	glfwSetErrorCallback(error_callback);
@@ -87,6 +83,13 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	// glfwMakeContextCurrent(_win); //useless?
 	// glfwSwapInterval(1); //useless?
 	glfwSetKeyCallback(_win, key_callback);
+
+
+	glMatrixMode(GL_PROJECTION); //useless?
+	glLoadIdentity(); //useless?
+	glEnable(GL_DEPTH_TEST); //added
+
+
 	std::cout << "[Window](std::pair<int, int>,float) Ctor called" << std::endl;
 	return ;
 }
@@ -111,24 +114,68 @@ void						Window::_put_grid(void) const
 	glBegin(GL_LINES);
 	glColor3f(1.f, 0.f, 0.f);
 	i = 0;
-	for (float y = _topLeftCell.second;
-		 i <= _tmpGridSize.second; i++, y += _cellPadding.second)
-	{
-		// std::cout << "Horiz " << i << std::endl;
-		
+	for (float y = _topLeftCell.second; i <= _tmpGridSize.second;
+		 i++, y += _cellPadding.second)
+	{		
 		glVertex3f(_topLeftCell.first, y, 0.f);
 		glVertex3f(-_topLeftCell.first, y, 0.f);		
 	}
 	i = 0;
-	for (float x = _topLeftCell.first;
-		 i <= _tmpGridSize.first; i++, x += _cellPadding.first)
+	for (float x = _topLeftCell.first; i <= _tmpGridSize.first;
+		 i++, x += _cellPadding.first)
 	{
-		// std::cout << "Vert " << i << std::endl;
 		glVertex3f(x, _topLeftCell.second, 0.f);
 		glVertex3f(x, -_topLeftCell.second, 0.f);		
-	}
-	// std::cout << "" << std::endl;
+	}	
+	glEnd();
+	return ;
+}
+
+void						Window::_put_block(std::pair<int, int> const &pos)
+	const
+{
+	std::pair<float, float>		topLeft(
+		_topLeftCell.first + _cellPadding.first * static_cast<float>(pos.first),
+		_topLeftCell.second + _cellPadding.second * static_cast<float>(pos.second));
+	float					tmp;
+
+	float z;
 	
+	z = -1.f;
+	glColor3f(0.f, 0.5f, 0.f);
+	glBegin(GL_QUADS);
+	{
+		glVertex3f(topLeft.first, topLeft.second, z);
+		tmp = topLeft.first;
+		topLeft.first += _cellPadding.first;
+		glVertex3f(topLeft.first, topLeft.second, 0.f);
+		topLeft.second += _cellPadding.second;
+		glVertex3f(topLeft.first, topLeft.second, 0.f);
+		glVertex3f(tmp, topLeft.second, z);
+	}
+	z = -0.f;
+	glColor3f(0.f, 0.0f, 0.5f);
+	{
+		glVertex3f(topLeft.first, topLeft.second, z);
+		tmp = topLeft.first;
+		topLeft.first += _cellPadding.first;
+		glVertex3f(topLeft.first, topLeft.second, z);
+		topLeft.second += _cellPadding.second;
+		glVertex3f(topLeft.first, topLeft.second, z);
+		glVertex3f(tmp, topLeft.second, z);
+	}
+	z = 1.f;
+	glColor3f(0.5f, 0.5f, 0.f);
+	{
+		glVertex3f(topLeft.first, topLeft.second, z);
+		tmp = topLeft.first;
+		topLeft.first += _cellPadding.first;
+		glVertex3f(topLeft.first, topLeft.second, z);
+		topLeft.second += _cellPadding.second;
+		glVertex3f(topLeft.first, topLeft.second, z);
+		glVertex3f(tmp, topLeft.second, z);
+	}
+	glEnd();
 	return ;
 }
 
@@ -140,14 +187,20 @@ void						Window::draw(void) const
 	// glfwGetFramebufferSize(_win, &width, &height); //useless?
 	// ratio = width / static_cast<float>(height); //useless?
 	// glViewport(0, 0, width, height); //useless?
-	glClear(GL_COLOR_BUFFER_BIT);
-	// glMatrixMode(GL_PROJECTION); //useless?
-	// glLoadIdentity(); //useless?
-	// glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f); //useless?
-	// glMatrixMode(GL_MODELVIEW); //useless?
+	// GLKMatrix4MakePerspective(70,(double)640/480,1,1000);
+	
+	// glOrtho(-1, 1, -1.f, 1.f, 1.f, -1.f); //useless?
+	// glClear(GL_COLOR_BUFFER_BIT);
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
+	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-	_put_grid();
-	glEnd();
+	// glEnable(GL_DEPTH_TEST);
+	// gluLookAt(3,3,3,0,0,0,0,0,1);
+	// _put_grid();
+	_put_block(std::make_pair<int, int>(1, 1));
+	// glEnd();
+	glFlush();
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
 	return ;

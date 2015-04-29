@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 08:45:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 09:23:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,12 +21,6 @@ int main(void)
 	void *dlib = dlopen("OpenGL.so", RTLD_LAZY | RTLD_LOCAL);
 	std::cout << "dlib = " << dlib << std::endl;
 
-
-
-
-
-
-	
 	//getting "init" function pointer
 	void *fun = dlsym(dlib, "init");
 	std::cout << "fun = " << fun << std::endl;
@@ -40,7 +34,8 @@ int main(void)
 	
 		try
 		{
-			std::unique_ptr<IWindow> tmp(f(std::make_pair(10, 10), 3.f));
+			//(how to improve without tmp)
+			std::unique_ptr<IWindow> tmp(f(std::make_pair(20, 35), 20.f));
 
 			u = std::move(tmp);
 		}
@@ -53,7 +48,7 @@ int main(void)
 
 		while (!u->windowShouldClose())
 			u->draw();
-	}	
+	}
 	dlclose(dlib); // do not close library before unique_ptr's DTOR is called
 	return (0);
 }
