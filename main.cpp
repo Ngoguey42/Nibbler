@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 09:23:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 14:30:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -35,7 +35,7 @@ int main(void)
 		try
 		{
 			//(how to improve without tmp)
-			std::unique_ptr<IWindow> tmp(f(std::make_pair(20, 35), 20.f));
+			std::unique_ptr<IWindow> tmp(f(std::make_pair(12, 12), 35.f));
 
 			u = std::move(tmp);
 		}

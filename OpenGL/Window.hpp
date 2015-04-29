@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:16 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 10:39:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 15:21:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,9 +38,9 @@ private:
 	Window						&operator=(Window const &rhs);
 
 	void						_put_grid(void) const;
+	void						_put_lol(void) const;
 	void                        _put_block(std::pair<int, int> const &pos)
 		const;
-	
 	
 	GLFWwindow					*_win;
 	std::pair<int, int> const	_tmpGridSize;		// Grid size (Ctor)
