@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:16 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/27 16:05:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 07:11:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,7 @@
 # include <utility>
 //# include <string>
 # include <iostream>
-//# include <stdexcept>
+# include <stdexcept>
 
 class Window
 {

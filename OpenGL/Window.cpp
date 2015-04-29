@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/27 16:10:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 07:28:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,7 +52,8 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 					 cellSize / static_cast<float>(_winSize.second) * -2.f
 					 ))
 {
-	std::cout << "[Window](std::pair<int>,std::pair<int>) Ctor called" << std::endl;
+	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
+		throw std::invalid_argument("Grid attributes invalid");
 	// glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
@@ -67,15 +68,16 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	// glfwMakeContextCurrent(_win); //useless?
 	// glfwSwapInterval(1); //useless?
 	// glfwSetKeyCallback(_win, key_callback);
+	std::cout << "[Window](std::pair<int, int>,float) Ctor called" << std::endl;
 	return ;
 }
 
 // * DESTRUCTORS ************************************************************ //
 Window::~Window()
 {
-	std::cout << "[Window]() Dtor called" << std::endl;
 	glfwDestroyWindow(_win);
 	glfwTerminate();
+	std::cout << "[Window]() Dtor called" << std::endl;
 	return ;
 }
 
@@ -93,6 +95,8 @@ void						Window::_put_grid(void) const
 	for (float y = _topLeftCell.second;
 		 i <= _tmpGridSize.second; i++, y += _cellPadding.second)
 	{
+		// std::cout << "Horiz " << i << std::endl;
+		
 		glVertex3f(_topLeftCell.first, y, 0.f);
 		glVertex3f(-_topLeftCell.first, y, 0.f);		
 	}
@@ -100,9 +104,12 @@ void						Window::_put_grid(void) const
 	for (float x = _topLeftCell.first;
 		 i <= _tmpGridSize.first; i++, x += _cellPadding.first)
 	{
+		// std::cout << "Vert " << i << std::endl;
 		glVertex3f(x, _topLeftCell.second, 0.f);
 		glVertex3f(x, -_topLeftCell.second, 0.f);		
 	}
+	// std::cout << "" << std::endl;
+	
 	return ;
 }
 
