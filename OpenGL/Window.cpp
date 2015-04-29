@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 07:28:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 08:20:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,21 @@
 #include <cmath>
 
 #define TMP_PADDING ((int)10)
+
+extern "C" Window	*init(std::pair<int, int> gridSize, float cellSize)
+{
+	std::cout << "init from OpenGL" << std::endl;
+	
+	return (new Window(gridSize, cellSize));
+}
+
+auto truc = &init;
+void * t = reinterpret_cast<void*>(truc);
+std::function<IWindow*(std::pair<int, int>, float)> f =
+
+									   reinterpret_cast<
+	IWindow*(*)(std::pair<int, int>, float)
+	>(t);
 
 // * STATICS **************************************************************** //
 // * CONSTRUCTORS *********************************************************** //
@@ -52,9 +67,13 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 					 cellSize / static_cast<float>(_winSize.second) * -2.f
 					 ))
 {
+	//
+	
+	//
+	
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
-	// glfwSetErrorCallback(error_callback);
+	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -67,7 +86,7 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	}
 	// glfwMakeContextCurrent(_win); //useless?
 	// glfwSwapInterval(1); //useless?
-	// glfwSetKeyCallback(_win, key_callback);
+	glfwSetKeyCallback(_win, key_callback);
 	std::cout << "[Window](std::pair<int, int>,float) Ctor called" << std::endl;
 	return ;
 }

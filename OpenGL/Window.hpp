@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:16 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 07:11:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 08:03:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,9 @@
 # include <iostream>
 # include <stdexcept>
 
-class Window
+# include <IWindow.hpp>
+
+class Window : public IWindow
 {
 public:
 	Window(std::pair<int, int> gridSize, float cellSize);
