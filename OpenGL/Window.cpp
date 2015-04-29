@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/27 14:11:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 16:43:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/29 17:31:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,6 +67,14 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 					 cellSize / static_cast<float>(_winSize.second) * -2.f
 					 ))
 {
+
+	std::cout << _cellPadding.first << std::endl;
+	std::cout << _cellPadding.second << std::endl;
+	
+
+
+
+
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
 	glfwSetErrorCallback(error_callback);
@@ -145,23 +153,31 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 
 	// std::cout << glfwGetTime() << std::endl;
 	
-	float ratio = fmod(glfwGetTime(), 0.5f) / 0.25f;
-	if (ratio < 1.f)
-		ratio -= 0.5f;
-	else
-		ratio = (1.5f - ratio);
-	std::cout << ratio << std::endl;
-	
+	float ratio = fmod(glfwGetTime(), 5.f) / 5.f;
+	// float ratio = fmod(glfwGetTime(), 0.5f) / 0.25f;
+	// if (ratio < 1.f)
+		// ratio -= 0.5f;
+	// else
+		// ratio = (1.5f - ratio);
+	// std::cout << ratio << std::endl;
+
+	ratio = 0.f;
 	glLoadIdentity();
 	glColor3f(0.5f, 0.3f, 0.f);
 	glTranslatef(topLeft.first,
 				 topLeft.second + _cellPadding.second / 2.f, 0.0f);	
-	glRotatef(45.f, 0, 1, 0);
-	glRotatef(ratio * 10.f, 0, 1, 0);
+	glRotatef(60.f, 0, 1, 0);
+	glRotatef(ratio * 360.f, 0, 1, 0);
+	// glRotatef(ratio * 10.f, 0, 1, 0);
 	glBegin(GL_QUADS);
 	{
-		glVertex3f(0.f, -_cellPadding.second / 2, 0.f);
+		glVertex3f(0.f,   -_cellPadding.second / 2,
+				   0.f);
+
+
 		glVertex3f(_cellPadding.first / 2.f, -_cellPadding.second / 2, 0.f);
+
+		
 		glVertex3f(_cellPadding.first / 2.f, _cellPadding.second / 2, 0.f);
 		glVertex3f(0.f, _cellPadding.second / 2, 0.f);
 	}
@@ -170,9 +186,10 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 	glLoadIdentity();
 	glColor3f(0.6f, 0.37f, 0.f);
 	glTranslatef(topLeft.first + _cellPadding.first,
-				 topLeft.second + _cellPadding.second / 2.f, 0.0f);	
-	glRotatef(-45.f, 0, 1, 0);
-	glRotatef(ratio * -10.f, 0, 1, 0);
+				 topLeft.second + _cellPadding.second / 2.f, 0.0f);
+	glRotatef(-60.f, 0, 1, 0);
+	glRotatef(ratio * -360.f, 0, 1, 0);
+	// glRotatef(ratio * -10.f, 0, 1, 0);
 	glBegin(GL_QUADS);
 	{
 		glVertex3f(-_cellPadding.first / 2.f, -_cellPadding.second / 2, 0.f);
@@ -181,22 +198,25 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 		glVertex3f(-_cellPadding.first / 2.f, _cellPadding.second / 2, 0.f);
 	}
 	glEnd();
-	return ;
+	// return ;
 	glLoadIdentity();
 	glColor3f(0.5f, 0.57f, 0.f);
 	// glTranslatef(topLeft.first - _cellPadding.first / 2.f,
 				 // topLeft.second + _cellPadding.second / 2.f, 0.0f);	
-	glTranslatef(topLeft.first - _cellPadding.second / 2.f,
+	glTranslatef(topLeft.first + _cellPadding.first / 2.f,
 				 topLeft.second + _cellPadding.second / 2.f,
-				 -0.052f
+				 -0.074f
+				 // -0.052f
 		);
 	// glRotatef(-45.f, 0, 1, 0);
 	glBegin(GL_QUADS);
 	{
-		glVertex3f(-_cellPadding.first / 4, -_cellPadding.second / 2, 0.f);
-		glVertex3f(_cellPadding.first / 4, -_cellPadding.second / 2, 0.f);
-		glVertex3f(_cellPadding.first / 4, _cellPadding.second / 2, 0.f);
-		glVertex3f(-_cellPadding.first / 4, _cellPadding.second / 2, 0.f);
+		float halfWidth = _cellPadding.first / 4;
+		// float halfWidth = sqrtf(2.f) / 4 * _cellPadding.first / 2;
+		glVertex3f(-halfWidth, -_cellPadding.second / 2, 0.f);
+		glVertex3f(halfWidth, -_cellPadding.second / 2, 0.f);
+		glVertex3f(halfWidth, _cellPadding.second / 2, 0.f);
+		glVertex3f(-halfWidth, _cellPadding.second / 2, 0.f);
 	}
 	glEnd();
 	return ;
