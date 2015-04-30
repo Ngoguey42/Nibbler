@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/30 11:51:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/04/30 13:59:45 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,17 +16,25 @@
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 
-static void					putSquarePoints(
-	std::pair<float, float> const &size, Window::e_alignement align)
+void					putSquarePoints(
+	std::pair<float, float> const &size, Window::e_alignement align,
+	float point2Z, float point3Z)
 {
-	glBegin(GL_QUADS);
+	glBegin(GL_TRIANGLE_STRIP);
+	// glBegin(GL_QUADS);
 	switch(align)
 	{
 	case Window::e_alignement::left:
+		glColor3f(0.f, 0.0f, 0.9f);
 		glVertex3f(0.f, -size.second / 2.f, 0.f);
-		glVertex3f(size.first, -size.second / 2.f, 0.f);
-		glVertex3f(size.first, size.second / 2.f, 0.f);
+		glColor3f(0.5f, 0.57f, 0.f);
 		glVertex3f(0.f, size.second / 2.f, 0.f);
+//		glColor3f(0.5f, 0.57f, 0.f);
+		glVertex3f(size.first, -size.second / 2.f, point2Z);
+		glColor3f(0.f, 0.0f, 0.9f);
+		glVertex3f(size.first, size.second / 2.f, point3Z);
+		
+		glVertex3f(size.first, -size.second / 2.f, point2Z);
 		break;
 	case Window::e_alignement::right:
 		break;
@@ -61,19 +69,43 @@ void						Window::_putSnakeChunk(
 	glLoadIdentity();
 	glColor3f(0.5f, 0.57f, 0.f);
 	
-	glTranslatef(topLeft.first,
-				 topLeft.second + _cellSize / 2.f, -0.0f);
+	glTranslatef(
+		topLeft.first,
+		topLeft.second + _cellSize / 2.f, -0.0f);
 
 	
 	float ratio = fmod(glfwGetTime(), 5.f) / 5.f;
-	(void)ratior;
-	glRotatef(60.f, 0, 1, 0);	
+	(void)ratio;
+	// glRotatef(, 0, 1, 0);	
 	// glRotatef(ratio * 360.f, 0, 1, 0);	
 
+
+	glBegin(GL_TRIANGLE_STRIP);
+	{
+		glColor3f(0.9f, 0.0f, 0.0f);
+		glVertex3f(-_cellSize / 2,	-_cellSize / 2, 0.f);
+		glColor3f(0.0f, 0.9f, 0.0f);
+		glVertex3f(-_cellSize / 2,	_cellSize / 2, 0.f);
+		glColor3f(0.0f, 0.0f, 0.9f);
+		glVertex3f(-5.f,			-_cellSize / 2 , 0.f);
+		glColor3f(0.9f, 0.0f, 0.0f);
+		glVertex3f(-5.f,			_cellSize / 2, 0.f);
+		glColor3f(0.0f, 0.9f, 0.0f);
+		glVertex3f(5.f,				-_cellSize / 2 , 0.f);
+		glColor3f(0.0f, 0.0f, 0.9f);
+		glVertex3f(5.f,				_cellSize / 2 , 0.f);
+		glColor3f(0.9f, 0.0f, 0.0f);
+		glVertex3f(_cellSize / 2,	-_cellSize / 2, 0.f);
+		glColor3f(0.0f, 0.9f, 0.0f);
+		glVertex3f(_cellSize / 2,	_cellSize / 2, 0.f);
+		
+		// glVertex3f(size.first, -size.second / 2.f, point2Z);
+	}
+	glEnd();
+
 	
-	
-	putSquarePoints(std::make_pair(_cellSize / 2, _cellSize),
-					Window::e_alignement::left);
+//	putSquarePoints(std::make_pair(_cellSize / 3, _cellSize),
+//					Window::e_alignement::left, 25.f, 20.f);
 	glEnd();
 
 	return ; 
