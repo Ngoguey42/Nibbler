@@ -1,17 +1,17 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Window.cpp                                         :+:      :+:    :+:   //
+//   Window.class.cpp                                   :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/04/27 14:11:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/29 17:31:18 by ngoguey          ###   ########.fr       //
+//   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             //
+//   Updated: 2015/04/30 11:50:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 //#include <iostream>
-#include "Window.hpp"
+#include "Window.class.hpp"
 #include <cmath>
 
 #define TMP_PADDING ((int)10)
@@ -57,24 +57,19 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 								 cellSize)) + TMP_PADDING * 2
 			)),
 	_topLeftCell(std::make_pair(
-					 static_cast<float>(TMP_PADDING) /
+					 static_cast<float>(TMP_PADDING),
+					 static_cast<float>(TMP_PADDING)
+/*					 static_cast<float>(TMP_PADDING) /
 					 static_cast<float>(_winSize.first) * 2.f - 1.f,
 					 static_cast<float>(TMP_PADDING) /
 					 static_cast<float>(_winSize.second) * -2.f + 1.f
-					 )),
-	_cellPadding(std::make_pair(
+*/					 ))
+/*	_cellPadding(std::make_pair(
+					 
 					 cellSize / static_cast<float>(_winSize.first) * 2.f,
 					 cellSize / static_cast<float>(_winSize.second) * -2.f
-					 ))
+					 ))*/
 {
-
-	std::cout << _cellPadding.first << std::endl;
-	std::cout << _cellPadding.second << std::endl;
-	
-
-
-
-
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
 	glfwSetErrorCallback(error_callback);
@@ -91,7 +86,7 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	// glfwMakeContextCurrent(_win); //useless?
 	// glfwSwapInterval(1); //useless?
 	glfwSetKeyCallback(_win, key_callback);
-
+	
 	
 
 	glMatrixMode(GL_PROJECTION); //useless?
@@ -99,6 +94,12 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	// float aspect_ratio = (float)_winSize.first / (float)_winSize.second;
 	// glFrustum(.5, -.5, -.5 * aspect_ratio, .5 * aspect_ratio, 1, 50);
 	
+	glOrtho(.0f, static_cast<float>(_winSize.first),
+			static_cast<float>(_winSize.second), .0f,
+			-cellSize,
+			cellSize);
+			// .0f,
+			// 1.f);
 	glEnable(GL_DEPTH_TEST); //added
 	// glMatrixMode(GL_MODELVIEW);
 	
@@ -128,17 +129,17 @@ void						Window::_put_grid(void) const
 	glColor3f(1.f, 0.f, 0.f);
 	i = 0;
 	for (float y = _topLeftCell.second; i <= _tmpGridSize.second;
-		 i++, y += _cellPadding.second)
-	{		
+		 i++, y += _cellSize)
+	{
 		glVertex3f(_topLeftCell.first, y, 0.f);
-		glVertex3f(-_topLeftCell.first, y, 0.f);		
+		glVertex3f(_winSize.first - _topLeftCell.first, y, 0.f);
 	}
 	i = 0;
 	for (float x = _topLeftCell.first; i <= _tmpGridSize.first;
-		 i++, x += _cellPadding.first)
+		 i++, x += _cellSize)
 	{
 		glVertex3f(x, _topLeftCell.second, 0.f);
-		glVertex3f(x, -_topLeftCell.second, 0.f);		
+		glVertex3f(x, _winSize.second - _topLeftCell.second, 0.f);		
 	}	
 	glEnd();
 	return ;
@@ -150,16 +151,8 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 	std::pair<float, float>		topLeft(
 		_topLeftCell.first + _cellPadding.first * static_cast<float>(pos.first),
 		_topLeftCell.second + _cellPadding.second * static_cast<float>(pos.second));
-
-	// std::cout << glfwGetTime() << std::endl;
 	
 	float ratio = fmod(glfwGetTime(), 5.f) / 5.f;
-	// float ratio = fmod(glfwGetTime(), 0.5f) / 0.25f;
-	// if (ratio < 1.f)
-		// ratio -= 0.5f;
-	// else
-		// ratio = (1.5f - ratio);
-	// std::cout << ratio << std::endl;
 
 	ratio = 0.f;
 	glLoadIdentity();
@@ -168,16 +161,10 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 				 topLeft.second + _cellPadding.second / 2.f, 0.0f);	
 	glRotatef(60.f, 0, 1, 0);
 	glRotatef(ratio * 360.f, 0, 1, 0);
-	// glRotatef(ratio * 10.f, 0, 1, 0);
 	glBegin(GL_QUADS);
 	{
-		glVertex3f(0.f,   -_cellPadding.second / 2,
-				   0.f);
-
-
+		glVertex3f(0.f, -_cellPadding.second / 2, 0.f);
 		glVertex3f(_cellPadding.first / 2.f, -_cellPadding.second / 2, 0.f);
-
-		
 		glVertex3f(_cellPadding.first / 2.f, _cellPadding.second / 2, 0.f);
 		glVertex3f(0.f, _cellPadding.second / 2, 0.f);
 	}
@@ -201,8 +188,6 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 	// return ;
 	glLoadIdentity();
 	glColor3f(0.5f, 0.57f, 0.f);
-	// glTranslatef(topLeft.first - _cellPadding.first / 2.f,
-				 // topLeft.second + _cellPadding.second / 2.f, 0.0f);	
 	glTranslatef(topLeft.first + _cellPadding.first / 2.f,
 				 topLeft.second + _cellPadding.second / 2.f,
 				 -0.074f
@@ -212,7 +197,6 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 	glBegin(GL_QUADS);
 	{
 		float halfWidth = _cellPadding.first / 4;
-		// float halfWidth = sqrtf(2.f) / 4 * _cellPadding.first / 2;
 		glVertex3f(-halfWidth, -_cellPadding.second / 2, 0.f);
 		glVertex3f(halfWidth, -_cellPadding.second / 2, 0.f);
 		glVertex3f(halfWidth, _cellPadding.second / 2, 0.f);
@@ -222,12 +206,8 @@ void						Window::_put_block(std::pair<int, int> const &pos)
 	return ;
 }
 
-
 void						Window::_put_lol() const
 {
-	// _put_block(std::make_pair<int, int>(0, 0));
-
-	// _put_block(std::make_pair<int, int>(2, 2));
 	_put_block(std::make_pair<int, int>(3, 3));
 	_put_block(std::make_pair<int, int>(3, 4));
 	_put_block(std::make_pair<int, int>(3, 5));
@@ -257,8 +237,22 @@ void						Window::draw(void) const
 	// _put_block(std::make_pair<int, int>(10, 10));
 	// _put_block(std::make_pair<int, int>(10, 0));
 	// _put_block(std::make_pair<int, int>(0, 10));
-	_put_lol();
-	// glEnd();
+	// _put_lol();	
+	_putSnakeChunk(
+		std::make_pair(1, 5),
+		std::make_pair(1, 4), 60.f,
+		std::make_pair(1, 6), 60.f
+		);
+
+/*	glLoadIdentity();
+	glColor3f(0.5f, 0.57f, 0.f);
+	glBegin(GL_LINE_STRIP);
+	{
+		glVertex3f(0., 0., 0.);
+		glVertex3f(10., 10., 0.);
+	}
+	glEnd();
+*/	
 	glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
