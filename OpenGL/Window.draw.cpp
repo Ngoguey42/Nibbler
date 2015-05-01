@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/01 11:29:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/01 12:04:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,33 @@
 #include <cmath>
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
+
+static void					rotateChunk(
+	std::pair<int, int> prevDelta, std::pair<int, int> nextDelta)
+{
+	if ((prevDelta.first != 0) != (nextDelta.first != 0))
+	{
+		//angle
+	}
+	else if (prevDelta.first != 0)
+	{
+		//x changes
+		if (prevDelta.first > 0)
+			glRotatef(90.f, 0, 0, 1);
+		else
+			glRotatef(-90.f, 0, 0, 1);
+	}
+	else
+	{
+		//ychanges
+		if (prevDelta.second > 0)
+			return ;
+		else
+			glRotatef(180.f, 0, 0, 1);
+	}
+	return ;
+}
+
 
 void						Window::_putSnakeChunk(
 	std::pair<int, int> selfPos,
@@ -48,11 +75,15 @@ void						Window::_putSnakeChunk(
 	// glRotatef(ratio * 360.f, 0, 1, 0);
 	// glRotatef(90.f, 0, 1, 0);	
 
+	rotateChunk(std::make_pair<int, int>(selfPos.first - prevPos.first,
+										 selfPos.second - prevPos.second),
+				std::make_pair<int, int>(selfPos.first - nextPos.first,
+										 selfPos.second - nextPos.second));
 	
 	glBegin(GL_TRIANGLE_STRIP);
 
-	// glColor3f(1.f, 0.f, 1.f);
-	glColor3f(std::get<0>(color2), std::get<1>(color2), std::get<2>(color2));
+	glColor3f(1.f, 0.f, 1.f);
+	// glColor3f(std::get<0>(color2), std::get<1>(color2), std::get<2>(color2));
 	glVertex3f(0.f,	0.f, 0.f);
 	glColor3f(std::get<0>(color1), std::get<1>(color1), std::get<2>(color1));
 	glVertex3f(0.f,	_cellSize, 0.f);
