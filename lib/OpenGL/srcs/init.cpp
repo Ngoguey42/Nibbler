@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/01 19:58:13 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/01 19:23:27 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/01 19:25:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include "nibbler.h"
-#include "IUI.hpp"
-#include "Game.hpp"
+#include "Window.class.hpp"
 
-int main(void)
+extern "C"
 {
-	Game			game;
 
-	try
-	{
-		game.changeUI("lib/OpenGL.so");
-	}
-	catch (std::exception &e)
-	{
-		std::cout << "Error: " << e.what() << std::endl;
-	}
-	game.start();
-	return (0);
+Window			*INIT_FUNCTION(std::pair<int, int> gridSize, float cellSize)
+{
+	return (new Window(gridSize, cellSize));
+}
+
 }

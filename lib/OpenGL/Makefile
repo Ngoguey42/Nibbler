@@ -12,6 +12,8 @@ HEADS := -I include -I ../../include -I ~/.brew/include
 
 all: $(NAME)
 
+o/init.cpp.o: srcs/init.cpp include/Window.class.hpp
+	@$(COMPILE)
 o/Window.class.cpp.o: srcs/Window.class.cpp include/Window.class.hpp
 	@$(COMPILE)
 o/Window.draw.cpp.o: srcs/Window.draw.cpp include/Window.class.hpp
@@ -22,7 +24,8 @@ MSG_1 := printf '\033[0;31m%-21.21s\033[0;0m\n'
 
 COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
 
-O_FILES := o/Window.class.cpp.o \
+O_FILES := o/init.cpp.o \
+		o/Window.class.cpp.o \
 		o/Window.draw.cpp.o
 
 $(NAME): o/ $(LIBS) $(O_FILES)

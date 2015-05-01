@@ -6,15 +6,15 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/01 16:05:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/01 19:52:37 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_HPP
 # define GAME_HPP
 
-# include <queue>
-# include "IUI.hpp"
+# include <exception>
+# include "nibbler.h"
 # include "Snake.hpp"
 
 class	Game
@@ -27,14 +27,19 @@ public:
 	// getSnake
 	// getEverything
 
+	void					start(void);
+
+	void					changeUI(char const *lib) throw(std::exception);
+
 protected:
 
-	void					*_uiLib;
-	IUI						*_ui;
+	int						_gameWidth;
+	int						_gameHeight;
 
 	Snake					_snake;
 
-	void					changeUI(char const *lib);
+	void					*_uiLib;
+	IUI						*_ui;
 
 private:
 	Game(Game const &src);

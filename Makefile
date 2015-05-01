@@ -12,9 +12,9 @@ HEADS := -I include
 
 all: $(NAME)
 
-o/Game.cpp.o: srcs/Game.cpp include/Game.hpp
+o/Game.cpp.o: srcs/Game.cpp include/nibbler.h include/IUI.hpp include/Game.hpp
 	@$(COMPILE)
-o/main.cpp.o: srcs/main.cpp
+o/main.cpp.o: srcs/main.cpp include/nibbler.h include/IUI.hpp include/Game.hpp
 	@$(COMPILE)
 o/Snake.cpp.o: srcs/Snake.cpp include/Snake.hpp
 	@$(COMPILE)
