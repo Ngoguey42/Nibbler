@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/04/30 13:26:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/01 11:02:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -214,6 +214,15 @@ void						Window::_put_lol() const
 	return ;
 }
 
+static float				getRatio(float selfDelta = 0.f)
+{
+	float ratio = fmod(glfwGetTime() + selfDelta, 3.f) / 1.5f;
+
+	if (ratio < 1.f)
+		return (ratio - 0.5f);
+	return (1.f - ratio + 0.5f);
+}
+
 void						Window::draw(void) const
 {
 	// float ratio; //useless?
@@ -232,18 +241,65 @@ void						Window::draw(void) const
 	glLoadIdentity();
 	// glEnable(GL_DEPTH_TEST);
 	// gluLookAt(3,3,3,0,0,0,0,0,1);
-	_put_grid();
+	// _put_grid();
 	// _put_block(std::make_pair<int, int>(0, 0));
 	// _put_block(std::make_pair<int, int>(10, 10));
 	// _put_block(std::make_pair<int, int>(10, 0));
 	// _put_block(std::make_pair<int, int>(0, 10));
 	// _put_lol();	
-	_putSnakeChunk(
-		std::make_pair(1, 5),
-		std::make_pair(1, 4), 60.f,
-		std::make_pair(1, 6), 60.f
-		);
 
+
+	/*
+	_putSnakeChunk(
+		std::make_pair(1, 8),
+		std::make_pair(1, 7), 65.f,
+		std::make_pair(1, 9), 65.f + 20.f * getRatio(0.f)
+		);
+	_putSnakeChunk(
+		std::make_pair(1, 9),
+		std::make_pair(1, 8), 65.f + 20.f * getRatio(0.f),
+		std::make_pair(1, 10), 65.f + 20.f * getRatio(0.5f),
+		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+		);
+	_putSnakeChunk(
+		std::make_pair(1, 10),
+		std::make_pair(1, 9), 65.f + 20.f * getRatio(0.5f),
+		std::make_pair(1, 11), 65.f
+		);
+	*/
+	static float ratiosDelta[] = {
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f,
+		static_cast<float>(std::rand() % 200) / 100.f
+	};
+	for (int i = 1; i < 10 ; i++)
+	{
+	_putSnakeChunk(
+		std::make_pair(1, i),
+		std::make_pair(1, i - 1), 65.f + 20.f * getRatio(ratiosDelta[i - 1]),
+		std::make_pair(1, i + 1), 65.f + 20.f * getRatio(ratiosDelta[i])
+			);
+	i++;
+	_putSnakeChunk(
+		std::make_pair(1, i),
+		std::make_pair(1, i - 1), 65.f + 20.f * getRatio(ratiosDelta[i - 1]),
+		std::make_pair(1, i + 1), 65.f + 20.f * getRatio(ratiosDelta[i]),
+		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+		);
+	}
+
+	
 /*	glLoadIdentity();
 	glColor3f(0.5f, 0.57f, 0.f);
 	glBegin(GL_LINE_STRIP);
