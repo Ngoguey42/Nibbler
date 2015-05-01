@@ -6,11 +6,10 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/01 11:02:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/01 11:27:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-//#include <iostream>
 #include "Window.class.hpp"
 #include <cmath>
 
@@ -22,14 +21,6 @@ extern "C" Window	*init(std::pair<int, int> gridSize, float cellSize)
 	
 	return (new Window(gridSize, cellSize));
 }
-
-auto truc = &init;
-void * t = reinterpret_cast<void*>(truc);
-std::function<IWindow*(std::pair<int, int>, float)> f =
-
-									   reinterpret_cast<
-	IWindow*(*)(std::pair<int, int>, float)
-	>(t);
 
 // * STATICS **************************************************************** //
 // * CONSTRUCTORS *********************************************************** //
@@ -56,54 +47,32 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 								 static_cast<float>(gridSize.second) *
 								 cellSize)) + TMP_PADDING * 2
 			)),
-	_topLeftCell(std::make_pair(
-					 static_cast<float>(TMP_PADDING),
-					 static_cast<float>(TMP_PADDING)
-/*					 static_cast<float>(TMP_PADDING) /
-					 static_cast<float>(_winSize.first) * 2.f - 1.f,
-					 static_cast<float>(TMP_PADDING) /
-					 static_cast<float>(_winSize.second) * -2.f + 1.f
-*/					 ))
-/*	_cellPadding(std::make_pair(
-					 
-					 cellSize / static_cast<float>(_winSize.first) * 2.f,
-					 cellSize / static_cast<float>(_winSize.second) * -2.f
-					 ))*/
+	_topLeftCell(std::make_pair(static_cast<float>(TMP_PADDING),
+								static_cast<float>(TMP_PADDING)))
 {
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
-		exit(EXIT_FAILURE);
+		throw std::runtime_error("Could not init glfw");
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	_win = glfwCreateWindow(_winSize.first, _winSize.second,
-							"Nibbler", NULL, NULL);
+	_win = glfwCreateWindow(_winSize.first, _winSize.second, "Nibbler",
+							NULL, NULL);
 	if (!_win)
 	{
 		glfwTerminate();
-		exit(EXIT_FAILURE);
+		throw std::runtime_error("Could not create glfw window");
 	}
 	// glfwMakeContextCurrent(_win); //useless?
 	// glfwSwapInterval(1); //useless?
 	glfwSetKeyCallback(_win, key_callback);
-	
-	
-
-	glMatrixMode(GL_PROJECTION); //useless?
-	glLoadIdentity(); //useless?
-	// float aspect_ratio = (float)_winSize.first / (float)_winSize.second;
-	// glFrustum(.5, -.5, -.5 * aspect_ratio, .5 * aspect_ratio, 1, 50);
-	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
-			-cellSize,
-			cellSize);
-			// .0f,
-			// 1.f);
-	glEnable(GL_DEPTH_TEST); //added
-	// glMatrixMode(GL_MODELVIEW);
-	
-
+			-cellSize, cellSize);
+	glEnable(GL_DEPTH_TEST);
+	// gluLookAt(3,3,3,0,0,0,0,0,1); // to test	
 	std::cout << "[Window](std::pair<int, int>,float) Ctor called" << std::endl;
 	return ;
 }
@@ -145,129 +114,31 @@ void						Window::_put_grid(void) const
 	return ;
 }
 
-void						Window::_put_block(std::pair<int, int> const &pos)
-	const
+static float				getRandRange(float selfDelta = 0.f)
 {
-	std::pair<float, float>		topLeft(
-		_topLeftCell.first + _cellPadding.first * static_cast<float>(pos.first),
-		_topLeftCell.second + _cellPadding.second * static_cast<float>(pos.second));
-	
-	float ratio = fmod(glfwGetTime(), 5.f) / 5.f;
+	float randRange = fmod(glfwGetTime() + selfDelta, 3.f) / 1.5f;
 
-	ratio = 0.f;
-	glLoadIdentity();
-	glColor3f(0.5f, 0.3f, 0.f);
-	glTranslatef(topLeft.first,
-				 topLeft.second + _cellPadding.second / 2.f, 0.0f);	
-	glRotatef(60.f, 0, 1, 0);
-	glRotatef(ratio * 360.f, 0, 1, 0);
-	glBegin(GL_QUADS);
-	{
-		glVertex3f(0.f, -_cellPadding.second / 2, 0.f);
-		glVertex3f(_cellPadding.first / 2.f, -_cellPadding.second / 2, 0.f);
-		glVertex3f(_cellPadding.first / 2.f, _cellPadding.second / 2, 0.f);
-		glVertex3f(0.f, _cellPadding.second / 2, 0.f);
-	}
-	glEnd();
-
-	glLoadIdentity();
-	glColor3f(0.6f, 0.37f, 0.f);
-	glTranslatef(topLeft.first + _cellPadding.first,
-				 topLeft.second + _cellPadding.second / 2.f, 0.0f);
-	glRotatef(-60.f, 0, 1, 0);
-	glRotatef(ratio * -360.f, 0, 1, 0);
-	// glRotatef(ratio * -10.f, 0, 1, 0);
-	glBegin(GL_QUADS);
-	{
-		glVertex3f(-_cellPadding.first / 2.f, -_cellPadding.second / 2, 0.f);
-		glVertex3f(0.f, -_cellPadding.second / 2, 0.f);
-		glVertex3f(0.f, _cellPadding.second / 2, 0.f);
-		glVertex3f(-_cellPadding.first / 2.f, _cellPadding.second / 2, 0.f);
-	}
-	glEnd();
-	// return ;
-	glLoadIdentity();
-	glColor3f(0.5f, 0.57f, 0.f);
-	glTranslatef(topLeft.first + _cellPadding.first / 2.f,
-				 topLeft.second + _cellPadding.second / 2.f,
-				 -0.074f
-				 // -0.052f
-		);
-	// glRotatef(-45.f, 0, 1, 0);
-	glBegin(GL_QUADS);
-	{
-		float halfWidth = _cellPadding.first / 4;
-		glVertex3f(-halfWidth, -_cellPadding.second / 2, 0.f);
-		glVertex3f(halfWidth, -_cellPadding.second / 2, 0.f);
-		glVertex3f(halfWidth, _cellPadding.second / 2, 0.f);
-		glVertex3f(-halfWidth, _cellPadding.second / 2, 0.f);
-	}
-	glEnd();
-	return ;
-}
-
-void						Window::_put_lol() const
-{
-	_put_block(std::make_pair<int, int>(3, 3));
-	_put_block(std::make_pair<int, int>(3, 4));
-	_put_block(std::make_pair<int, int>(3, 5));
-	return ;
-}
-
-static float				getRatio(float selfDelta = 0.f)
-{
-	float ratio = fmod(glfwGetTime() + selfDelta, 3.f) / 1.5f;
-
-	if (ratio < 1.f)
-		return (ratio - 0.5f);
-	return (1.f - ratio + 0.5f);
+	if (randRange < 1.f)
+		return (randRange - 0.5f);
+	return (1.f - randRange + 0.5f);
 }
 
 void						Window::draw(void) const
 {
-	// float ratio; //useless?
+	// float randRange; //useless?
 	// int width, height; //useless?
 
 	// glfwGetFramebufferSize(_win, &width, &height); //useless?
-	// ratio = width / static_cast<float>(height); //useless?
+	// randRange = width / static_cast<float>(height); //useless?
 	// glViewport(0, 0, width, height); //useless?
 	// GLKMatrix4MakePerspective(70,(double)640/480,1,1000);
-	
-	// glOrtho(-1, 1, -1.f, 1.f, 1.f, -1.f); //useless?
-	// glClear(GL_COLOR_BUFFER_BIT);
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-	// glEnable(GL_DEPTH_TEST);
-	// gluLookAt(3,3,3,0,0,0,0,0,1);
-	// _put_grid();
-	// _put_block(std::make_pair<int, int>(0, 0));
-	// _put_block(std::make_pair<int, int>(10, 10));
-	// _put_block(std::make_pair<int, int>(10, 0));
-	// _put_block(std::make_pair<int, int>(0, 10));
-	// _put_lol();	
+	_put_grid();
 
-
-	/*
-	_putSnakeChunk(
-		std::make_pair(1, 8),
-		std::make_pair(1, 7), 65.f,
-		std::make_pair(1, 9), 65.f + 20.f * getRatio(0.f)
-		);
-	_putSnakeChunk(
-		std::make_pair(1, 9),
-		std::make_pair(1, 8), 65.f + 20.f * getRatio(0.f),
-		std::make_pair(1, 10), 65.f + 20.f * getRatio(0.5f),
-		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-		);
-	_putSnakeChunk(
-		std::make_pair(1, 10),
-		std::make_pair(1, 9), 65.f + 20.f * getRatio(0.5f),
-		std::make_pair(1, 11), 65.f
-		);
-	*/
-	static float ratiosDelta[] = {
+	static float rangesDelta[] = {
 		static_cast<float>(std::rand() % 200) / 100.f,
 		static_cast<float>(std::rand() % 200) / 100.f,
 		static_cast<float>(std::rand() % 200) / 100.f,
@@ -285,30 +156,19 @@ void						Window::draw(void) const
 	};
 	for (int i = 1; i < 10 ; i++)
 	{
-	_putSnakeChunk(
-		std::make_pair(1, i),
-		std::make_pair(1, i - 1), 65.f + 20.f * getRatio(ratiosDelta[i - 1]),
-		std::make_pair(1, i + 1), 65.f + 20.f * getRatio(ratiosDelta[i])
+		_putSnakeChunk(
+			std::make_pair(1, i),
+			std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
+			std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i])
 			);
-	i++;
-	_putSnakeChunk(
-		std::make_pair(1, i),
-		std::make_pair(1, i - 1), 65.f + 20.f * getRatio(ratiosDelta[i - 1]),
-		std::make_pair(1, i + 1), 65.f + 20.f * getRatio(ratiosDelta[i]),
-		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-		);
+		i++;
+		_putSnakeChunk(
+			std::make_pair(1, i),
+			std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
+			std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
+			std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+			);
 	}
-
-	
-/*	glLoadIdentity();
-	glColor3f(0.5f, 0.57f, 0.f);
-	glBegin(GL_LINE_STRIP);
-	{
-		glVertex3f(0., 0., 0.);
-		glVertex3f(10., 10., 0.);
-	}
-	glEnd();
-*/	
 	glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
