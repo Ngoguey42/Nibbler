@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   Window.class.hpp                                   :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/01 11:22:32 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Window.class.hpp                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
+/*   Updated: 2015/05/01 16:09:43 by jaguillo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef WINDOW_CLASS_HPP
 # define WINDOW_CLASS_HPP
@@ -19,13 +19,14 @@
 
 # include <GL/glew.h>
 # include <GLFW/glfw3.h>
-# include <IWindow.hpp>
+
+# include "IUI.hpp"
 
 # ifndef DEG_TO_RAD
 #  define DEG_TO_RAD(angleDegrees) (angleDegrees * M_PI / 180.0)
-#endif
+# endif
 
-class Window : public IWindow
+class Window : public IUI
 {
 public:
 	Window(std::pair<int, int> gridSize, float cellSize);
