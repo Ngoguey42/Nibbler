@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/04 15:08:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/04 15:33:40 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,28 +131,10 @@ void						Window::draw(void)
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
 	_put_grid();
-/*
-  static float rangesDelta[] = {
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f,
-  static_cast<float>(std::rand() % 200) / 100.f
-  };
-*/
 
-	// float range = fmod(glfwGetTime(), 3.f) / 3.f;
 
-	_phase -= 0.025;
+	_phase -= 0.01; //speed
+	// _phase -= 0.025;
 	
 	float curPhase = _phase;
 
@@ -161,20 +143,30 @@ void						Window::draw(void)
 	q.push_front(std::make_pair(1, 1)); //tail
 	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 
 	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
 	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
 	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
 
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
 
 	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
 	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
 	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
 	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
 		
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1)); //head
+
 	for (auto it = ++q.rbegin(), ite = --q.rend();
 		 it != ite;
 		++it)
@@ -184,86 +176,6 @@ void						Window::draw(void)
 		curPhase += PHASE_PER_CHUNK;
 	}
 
-
-/*		_putSnakeChunk(
-			std::make_pair(1, i),
-			std::make_pair(1, i - 1),
-			std::make_pair(1, i + 1),
-			curPhase
-			);
-		curPhase += PHASE_PER_CHUNK;
-		i++;
-		_putSnakeChunk(
-			std::make_pair(1, i),
-			std::make_pair(1, i - 1),
-			std::make_pair(1, i + 1),
-			curPhase,
-			std::make_tuple(0.f, 0.f, 1.f),
-			std::make_tuple(0.f, 1.f, 0.f)
-			);
-		curPhase += PHASE_PER_CHUNK;
-*/		
-	
-/*
-  for (int i = 1; i < 10 ; i++)
-  {
-  _putSnakeChunk(
-  std::make_pair(1, i),
-  std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-  std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i])
-  );
-  i++;
-  _putSnakeChunk(
-  std::make_pair(1, i),
-  std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-  std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
-  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-  );
-  }
-
-  int i = 5;
-  _putSnakeChunk(
-  std::make_pair(4, i),
-  std::make_pair(4, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-  std::make_pair(4, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i])
-  );
-  i--;
-  _putSnakeChunk(
-  std::make_pair(4, i),
-  std::make_pair(4, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-  std::make_pair(4, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
-  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-  );
-
-  i = 5;
-  _putSnakeChunk(
-  std::make_pair(i, 1),
-  std::make_pair(i + 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-  std::make_pair(i - 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i])
-  );
-  i--;
-  _putSnakeChunk(
-  std::make_pair(i, 1),
-  std::make_pair(i + 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-  std::make_pair(i - 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
-  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-  );
-
-  i = 7;
-  _putSnakeChunk(
-  std::make_pair(i, 3),
-  std::make_pair(i - 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-  std::make_pair(i + 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i])
-  );
-  i++;
-  _putSnakeChunk(
-  std::make_pair(i, 3),
-  std::make_pair(i - 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-  std::make_pair(i + 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i]),
-  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-  );
-
-*/
 	glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
