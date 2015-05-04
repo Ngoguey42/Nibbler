@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/01 19:23:24 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/05/04 15:08:07 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 								 cellSize)) + TMP_PADDING * 2
 			)),
 	_topLeftCell(std::make_pair(static_cast<float>(TMP_PADDING),
-								static_cast<float>(TMP_PADDING)))
+								static_cast<float>(TMP_PADDING))),
+	_phase(0.f)
 {
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -107,7 +108,7 @@ void						Window::_put_grid(void) const
 	return ;
 }
 
-static float				getRandRange(float selfDelta = 0.f)
+float				getRandRange(float selfDelta = 0.f)
 {
 	float randRange = fmod(glfwGetTime() + selfDelta, 3.f) / 1.5f;
 
@@ -116,7 +117,7 @@ static float				getRandRange(float selfDelta = 0.f)
 	return (1.f - randRange + 0.5f);
 }
 
-void						Window::draw(void) const
+void						Window::draw(void)
 {
 	// float randRange; //useless?
 	// int width, height; //useless?
@@ -129,82 +130,140 @@ void						Window::draw(void) const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-	// _put_grid();
+	_put_grid();
+/*
+  static float rangesDelta[] = {
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f,
+  static_cast<float>(std::rand() % 200) / 100.f
+  };
+*/
 
-	static float rangesDelta[] = {
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f,
-		static_cast<float>(std::rand() % 200) / 100.f
-	};
-	for (int i = 1; i < 10 ; i++)
+	// float range = fmod(glfwGetTime(), 3.f) / 3.f;
+
+	_phase -= 0.025;
+	
+	float curPhase = _phase;
+
+	std::deque<std::pair<int, int>>		q;
+
+	q.push_front(std::make_pair(1, 1)); //tail
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+		
+	for (auto it = ++q.rbegin(), ite = --q.rend();
+		 it != ite;
+		++it)
 	{
 		_putSnakeChunk(
+			*(it), *(it - 1), *(it + 1), curPhase);
+		curPhase += PHASE_PER_CHUNK;
+	}
+
+
+/*		_putSnakeChunk(
 			std::make_pair(1, i),
-			std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-			std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i])
+			std::make_pair(1, i - 1),
+			std::make_pair(1, i + 1),
+			curPhase
 			);
+		curPhase += PHASE_PER_CHUNK;
 		i++;
 		_putSnakeChunk(
 			std::make_pair(1, i),
-			std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-			std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
-			std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+			std::make_pair(1, i - 1),
+			std::make_pair(1, i + 1),
+			curPhase,
+			std::make_tuple(0.f, 0.f, 1.f),
+			std::make_tuple(0.f, 1.f, 0.f)
 			);
-	}
-	int i = 5;
-	_putSnakeChunk(
-		std::make_pair(4, i),
-		std::make_pair(4, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-		std::make_pair(4, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i])
-		);
-	i--;
-	_putSnakeChunk(
-		std::make_pair(4, i),
-		std::make_pair(4, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-		std::make_pair(4, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
-		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-		);
+		curPhase += PHASE_PER_CHUNK;
+*/		
+	
+/*
+  for (int i = 1; i < 10 ; i++)
+  {
+  _putSnakeChunk(
+  std::make_pair(1, i),
+  std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
+  std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i])
+  );
+  i++;
+  _putSnakeChunk(
+  std::make_pair(1, i),
+  std::make_pair(1, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
+  std::make_pair(1, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
+  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+  );
+  }
 
-	i = 5;
-	_putSnakeChunk(
-		std::make_pair(i, 1),
-		std::make_pair(i + 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-		std::make_pair(i - 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i])
-		);
-	i--;
-	_putSnakeChunk(
-		std::make_pair(i, 1),
-		std::make_pair(i + 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
-		std::make_pair(i - 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
-		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-		);
+  int i = 5;
+  _putSnakeChunk(
+  std::make_pair(4, i),
+  std::make_pair(4, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
+  std::make_pair(4, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i])
+  );
+  i--;
+  _putSnakeChunk(
+  std::make_pair(4, i),
+  std::make_pair(4, i + 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
+  std::make_pair(4, i - 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
+  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+  );
 
-	i = 7;
-	_putSnakeChunk(
-		std::make_pair(i, 3),
-		std::make_pair(i - 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-		std::make_pair(i + 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i])
-		);
-	i++;
-	_putSnakeChunk(
-		std::make_pair(i, 3),
-		std::make_pair(i - 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
-		std::make_pair(i + 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i]),
-		std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
-		);
+  i = 5;
+  _putSnakeChunk(
+  std::make_pair(i, 1),
+  std::make_pair(i + 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
+  std::make_pair(i - 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i])
+  );
+  i--;
+  _putSnakeChunk(
+  std::make_pair(i, 1),
+  std::make_pair(i + 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i + 1]),
+  std::make_pair(i - 1, 1), 65.f + 20.f * getRandRange(rangesDelta[i]),
+  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+  );
 
+  i = 7;
+  _putSnakeChunk(
+  std::make_pair(i, 3),
+  std::make_pair(i - 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
+  std::make_pair(i + 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i])
+  );
+  i++;
+  _putSnakeChunk(
+  std::make_pair(i, 3),
+  std::make_pair(i - 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i - 1]),
+  std::make_pair(i + 1, 3), 65.f + 20.f * getRandRange(rangesDelta[i]),
+  std::make_tuple(0.f, 0.f, 1.f), std::make_tuple(0.f, 1.f, 0.f)
+  );
 
+*/
 	glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
