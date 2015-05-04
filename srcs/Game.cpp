@@ -6,21 +6,21 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 17:16:12 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:55:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <dlfcn.h>
 #include <string>
 #include <iostream>
-#include <ctime>
+#include <chrono>
 #include "nibbler.h"
 #include "Game.hpp"
 #include "Event.hpp"
 #include "IUI.hpp"
 
 Game::Game(void)
-	: gameWidth(GAME_WIDTH), gameHeight(GAME_HEIGHT), snake(2, 2),
+	: gameWidth(GAME_WIDTH), gameHeight(GAME_HEIGHT), snake(5, 5),
 	_uiLib(NULL), _ui(NULL)
 {
 }
@@ -36,9 +36,9 @@ Game::~Game(void)
 
 void						Game::start(void)
 {
-	clock_t		lastUpdate;
+	std::chrono::steady_clock::time_point	lastUpdate;
 
-	lastUpdate = clock();
+	lastUpdate = std::chrono::steady_clock::now();
 	while (_ui != NULL && !_ui->windowShouldClose())
 	{
 		while (true)
@@ -49,7 +49,7 @@ void						Game::start(void)
 			event.process(*this);
 		}
 		_ui->draw(*this);
-		while ((clock() - lastUpdate) > UPDATE_INTERVAL)
+		while ((std::chrono::steady_clock::now() - lastUpdate) > UPDATE_INTERVAL)
 		{
 			_update();
 			lastUpdate += UPDATE_INTERVAL;
@@ -59,7 +59,8 @@ void						Game::start(void)
 
 void						Game::_update(void)
 {
-	snake.move(direction.first, direction.second);
+	snake.update();
+	// collisions and bonus
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)

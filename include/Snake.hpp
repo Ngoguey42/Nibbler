@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 17:16:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:23:55 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ public:
 
 	typedef std::pair<int, int>	Chunk;
 
-	void						move(int x, int y);
+	void						update(void);
 
 	std::deque<Chunk>			chunks;
+
+	std::pair<int, int>			direction;
 
 protected:
 

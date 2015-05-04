@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 15:28:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:51:55 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class	GrowBonus;
 # define GAME_WIDTH			12
 # define GAME_HEIGHT		20
 
-# define UPDATE_INTERVAL	(1000 / 30)
+# define UPDATE_INTERVAL	std::chrono::milliseconds(1000)
 
 /*
 ** ========================================================================== **

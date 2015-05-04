@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 17:15:41 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:22:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ public:
 
 	int							score;
 	bool						paused;
-	std::pair<int, int>			direction;
 
 	std::list<IBonus*>			bonus;
 

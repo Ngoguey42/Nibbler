@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/29 08:02:43 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/04 16:17:44 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:18:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ public:
 	virtual bool			windowShouldClose(void) const = 0;
 
 protected:
+
 private:
 	IUI(IUI const &src);
 	IUI						&operator=(IUI const &rhs);

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 17:16:02 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:22:48 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,28 @@ void				Event::_processUp(Game &game)
 {
 	if (game.paused)
 		return ;
-	game.direction = std::make_pair(0, -1);
+	game.snake.direction = std::make_pair(0, -1);
 }
 
 void				Event::_processRight(Game &game)
 {
 	if (game.paused)
 		return ;
-	game.direction = std::make_pair(1, 0);
+	game.snake.direction = std::make_pair(1, 0);
 }
 
 void				Event::_processDown(Game &game)
 {
 	if (game.paused)
 		return ;
-	game.direction = std::make_pair(0, 1);
+	game.snake.direction = std::make_pair(0, 1);
 }
 
 void				Event::_processLeft(Game &game)
 {
 	if (game.paused)
 		return ;
-	game.direction = std::make_pair(-1, 0);
+	game.snake.direction = std::make_pair(-1, 0);
 }
 
 void				Event::_processSpace(Game &game)
