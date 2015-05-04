@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 17:55:09 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 18:05:37 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void						Game::start(void)
 			event.process(*this);
 		}
 		_ui->draw(*this);
-		while ((std::chrono::steady_clock::now() - lastUpdate) > UPDATE_INTERVAL)
+		while (!snake.die && (std::chrono::steady_clock::now() - lastUpdate) > UPDATE_INTERVAL)
 		{
 			_update();
 			lastUpdate += UPDATE_INTERVAL;
@@ -60,7 +60,8 @@ void						Game::start(void)
 void						Game::_update(void)
 {
 	snake.update();
-	// collisions and bonus
+	if (snake.collide(*this))
+		PRINT("DIE");
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)
