@@ -1,40 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Snake.hpp                                          :+:      :+:    :+:   */
+/*   GrowBonus.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 14:55:31 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/04 13:36:29 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/04 15:11:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SNAKE_HPP
-# define SNAKE_HPP
+#include "GrowBonus.hpp"
 
-# include <deque>
-
-class	Snake
+GrowBonus::GrowBonus(void)
+	: _eaten(false)
 {
-public:
-	Snake(int x, int y);
-	virtual ~Snake(void);
+}
 
-	typedef std::pair<int, int>	Chunk;
+GrowBonus::~GrowBonus(void)
+{
+}
 
-	std::deque<Chunk> const		&getChunks(void) const;
+IBonus::Type	GrowBonus::getType(void) const
+{
+	return (IBonus::Type::GROW);
+}
 
-	void						move(int x, int y);
+void			GrowBonus::active(Snake &)
+{
+	_eaten = true;
+}
 
-protected:
-
-	std::deque<Chunk>			_chunks;
-
-private:
-	Snake(void);
-	Snake(Snake const &src);
-	Snake						&operator=(Snake const &rhs);
-};
-
-#endif
+bool			GrowBonus::shouldDestroy(void) const
+{
+	return (_eaten);
+}

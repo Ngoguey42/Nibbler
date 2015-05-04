@@ -12,7 +12,11 @@ HEADS := -I include
 
 all: $(NAME)
 
+o/Event.cpp.o: srcs/Event.cpp include/Event.hpp
+	@$(COMPILE)
 o/Game.cpp.o: srcs/Game.cpp include/nibbler.h include/IUI.hpp include/Game.hpp
+	@$(COMPILE)
+o/GrowBonus.cpp.o: srcs/GrowBonus.cpp include/GrowBonus.hpp
 	@$(COMPILE)
 o/main.cpp.o: srcs/main.cpp include/nibbler.h include/IUI.hpp include/Game.hpp
 	@$(COMPILE)
@@ -22,12 +26,14 @@ lib/OpenGL:
 	@make -C lib/OpenGL
 
 
-MSG_0 := printf '\033[0;32m%-14.14s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-14.14s\033[0;0m\n'
+MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-18.18s\033[0;0m\n'
 
 COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
 
-O_FILES := o/Game.cpp.o \
+O_FILES := o/Event.cpp.o \
+		o/Game.cpp.o \
+		o/GrowBonus.cpp.o \
 		o/main.cpp.o \
 		o/Snake.cpp.o
 

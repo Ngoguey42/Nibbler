@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Snake.hpp                                          :+:      :+:    :+:   */
+/*   IBonus.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 14:55:31 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/04 13:21:35 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/04 13:36:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SNAKE_HPP
-# define SNAKE_HPP
+#ifndef IBONUS_HPP
+# define IBONUS_HPP
 
-# include <deque>
+# include "nibbler.h"
 
-class	Snake
+class	IBonus
 {
 public:
-	Snake(int x, int y);
-	virtual ~Snake(void);
+	enum	Type
+	{
+		GROW
+	};
 
-	typedef std::pair<int, int>	Chunk;
+	IBonus(void){}
+	virtual ~IBonus(void){}
 
-	std::deque<Chunk> const		&getChunks(void) const;
-
-	void						move(int x, int y);
+	virtual Type		getType(void) const = 0;
+	virtual void		active(Snake &snake) = 0;
+	virtual bool		shouldDestroy(void) const = 0;
 
 protected:
 
-	std::deque<Chunk>			_chunks;
-
 private:
-	Snake(void);
-	Snake(Snake const &src);
-	Snake						&operator=(Snake const &rhs);
+	IBonus(IBonus const &src);
+	IBonus				&operator=(IBonus const &rhs);
 };
 
 #endif

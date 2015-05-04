@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/01 16:05:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 15:18:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,22 @@
 
 Snake::Snake(int x, int y)
 {
-	_chunks.emplace(Chunk(x, y));
+	_chunks.emplace_front(Snake::Chunk(x, y));
 }
 
 Snake::~Snake(void)
 {
 }
 
-void			Snake::move(int x, int y)
+std::deque<Snake::Chunk> const	&Snake::getChunks(void) const
 {
-	_chunks.pop();
-	_chunks.emplace(Chunk(x, y));
+	return (_chunks);
+}
+
+void						Snake::move(int x, int y)
+{
+	Snake::Chunk						&last = *_chunks.begin();
+
+	_chunks.pop_back();
+	_chunks.emplace_front(Snake::Chunk(last.first + x, last.second + y));
 }
