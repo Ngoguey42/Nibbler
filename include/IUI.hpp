@@ -6,13 +6,14 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/29 08:02:43 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/04 14:30:06 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/05/04 16:17:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IUI_HPP
 # define IUI_HPP
 
+# include "nibbler.h"
 # include "Event.hpp"
 
 class IUI
@@ -21,10 +22,10 @@ public:
 	IUI(){};
 	virtual ~IUI(){};
 
-	virtual void			draw(void) = 0;
-	virtual Event::Type		getEvent(void);
+	virtual Event::Type		getEvent(void) = 0;
 
-	virtual void			draw(void) const = 0;
+	virtual void			draw(Game const &game) = 0;
+
 	virtual bool			windowShouldClose(void) const = 0;
 
 protected:

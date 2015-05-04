@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 14:55:31 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:16:18 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ public:
 
 	typedef std::pair<int, int>	Chunk;
 
-	std::deque<Chunk> const		&getChunks(void) const;
-
 	void						move(int x, int y);
 
-protected:
+	std::deque<Chunk>			chunks;
 
-	std::deque<Chunk>			_chunks;
+protected:
 
 private:
 	Snake(void);

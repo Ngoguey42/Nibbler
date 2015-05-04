@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 15:53:28 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:15:41 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,20 @@ public:
 
 	void						start(void);
 
-	Snake const					&getSnake(void) const;
-	std::list<IBonus*> const	&getBonus(void) const;
-	int							getScore(void) const;
-	std::pair<int, int>			getGameSize(void) const;
-	bool						isPaused(void) const;
+	int							gameWidth;
+	int							gameHeight;
 
-	void						setDirection(int x, int y);
+	int							score;
+	bool						paused;
+	std::pair<int, int>			direction;
 
-	void						setPaused(bool paused);
+	std::list<IBonus*>			bonus;
+
+	Snake						snake;
 
 	void						changeUI(char const *lib) throw(std::exception);
 
 protected:
-
-	int							_gameWidth;
-	int							_gameHeight;
-
-	int							_score;
-	bool						_paused;
-	std::pair<int, int>			_direction;
-
-	std::list<IBonus*>			_bonus;
-
-	Snake						_snake;
 
 	void						*_uiLib;
 	IUI							*_ui;

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 15:53:44 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:16:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "IUI.hpp"
 
 Game::Game(void)
-	: _gameWidth(GAME_WIDTH), _gameHeight(GAME_HEIGHT), _snake(2, 2),
+	: gameWidth(GAME_WIDTH), gameHeight(GAME_HEIGHT), snake(2, 2),
 	_uiLib(NULL), _ui(NULL)
 {
 }
@@ -41,14 +41,14 @@ void						Game::start(void)
 	lastUpdate = clock();
 	while (_ui != NULL && !_ui->windowShouldClose())
 	{
-		// while (true)
-		// {
-		// 	Event	event(_ui->getEvent());
-		// 	if (event.getType() == Event::Type::NOPE)
-		// 		break ;
-		// 	event.process(*this);
-		// }
-		_ui->draw();
+		while (true)
+		{
+			Event	event(_ui->getEvent());
+			if (event.getType() == Event::Type::NOPE)
+				break ;
+			event.process(*this);
+		}
+		_ui->draw(*this);
 		while ((clock() - lastUpdate) > UPDATE_INTERVAL)
 		{
 			_update();
@@ -59,42 +59,7 @@ void						Game::start(void)
 
 void						Game::_update(void)
 {
-	_snake.move(_direction.first, _direction.second);
-}
-
-Snake const					&Game::getSnake(void) const
-{
-	return (_snake);
-}
-
-int							Game::getScore(void) const
-{
-	return (_score);
-}
-
-std::list<IBonus*> const	&Game::getBonus(void) const
-{
-	return (_bonus);
-}
-
-std::pair<int, int>			Game::getGameSize(void) const
-{
-	return (std::pair<int, int>(_gameWidth, _gameHeight));
-}
-
-bool						Game::isPaused(void) const
-{
-	return (_paused);
-}
-
-void						Game::setDirection(int x, int y)
-{
-	_direction = std::pair<int, int>(x, y);
-}
-
-void						Game::setPaused(bool paused)
-{
-	_paused = paused;
+	snake.move(direction.first, direction.second);
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)
@@ -121,7 +86,7 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	try
 	{
 		_ui = reinterpret_cast<IUI *(*)(std::pair<int, int>, float)>
-			(init_func)(std::make_pair(_gameWidth, _gameHeight), 35.f);
+			(init_func)(std::make_pair(gameWidth, gameHeight), 35.f);
 	}
 	catch (std::exception &e)
 	{

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 15:55:47 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/04 17:16:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,40 @@ void				Event::process(Game &game)
 
 void				Event::_processUp(Game &game)
 {
-	if (game.isPaused())
+	if (game.paused)
 		return ;
-	game.setDirection(0, -1);
+	game.direction = std::make_pair(0, -1);
 }
 
 void				Event::_processRight(Game &game)
 {
-	if (game.isPaused())
+	if (game.paused)
 		return ;
-	game.setDirection(1, 0);
+	game.direction = std::make_pair(1, 0);
 }
 
 void				Event::_processDown(Game &game)
 {
-	if (game.isPaused())
+	if (game.paused)
 		return ;
-	game.setDirection(0, 1);
+	game.direction = std::make_pair(0, 1);
 }
 
 void				Event::_processLeft(Game &game)
 {
-	if (game.isPaused())
+	if (game.paused)
 		return ;
-	game.setDirection(-1, 0);
+	game.direction = std::make_pair(-1, 0);
 }
 
 void				Event::_processSpace(Game &game)
 {
-	if (game.isPaused())
-		game.setPaused(false);
-	game.setPaused(true);
+	game.paused = !game.paused;
 }
 
 void				Event::_process1(Game &game)
 {
-	game.setPaused(true);
+	game.paused = true;
 	game.changeUI(UI_1);
 }
 
