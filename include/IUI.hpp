@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/29 08:02:43 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/04 15:18:06 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/05/04 14:30:06 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ public:
 	IUI(){};
 	virtual ~IUI(){};
 
+	virtual void			draw(void) = 0;
 	virtual Event::Type		getEvent(void);
 
 	virtual void			draw(void) const = 0;
