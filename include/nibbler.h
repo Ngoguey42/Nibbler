@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 17:51:55 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/05 21:12:07 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class	GrowBonus;
 # define INIT_FUNCTION		init
 
 # define UI_1				"lib/OpenGL.so"
+# define UI_2				"lib/NcursesUI.so"
 
 /*
 ** ========================================================================== **
