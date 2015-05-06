@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/06 12:48:02 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 16:40:11 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ Event::Type		NcursesUI::getEvent(void)
 	c = getch();
 	if (c == 'q')
 		_shouldClose = true;
-	else if (_events[c] != 0)
+	else if (c != ERR && _events.find(c) != _events.end())
 		return (_events[c]);
 	_updateSize();
 	return (Event::NOPE);
@@ -67,11 +67,11 @@ void			NcursesUI::draw(Game const &game)
 {
 	erase();
 	attron(COLOR_PAIR(2));
-	for (int w = _gameSize.second * _chunkWidth - 1; w >= 0; --w)
+	for (int h = _gameSize.second * _chunkHeight - 1; h >= 0; --h)
 	{
-		for (int h = _gameSize.first * _chunkHeight - 1; h >= 0; --h)
+		for (int w = _gameSize.first * _chunkWidth - 1; w >= 0; --w)
 		{
-			move(w, h);
+			move(h + _offset.second, w + _offset.first);
 			printw(" ");
 		}
 	}
@@ -84,8 +84,8 @@ void			NcursesUI::draw(Game const &game)
 		{
 			for (int w = 0; w < _chunkWidth; ++w)
 			{
-				move(it->second * _chunkHeight + h,
-					it->first * _chunkWidth + w);
+				move(it->second * _chunkHeight + h + _offset.second,
+					it->first * _chunkWidth + w + _offset.first);
 				printw("X");
 			}
 		}
@@ -93,7 +93,7 @@ void			NcursesUI::draw(Game const &game)
 	if (game.snake.die)
 	{
 		attron(COLOR_PAIR(1));
-		move(0, 0);
+		move(_offset.second, _offset.first);
 		printw("[[ DIE ]]");
 	}
 	refresh();
@@ -108,8 +108,10 @@ void			NcursesUI::_updateSize(void)
 	_winSize.first = width;
 	_winSize.second = height;
 	_chunkWidth = std::min(width / _gameSize.first,
-		height / _gameSize.second);
+		height / _gameSize.second * 2);
 	_chunkHeight = _chunkWidth / 2;
+	_offset = std::make_pair((width - (_chunkWidth * _gameSize.first)) / 2,
+		(height - (_chunkHeight * _gameSize.second)) / 2);
 }
 
 bool			NcursesUI::windowShouldClose(void) const

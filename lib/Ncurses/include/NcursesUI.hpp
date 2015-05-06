@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:49 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/06 12:41:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 16:37:54 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ protected:
 	std::pair<int, int>			_gameSize;
 
 	std::pair<int, int>			_winSize;
+	std::pair<int, int>			_offset;
 	int							_chunkWidth;
 	int							_chunkHeight;
 
