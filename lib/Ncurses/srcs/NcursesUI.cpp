@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/06 16:40:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 17:18:27 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	noecho();
 	curs_set(0);
 	start_color();
-	init_color(17, 200, 200, 200);
+	init_color(17, 140, 140, 140);
+	init_color(18, 120, 120, 120);
+	init_color(19, 100, 100, 100);
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	init_pair(2, COLOR_WHITE, 17);
-	init_pair(3, COLOR_RED, COLOR_RED);
+	init_pair(2, COLOR_RED, COLOR_RED);
+	init_pair(3, 17, 17);
+	init_pair(4, 18, 18);
+	init_pair(5, 19, 19);
 	_events['1'] = Event::EVENT_1;
 	_events['2'] = Event::EVENT_2;
 	_events['3'] = Event::EVENT_3;
@@ -65,31 +69,16 @@ Event::Type		NcursesUI::getEvent(void)
 
 void			NcursesUI::draw(Game const &game)
 {
+	int				color = 0;
+
 	erase();
-	attron(COLOR_PAIR(2));
-	for (int h = _gameSize.second * _chunkHeight - 1; h >= 0; --h)
-	{
-		for (int w = _gameSize.first * _chunkWidth - 1; w >= 0; --w)
-		{
-			move(h + _offset.second, w + _offset.first);
-			printw(" ");
-		}
-	}
-	attron(COLOR_PAIR(3));
+	for (int x = _gameSize.first - 1; x >= 0; --x)
+		for (int y = _gameSize.second - 1; y >= 0; --y)
+			_drawChunk(x, y, (color = ((color << 1) + y) % 3) + 3, '.');
 	for (auto it = game.snake.chunks.begin();
 		it != game.snake.chunks.end();
 		++it)
-	{
-		for (int h = 0; h < _chunkHeight; ++h)
-		{
-			for (int w = 0; w < _chunkWidth; ++w)
-			{
-				move(it->second * _chunkHeight + h + _offset.second,
-					it->first * _chunkWidth + w + _offset.first);
-				printw("X");
-			}
-		}
-	}
+		_drawChunk(it->first, it->second, 2, 'X');
 	if (game.snake.die)
 	{
 		attron(COLOR_PAIR(1));
@@ -97,6 +86,16 @@ void			NcursesUI::draw(Game const &game)
 		printw("[[ DIE ]]");
 	}
 	refresh();
+}
+
+void			NcursesUI::_drawChunk(int x, int y, int color, char c)
+{
+	x = x * _chunkWidth + _offset.first;
+	y = y * _chunkHeight + _offset.second;
+	attron(COLOR_PAIR(color));
+	for (int w = _chunkWidth + x - 1; w >= x; --w)
+		for (int h = _chunkHeight + y - 1; h >= y; --h)
+			mvaddch(h, w, c);
 }
 
 void			NcursesUI::_updateSize(void)
