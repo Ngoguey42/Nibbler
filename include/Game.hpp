@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 17:27:13 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 18:26:37 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ protected:
 	void						*_uiLib;
 	IUI							*_ui;
 
-	void						_update(void);
+	void						_update(std::chrono::steady_clock::duration t);
 
 	void						_spawn(IBonus *bonus);
 

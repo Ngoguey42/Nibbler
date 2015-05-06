@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 17:54:17 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 19:05:56 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <string>
 #include <utility>
 #include <iostream>
+#include <chrono>
 #include <chrono>
 #include <cstdlib>
 #include "nibbler.h"
@@ -40,11 +41,12 @@ Game::~Game(void)
 
 void						Game::start(void)
 {
-	std::chrono::steady_clock::time_point	lastUpdate;
+	auto		lastUpdate = std::chrono::steady_clock::now();
+	auto		tmp = lastUpdate;
 
-	lastUpdate = std::chrono::steady_clock::now();
 	while (_ui != NULL && !_ui->windowShouldClose())
 	{
+		tmp = std::chrono::steady_clock::now();
 		while (true)
 		{
 			Event	event(_ui->getEvent());
@@ -53,19 +55,16 @@ void						Game::start(void)
 			event.process(*this);
 		}
 		_ui->draw(*this);
-		while (!snake.die && (std::chrono::steady_clock::now() - lastUpdate) > UPDATE_INTERVAL)
-		{
-			_update();
-			lastUpdate += UPDATE_INTERVAL;
-		}
+		_update(tmp - lastUpdate);
+		lastUpdate = tmp;
 	}
 }
 
-void						Game::_update(void)
+void						Game::_update(std::chrono::steady_clock::duration t)
 {
 	if (paused)
 		return ;
-	snake.update(*this);
+	snake.update(*this, t);
 	for (auto it = bonus.begin(); it != bonus.end(); ++it)
 		if ((*it)->shouldDestroy())
 			it = bonus.erase(it);
@@ -79,11 +78,13 @@ void						Game::_spawn(IBonus *b)
 {
 	int			pos = gameWidth * gameHeight - snake.chunks.size();
 
+	if (pos <= 0)
+		return ;
 	pos = rand() % pos;
 	bonus.push_back(b);
 	for (int y = 0; y < gameHeight; ++y)
 		for (int x = 0; x < gameWidth; ++x)
-			if (--pos < 0)
+			if (!snake.isChunk(x, y) && --pos < 0)
 			{
 				b->setPos(x, y);
 				return ;
