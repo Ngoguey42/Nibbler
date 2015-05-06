@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 17:42:04 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 17:54:17 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void						Game::_update(void)
 {
 	if (paused)
 		return ;
-	snake.update();
+	snake.update(*this);
+	for (auto it = bonus.begin(); it != bonus.end(); ++it)
+		if ((*it)->shouldDestroy())
+			it = bonus.erase(it);
 	if (snake.collide(*this))
 		return ;
 	if (bonus.size() <= 0)

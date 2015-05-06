@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 18:05:58 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 17:53:05 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ public:
 
 	typedef std::pair<int, int>	Chunk;
 
-	void						update(void);
+	void						update(Game const &game);
 
 	bool						collide(Game const &game);
 

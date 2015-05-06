@@ -6,13 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 18:08:10 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 18:01:52 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "Snake.hpp"
 #include "Game.hpp"
+#include "IBonus.hpp"
 
 Snake::Snake(int x, int y)
 	: direction(0, 1), die(false)
@@ -41,11 +42,14 @@ bool				Snake::collide(Game const &game)
 	return (false);
 }
 
-void				Snake::update(void)
+void				Snake::update(Game const &game)
 {
-	Snake::Chunk		&last = *chunks.begin();
+	Snake::Chunk		&head = *chunks.begin();
 
+	for (auto it = game.bonus.begin(); it != game.bonus.end(); ++it)
+		if (head.first == (*it)->getX() && head.second == (*it)->getY())
+			(*it)->active(*this);
 	chunks.pop_back();
-	chunks.emplace_front(Snake::Chunk(last.first + direction.first,
-		last.second + direction.second));
+	chunks.emplace_front(Snake::Chunk(head.first + direction.first,
+		head.second + direction.second));
 }

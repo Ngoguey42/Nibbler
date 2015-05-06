@@ -6,11 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:36:29 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 17:40:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 18:01:36 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GrowBonus.hpp"
+#include "Snake.hpp"
 
 GrowBonus::GrowBonus(void)
 	: _pos(0, 0), _eaten(false)
@@ -42,9 +43,10 @@ int						GrowBonus::getY(void) const
 	return (_pos.second);
 }
 
-void					GrowBonus::active(Snake &)
+void					GrowBonus::active(Snake &snake)
 {
 	_eaten = true;
+	snake.chunks.emplace_back(Snake::Chunk(_pos.first, _pos.second));
 }
 
 bool					GrowBonus::shouldDestroy(void) const
