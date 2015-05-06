@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/04 18:02:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 17:27:13 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ protected:
 	IUI							*_ui;
 
 	void						_update(void);
+
+	void						_spawn(IBonus *bonus);
 
 private:
 	Game(Game const &src);

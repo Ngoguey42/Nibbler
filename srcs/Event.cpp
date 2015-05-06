@@ -6,13 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/05 21:12:40 by juloo            ###   ########.fr       */
+/*   Updated: 2015/05/06 16:19:17 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nibbler.h"
 #include "Event.hpp"
 #include "Game.hpp"
+#include <iostream>
 
 Event::Event(Event::Type type)
 	: _type(type)
@@ -37,28 +38,28 @@ void				Event::process(Game &game)
 
 void				Event::_processUp(Game &game)
 {
-	if (game.paused)
+	if (game.paused || game.snake.direction.second == 1)
 		return ;
 	game.snake.direction = std::make_pair(0, -1);
 }
 
 void				Event::_processRight(Game &game)
 {
-	if (game.paused)
+	if (game.paused || game.snake.direction.first == -1)
 		return ;
 	game.snake.direction = std::make_pair(1, 0);
 }
 
 void				Event::_processDown(Game &game)
 {
-	if (game.paused)
+	if (game.paused || game.snake.direction.second == -1)
 		return ;
 	game.snake.direction = std::make_pair(0, 1);
 }
 
 void				Event::_processLeft(Game &game)
 {
-	if (game.paused)
+	if (game.paused || game.snake.direction.first == 1)
 		return ;
 	game.snake.direction = std::make_pair(-1, 0);
 }
