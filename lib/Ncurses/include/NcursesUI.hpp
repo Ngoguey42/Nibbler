@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:49 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/06 17:02:39 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 19:42:10 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ protected:
 
 	void						_updateSize(void);
 
+	void						_startText(int x, int y);
 	void						_drawChunk(int x, int y, int color, char c);
 
 private:

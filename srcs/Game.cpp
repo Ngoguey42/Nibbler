@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 19:05:56 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 19:50:07 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include "GrowBonus.hpp"
 
 Game::Game(void)
-	: gameWidth(GAME_WIDTH), gameHeight(GAME_HEIGHT), snake(5, 5),
+	: gameWidth(GAME_WIDTH), gameHeight(GAME_HEIGHT), score(0), snake(5, 5),
 	_uiLib(NULL), _ui(NULL)
 {
 	srand(time(NULL));

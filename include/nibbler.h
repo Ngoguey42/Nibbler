@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 18:59:15 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/06 19:25:55 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ class	GrowBonus;
 ** Settings
 */
 
-# define GAME_WIDTH			12
-# define GAME_HEIGHT		20
+# define GAME_WIDTH			13
+# define GAME_HEIGHT		19
 
 # define INITIAL_SPEED		130
 
