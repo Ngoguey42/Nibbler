@@ -4,10 +4,10 @@ NAME := nibbler
 C_DIR := srcs
 H_DIRS := include
 O_DIR := o
-LIBS := lib/OpenGL
+LIBS := lib/OpenGL lib/Ncurses
 CC := clang++
 FLAGS := -std=c++14 -Wall -Wextra -Werror -g
-LINKS := -Llib/OpenGL 
+LINKS := -Llib/Ncurses -Llib/OpenGL 
 HEADS := -I include
 
 all: $(NAME)
@@ -20,10 +20,13 @@ o/GrowBonus.cpp.o: srcs/GrowBonus.cpp include/GrowBonus.hpp
 	@$(COMPILE)
 o/main.cpp.o: srcs/main.cpp include/nibbler.h include/IUI.hpp include/Game.hpp
 	@$(COMPILE)
-o/Snake.cpp.o: srcs/Snake.cpp include/Snake.hpp
+o/Snake.cpp.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp
 	@$(COMPILE)
 lib/OpenGL:
 	@make -C lib/OpenGL
+
+lib/Ncurses:
+	@make -C lib/Ncurses
 
 
 MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'
@@ -58,4 +61,4 @@ re: fclean all
 make:
 	@bash './makemake.sh' re
 
-.PHONY: all clean fclean re make lib/OpenGL
+.PHONY: all clean fclean re make lib/OpenGL lib/Ncurses

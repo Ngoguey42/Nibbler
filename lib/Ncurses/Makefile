@@ -6,7 +6,7 @@ H_DIRS := include
 O_DIR := o
 LIBS := 
 CC := clang++
-FLAGS := -Wall -Wextra -Werror -O2
+FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 LINKS := -fPIC -shared -lncurses
 HEADS := -Iinclude -I../../include
 
