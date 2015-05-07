@@ -1,44 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IBonus.hpp                                         :+:      :+:    :+:   */
+/*   ISnake.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/04 13:21:35 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 17:36:25 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/07 11:54:19 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/07 12:20:49 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IBONUS_HPP
-# define IBONUS_HPP
+#ifndef ISNAKE_HPP
+# define ISNAKE_HPP
 
+# include <utility>
+# include <deque>
+# include <chrono>
 # include "nibbler.h"
 
-class	IBonus
+class	ISnake
 {
 public:
-	enum	Type
-	{
-		GROW
-	};
+	typedef std::pair<int, int>		Chunk;
 
-	IBonus(void){}
-	virtual ~IBonus(void){}
+	ISnake(void){}
+	virtual ~ISnake(void){}
 
-	virtual void			setPos(int x, int y) = 0;
-	virtual int				getX(void) const = 0;
-	virtual int				getY(void) const = 0;
+	virtual std::deque<Chunk> const	&getChunks(void) const = 0;
+	virtual bool					isChunk(int x, int y) const = 0;
 
-	virtual Type			getType(void) const = 0;
-	virtual void			active(Snake &snake) = 0;
-	virtual bool			shouldDestroy(void) const = 0;
+	virtual std::pair<int, int>		getDirection(void) const = 0;
+
+	virtual bool					isDie(void) const = 0;
 
 protected:
 
 private:
-	IBonus(IBonus const &src);
-	IBonus					&operator=(IBonus const &rhs);
+	ISnake(ISnake const &src);
+	ISnake							&operator=(ISnake const &rhs);
 };
 
 #endif

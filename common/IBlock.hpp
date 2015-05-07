@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   GrowBonus.hpp                                      :+:      :+:    :+:   */
+/*   IBlock.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/04 13:25:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 11:49:05 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/07 11:55:20 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/07 12:20:58 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GROWBONUS_HPP
-# define GROWBONUS_HPP
+#ifndef IBLOCK_HPP
+# define IBLOCK_HPP
 
-# include "nibbler.h"
-# include "ABlock.hpp"
-
-class	GrowBonus : public ABlock
+class	IBlock
 {
 public:
-	GrowBonus(void);
-	virtual ~GrowBonus(void);
+	enum	Type
+	{
+		GROW,
+		WALL,
+		NOPE
+	};
 
-	virtual void			active(Snake &snake);
-	virtual bool			shouldDestroy(void) const;
+	IBlock(void){}
+	virtual ~IBlock(void){}
+
+	virtual int				getX(void) const = 0;
+	virtual int				getY(void) const = 0;
+
+	virtual Type			getType(void) const = 0;
 
 protected:
 
-	bool					_eaten;
-
 private:
-	GrowBonus(GrowBonus const &src);
-	GrowBonus				&operator=(GrowBonus const &rhs);
+	IBlock(IBlock const &src);
+	IBlock					&operator=(IBlock const &rhs);
 };
 
 #endif

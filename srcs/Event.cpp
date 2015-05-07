@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 16:19:17 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/07 13:33:03 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "Game.hpp"
 #include <iostream>
 
-Event::Event(Event::Type type)
+Event::Event(EventType type)
 	: _type(type)
 {
 }
@@ -24,60 +24,60 @@ Event::~Event(void)
 {
 }
 
-Event::Type			Event::getType(void) const
+EventType			Event::getType(void) const
 {
 	return (_type);
 }
 
 void				Event::process(Game &game)
 {
-	if (_type < 0 || _type >= Type::NOPE)
+	if (_type < 0 || _type >= EVENT_NOPE)
 		return ;
 	(this->*(_events[_type]))(game);
 }
 
 void				Event::_processUp(Game &game)
 {
-	if (game.paused || game.snake.direction.second == 1)
+	if (game.isPaused() || game.getSnake().getDirection().second == 1)
 		return ;
-	game.snake.direction = std::make_pair(0, -1);
+	game.getSnake().setDirection(0, -1);
 }
 
 void				Event::_processRight(Game &game)
 {
-	if (game.paused || game.snake.direction.first == -1)
+	if (game.isPaused() || game.getSnake().getDirection().first == -1)
 		return ;
-	game.snake.direction = std::make_pair(1, 0);
+	game.getSnake().setDirection(1, 0);
 }
 
 void				Event::_processDown(Game &game)
 {
-	if (game.paused || game.snake.direction.second == -1)
+	if (game.isPaused() || game.getSnake().getDirection().second == -1)
 		return ;
-	game.snake.direction = std::make_pair(0, 1);
+	game.getSnake().setDirection(0, 1);
 }
 
 void				Event::_processLeft(Game &game)
 {
-	if (game.paused || game.snake.direction.first == 1)
+	if (game.isPaused() || game.getSnake().getDirection().first == 1)
 		return ;
-	game.snake.direction = std::make_pair(-1, 0);
+	game.getSnake().setDirection(-1, 0);
 }
 
 void				Event::_processSpace(Game &game)
 {
-	game.paused = !game.paused;
+	game.setPaused(!game.isPaused());
 }
 
 void				Event::_process1(Game &game)
 {
-	game.paused = true;
+	game.setPaused(true);
 	game.changeUI(UI_1);
 }
 
 void				Event::_process2(Game &game)
 {
-	game.paused = true;
+	game.setPaused(true);
 	game.changeUI(UI_2);
 }
 
@@ -101,7 +101,7 @@ void				Event::_process7(Game &)
 {
 }
 
-Event::event_t		Event::_events[Type::NOPE]  = {
+Event::event_t		Event::_events[EVENT_NOPE]  = {
 	&Event::_processUp,
 	&Event::_processRight,
 	&Event::_processDown,

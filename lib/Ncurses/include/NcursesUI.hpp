@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:49 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/06 19:42:10 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/07 13:19:34 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <map>
 # include <utility>
+# include "nibbler.h"
 # include "IUI.hpp"
-# include "Event.hpp"
 
 class	NcursesUI : public IUI
 {
@@ -24,9 +24,9 @@ public:
 	NcursesUI(std::pair<int, int> gameSize);
 	virtual ~NcursesUI(void);
 
-	virtual Event::Type			getEvent(void);
+	virtual EventType			getEvent(void);
 
-	virtual void				draw(Game const &game);
+	virtual void				draw(IGame const &game);
 
 	virtual bool				windowShouldClose(void) const;
 
@@ -39,7 +39,7 @@ protected:
 	int							_chunkWidth;
 	int							_chunkHeight;
 
-	std::map<int, Event::Type>	_events;
+	std::map<int, EventType>	_events;
 
 	bool						_shouldClose;
 

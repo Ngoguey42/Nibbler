@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 19:25:55 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/07 13:15:37 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,17 @@
 ** Prototypes
 */
 
+// Shared
+class	IGame;
+class	ISnake;
+class	IBlock;
+// -
+
 class	Game;
 class	Snake;
 class	IUI;
 class	Event;
-class	IBonus;
+class	ABlock;
 class	GrowBonus;
 
 /*
@@ -34,6 +40,28 @@ class	GrowBonus;
 # define GAME_HEIGHT		19
 
 # define INITIAL_SPEED		130
+
+/*
+** ========================================================================== **
+** Types
+*/
+
+enum	EventType
+{
+	EVENT_UP,
+	EVENT_RIGHT,
+	EVENT_DOWN,
+	EVENT_LEFT,
+	EVENT_SPACE,
+	EVENT_1,
+	EVENT_2,
+	EVENT_3,
+	EVENT_4,
+	EVENT_5,
+	EVENT_6,
+	EVENT_7,
+	EVENT_NOPE
+};
 
 /*
 ** ========================================================================== **

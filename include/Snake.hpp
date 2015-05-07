@@ -6,49 +6,59 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 19:05:22 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/07 14:27:15 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SNAKE_HPP
 # define SNAKE_HPP
 
+# include <utility>
 # include <deque>
 # include <chrono>
 # include "nibbler.h"
+# include "ISnake.hpp"
 
-class	Snake
+class	Snake : public ISnake
 {
 public:
 	Snake(int x, int y);
 	virtual ~Snake(void);
 
-	typedef std::pair<int, int>	Chunk;
+// Shared
+	virtual std::deque<Chunk> const	&getChunks(void) const;
+	virtual bool					isChunk(int x, int y) const;
 
-	void						update(Game const &game, std::chrono::steady_clock::duration t);
+	virtual std::pair<int, int>		getDirection(void) const;
 
-	bool						collide(Game const &game);
+	virtual bool					isDie(void) const;
+// -
 
-	bool						isChunk(int x, int y);
+	void							update(Game const &game, std::chrono::steady_clock::duration t);
 
-	std::deque<Chunk>			chunks;
+	bool							collide(Game const &game);
 
-	std::pair<int, int>			direction;
+	void							grow(int x, int y);
 
-	std::chrono::steady_clock::duration	speed;
-
-	bool						die;
+	void							setDirection(int x, int y);
 
 protected:
 
+	std::deque<Chunk>				_chunks;
+
+	std::pair<int, int>				_direction;
+
+	bool							_die;
+
+	std::chrono::steady_clock::duration	_speed;
 	std::chrono::steady_clock::duration	_lastMove;
 
-	void						_move(Game const &game);
+	void							_move(Game const &game);
 
 private:
 	Snake(void);
 	Snake(Snake const &src);
-	Snake						&operator=(Snake const &rhs);
+	Snake							&operator=(Snake const &rhs);
 };
 
 #endif

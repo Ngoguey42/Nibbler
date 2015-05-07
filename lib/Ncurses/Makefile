@@ -2,19 +2,19 @@
 
 NAME := ../NcursesUI.so
 C_DIR := srcs
-H_DIRS := include
+H_DIRS := include ../../common
 O_DIR := o
 LIBS := 
 CC := clang++
 FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 LINKS := -fPIC -shared -lncurses
-HEADS := -Iinclude -I../../include
+HEADS := -Iinclude -I../../common
 
 all: $(NAME)
 
-o/init.cpp.o: srcs/init.cpp include/NcursesUI.hpp
+o/init.cpp.o: srcs/init.cpp ../../common/nibbler.h include/NcursesUI.hpp
 	@$(COMPILE)
-o/NcursesUI.cpp.o: srcs/NcursesUI.cpp include/NcursesUI.hpp
+o/NcursesUI.cpp.o: srcs/NcursesUI.cpp include/NcursesUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
 	@$(COMPILE)
 
 MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'

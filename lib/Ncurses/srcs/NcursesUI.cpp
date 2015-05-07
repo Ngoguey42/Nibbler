@@ -6,14 +6,15 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/06 19:49:39 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/07 13:23:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ncurses.h>
 #include "NcursesUI.hpp"
-#include "Game.hpp"
-#include "IBonus.hpp"
+#include "IGame.hpp"
+#include "ISnake.hpp"
+#include "IBlock.hpp"
 
 NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	: _gameSize(gameSize), _shouldClose(false)
@@ -35,18 +36,18 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	init_pair(13, 17, 17);
 	init_pair(14, 18, 18);
 	init_pair(15, 19, 19);
-	_events['1'] = Event::EVENT_1;
-	_events['2'] = Event::EVENT_2;
-	_events['3'] = Event::EVENT_3;
-	_events['4'] = Event::EVENT_4;
-	_events['5'] = Event::EVENT_5;
-	_events['6'] = Event::EVENT_6;
-	_events['7'] = Event::EVENT_7;
-	_events[' '] = Event::EVENT_SPACE;
-	_events[KEY_UP] = Event::EVENT_UP;
-	_events[KEY_RIGHT] = Event::EVENT_RIGHT;
-	_events[KEY_DOWN] = Event::EVENT_DOWN;
-	_events[KEY_LEFT] = Event::EVENT_LEFT;
+	_events['1'] = EVENT_1;
+	_events['2'] = EVENT_2;
+	_events['3'] = EVENT_3;
+	_events['4'] = EVENT_4;
+	_events['5'] = EVENT_5;
+	_events['6'] = EVENT_6;
+	_events['7'] = EVENT_7;
+	_events[' '] = EVENT_SPACE;
+	_events[KEY_UP] = EVENT_UP;
+	_events[KEY_RIGHT] = EVENT_RIGHT;
+	_events[KEY_DOWN] = EVENT_DOWN;
+	_events[KEY_LEFT] = EVENT_LEFT;
 	_updateSize();
 }
 
@@ -57,7 +58,7 @@ NcursesUI::~NcursesUI(void)
 	endwin();
 }
 
-Event::Type		NcursesUI::getEvent(void)
+EventType		NcursesUI::getEvent(void)
 {
 	int				c;
 
@@ -67,10 +68,10 @@ Event::Type		NcursesUI::getEvent(void)
 	else if (c != ERR && _events.find(c) != _events.end())
 		return (_events[c]);
 	_updateSize();
-	return (Event::NOPE);
+	return (EVENT_NOPE);
 }
 
-void			NcursesUI::draw(Game const &game)
+void			NcursesUI::draw(IGame const &game)
 {
 	int				color = 0;
 
@@ -79,24 +80,24 @@ void			NcursesUI::draw(Game const &game)
 	for (int x = _gameSize.first - 1; x >= 0; --x)
 		for (int y = _gameSize.second - 1; y >= 0; --y)
 			_drawChunk(x, y, (color = (x + y) % 3) + 13, '.');
-	// Draw bonus
-	for (auto it = game.bonus.begin();
-		it != game.bonus.end();
+	// Draw blocks
+	for (auto it = game.getBlocks().begin();
+		it != game.getBlocks().end();
 		++it)
 		_drawChunk((*it)->getX(), (*it)->getY(), 3, '+');
 	// Draw snake
-	for (auto it = game.snake.chunks.begin();
-		it != game.snake.chunks.end();
+	for (auto it = game.getSnake().getChunks().begin();
+		it != game.getSnake().getChunks().end();
 		++it)
 		_drawChunk(it->first, it->second, 2, 'X');
 	// Draw UI
 	for (int x = _gameSize.first - 1; x >= 0; --x)
 		_drawChunk(x, -1, 1, ' ');
 	_startText(1, -1);
-	printw("Score: %-3d Length: %d", game.score, game.snake.chunks.size());
-	if (game.snake.die)
+	printw("Score: %-3d Length: %d", game.getScore(), game.getSnake().getChunks().size());
+	if (game.getSnake().isDie())
 		printw("  [[ DIE ]]");
-	else if (game.paused)
+	else if (game.isPaused())
 		printw("  [[ PAUSE ]]");
 	refresh();
 }

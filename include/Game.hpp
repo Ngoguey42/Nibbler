@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/06 18:26:37 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/07 14:29:49 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,40 +16,55 @@
 # include <exception>
 # include <list>
 # include "nibbler.h"
+# include "IGame.hpp"
 # include "Snake.hpp"
 
-class	Game
+class	Game : public IGame
 {
 public:
 	Game(void);
 	virtual ~Game(void);
 
-	void						start(void);
+// Shared
+	virtual int							getGameWidth(void) const;
+	virtual int							getGameHeight(void) const;
 
-	int							gameWidth;
-	int							gameHeight;
+	virtual int							getScore(void) const;
 
-	int							score;
-	bool						paused;
+	virtual bool						isPaused(void) const;
 
-	std::list<IBonus*>			bonus;
+	virtual std::list<IBlock*> const	&getBlocks(void) const;
+	virtual Snake						&getSnake(void) const;
+// -
 
-	Snake						snake;
+	void								start(void);
 
-	void						changeUI(char const *lib) throw(std::exception);
+	void								setPaused(bool paused);
+
+	void								changeUI(char const *lib) throw(std::exception);
 
 protected:
 
-	void						*_uiLib;
-	IUI							*_ui;
+	void								*_uiLib;
+	IUI									*_ui;
 
-	void						_update(std::chrono::steady_clock::duration t);
+	int									_gameWidth;
+	int									_gameHeight;
 
-	void						_spawn(IBonus *bonus);
+	int									_score;
+	bool								_paused;
+
+	std::list<IBlock*>					_blocks;
+
+	Snake								_snake;
+
+	void								_update(std::chrono::steady_clock::duration t);
+
+	void								_spawn(ABlock *block);
 
 private:
 	Game(Game const &src);
-	Game						&operator=(Game const &rhs);
+	Game								&operator=(Game const &rhs);
 };
 
 #endif

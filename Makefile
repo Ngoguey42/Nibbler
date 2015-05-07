@@ -2,25 +2,27 @@
 
 NAME := nibbler
 C_DIR := srcs
-H_DIRS := include
+H_DIRS := include common
 O_DIR := o
 LIBS := lib/OpenGL lib/Ncurses
 CC := clang++
 FLAGS := -std=c++14 -Wall -Wextra -Werror -g
 LINKS := -Llib/Ncurses -Llib/OpenGL 
-HEADS := -I include
+HEADS := -I include -I common
 
 all: $(NAME)
 
-o/Event.cpp.o: srcs/Event.cpp include/nibbler.h include/Event.hpp include/Game.hpp
+o/ABlock.cpp.o: srcs/ABlock.cpp include/ABlock.hpp
 	@$(COMPILE)
-o/Game.cpp.o: srcs/Game.cpp include/nibbler.h include/Game.hpp include/IUI.hpp include/Event.hpp include/GrowBonus.hpp
+o/Event.cpp.o: srcs/Event.cpp common/nibbler.h include/Event.hpp include/Game.hpp
+	@$(COMPILE)
+o/Game.cpp.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp include/GrowBonus.hpp common/IBlock.hpp include/ABlock.hpp
 	@$(COMPILE)
 o/GrowBonus.cpp.o: srcs/GrowBonus.cpp include/GrowBonus.hpp include/Snake.hpp
 	@$(COMPILE)
-o/main.cpp.o: srcs/main.cpp include/nibbler.h include/IUI.hpp include/Game.hpp
+o/main.cpp.o: srcs/main.cpp common/nibbler.h common/IUI.hpp include/Game.hpp
 	@$(COMPILE)
-o/Snake.cpp.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp include/IBonus.hpp
+o/Snake.cpp.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp include/ABlock.hpp
 	@$(COMPILE)
 lib/OpenGL:
 	@make -C lib/OpenGL
@@ -34,7 +36,8 @@ MSG_1 := printf '\033[0;31m%-18.18s\033[0;0m\n'
 
 COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
 
-O_FILES := o/Event.cpp.o \
+O_FILES := o/ABlock.cpp.o \
+		o/Event.cpp.o \
 		o/Game.cpp.o \
 		o/GrowBonus.cpp.o \
 		o/main.cpp.o \

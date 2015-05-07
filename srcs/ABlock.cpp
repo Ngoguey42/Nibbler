@@ -1,37 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   GrowBonus.hpp                                      :+:      :+:    :+:   */
+/*   ABlock.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/04 13:25:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 11:49:05 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/07 11:41:44 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/07 11:49:43 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GROWBONUS_HPP
-# define GROWBONUS_HPP
+#include "ABlock.hpp"
 
-# include "nibbler.h"
-# include "ABlock.hpp"
-
-class	GrowBonus : public ABlock
+ABlock::ABlock(Type type)
+	: _type(type), _pos(0, 0)
 {
-public:
-	GrowBonus(void);
-	virtual ~GrowBonus(void);
+}
 
-	virtual void			active(Snake &snake);
-	virtual bool			shouldDestroy(void) const;
+ABlock::~ABlock(void)
+{
+}
 
-protected:
+void			ABlock::setPos(int x, int y)
+{
+	_pos.first = x;
+	_pos.second = y;
+}
 
-	bool					_eaten;
+int				ABlock::getX(void) const
+{
+	return (_pos.first);
+}
 
-private:
-	GrowBonus(GrowBonus const &src);
-	GrowBonus				&operator=(GrowBonus const &rhs);
-};
+int				ABlock::getY(void) const
+{
+	return (_pos.second);
+}
 
-#endif
+ABlock::Type	ABlock::getType(void) const
+{
+	return (_type);
+}

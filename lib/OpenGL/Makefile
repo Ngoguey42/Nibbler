@@ -2,13 +2,13 @@
 
 NAME := ../OpenGL.so
 C_DIR := srcs
-H_DIRS := include
+H_DIRS := include ../../common
 O_DIR := o
 LIBS := 
 CC := clang++
 FLAGS := -Wall -Wextra -Werror -g -std=c++14
 LINKS := -fPIC -shared -L ~/.brew/lib -l glfw3 -l GLEW -framework OpenGL
-HEADS := -I include -I ../../include -I ~/.brew/include
+HEADS := -I include -I ../../common -I ~/.brew/include
 
 all: $(NAME)
 
