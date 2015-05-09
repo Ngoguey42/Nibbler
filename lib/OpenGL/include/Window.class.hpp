@@ -29,18 +29,25 @@
 #  define DEG_TO_RAD(angleDegrees) (angleDegrees * M_PI / 180.0)
 # endif
 
-# define CHUNK_SIZE 35.f
+# define CHUNK_SIZE 35
 # define SNAKE_WAVELENGTH 100.f
 # define SNAKE_WIDTH 0.66f
-//nombre impair
-# define POINTS_PER_SIDE 9
+# define POINTS_PER_SIDE 9 //nombre impair, ou pas
+# define PRECALC_POINTS_DELTA 1.f
+
+//are all those macro evaluated preprocessor?
+# define CHUNK_SIZEF static_cast<float>(CHUNK_SIZE)
+# define POINTS_PER_SIDEF static_cast<float>(POINTS_PER_SIDE)
 
 # define SNAKE_WIDTH_INV (1.f - SNAKE_WIDTH)
 # define SNAKE_WIDTH_HALF (SNAKE_WIDTH / 2.f)
-# define POINTS_PER_SIDEF static_cast<float>(POINTS_PER_SIDE)
-# define PHASE_PER_CHUNK (CHUNK_SIZE / SNAKE_WAVELENGTH)
+# define PHASE_PER_CHUNK (CHUNK_SIZEF / SNAKE_WAVELENGTH)
 # define PHASE_PER_TRIANGLE (PHASE_PER_CHUNK / POINTS_PER_SIDEF)
-# define TRIANGLES_DISTANCE (CHUNK_SIZE / POINTS_PER_SIDEF)
+# define TRIANGLES_DISTANCE (CHUNK_SIZEF / POINTS_PER_SIDEF)
+// Points precalculation macros: //
+# define PHASE_MAX_DELTA (CHUNK_SIZEF * (1 - SNAKE_WIDTH))
+# define NUM_PRECALC_POINTSF ceilf(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
+# define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
 
 class Window : public IUI
 {
