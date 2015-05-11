@@ -1,49 +1,91 @@
-# LOL
+#
+# ../NcursesUI.so
+#
+# Makefile
+#
 
+#
+# Config
+#
+
+# Project name
 NAME := ../NcursesUI.so
-C_DIR := srcs
-H_DIRS := include ../../common
+
+# Project directories
+DIRS := srcs include ../../common
+
+# Obj directory
 O_DIR := o
-LIBS := 
-CC := clang++
-FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
-LINKS := -fPIC -shared -lncurses
-HEADS := -Iinclude -I../../common
 
-all: $(NAME)
+# Number of threads
+THREADS := 4
 
-o/init.cpp.o: srcs/init.cpp ../../common/nibbler.h include/NcursesUI.hpp
-	@$(COMPILE)
-o/NcursesUI.cpp.o: srcs/NcursesUI.cpp include/NcursesUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
-	@$(COMPILE)
+# Cpp compiler
+CPP_CC := clang++
 
-MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-18.18s\033[0;0m\n'
+# Linking compiler
+LD_CC := clang++
 
-COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
+# Clang++ flags
+CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
-O_FILES := o/init.cpp.o \
-		o/NcursesUI.cpp.o
+# Linking flags
+LD_FLAGS := -fPIC -shared -lncurses
 
-$(NAME): o/ $(LIBS) $(O_FILES)
-	@$(MSG_0) $@ ; $(CC) $(FLAGS) -o $@ $(O_FILES) $(LINKS) && echo || $(MSG_1) $@
+# Clang++ include flags
+CPP_HEADS := -Iinclude -I../../common
 
-o/:
-	@mkdir -p $@ 2> /dev/null || true
+#
+# Internal
+#
 
-o/%:
-	@mkdir -p $@ 2> /dev/null || true
+O_FILES := o/srcs/NcursesUI.o \
+	o/srcs/init.o
+
+MSG_0 := printf '\033[0;32m%-23.23s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-23.23s\033[0;0m\n'
+
+.SILENT:
+
+all: $(LIBS)
+	@make -j$(THREADS) $(NAME)
+.PHONY: all
+
+$(NAME): $(O_FILES)
+	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
+
+o/srcs/NcursesUI.o: srcs/NcursesUI.cpp include/NcursesUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/init.o: srcs/init.cpp ../../common/nibbler.h include/NcursesUI.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+include/NcursesUI.hpp: ../../common/nibbler.h ../../common/IUI.hpp
+
+../../common/IGame.hpp: ../../common/nibbler.h
+
+../../common/ISnake.hpp: ../../common/nibbler.h
+
+../../common/IUI.hpp: ../../common/nibbler.h
+
+$(LIBS):
+	@make -C $@
+.PHONY: $(LIBS)
 
 clean:
 	@rm -f $(O_FILES) 2> /dev/null || true
-	@rmdir -p o 2> /dev/null || true
+	@rmdir -p o/srcs $(O_DIR) 2> /dev/null || true
+.PHONY: clean
 
 fclean: clean
-	@rm -f ../NcursesUI.so 2> /dev/null || true
+	@rm -f $(NAME)
+.PHONY: fclean
 
 re: fclean all
+.PHONY: re
 
-make:
-	@bash './makemake.sh' re
-
-.PHONY: all clean fclean re make
+make: fclean
+	@python makemake.py
+.PHONY: make

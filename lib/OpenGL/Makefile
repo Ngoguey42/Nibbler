@@ -1,55 +1,103 @@
-# LOL
+#
+# ../OpenGLUI.so
+#
+# Makefile
+#
 
-NAME := ../OpenGL.so
-C_DIR := srcs
-H_DIRS := include ../../common
+#
+# Config
+#
+
+# Project name
+NAME := ../OpenGLUI.so
+
+# Project directories
+DIRS := srcs include ../../common
+
+# Obj directory
 O_DIR := o
-LIBS := 
-CC := clang++
-FLAGS := -Wall -Wextra -Werror -g -std=c++14
-LINKS := -fPIC -shared -L ~/.brew/lib -l glfw3 -l GLEW -framework OpenGL
-HEADS := -I include -I ../../common -I ~/.brew/include
 
-all: $(NAME)
+# Number of threads
+THREADS := 4
 
-o/AngledSnakePoints.class.cpp.o: srcs/AngledSnakePoints.class.cpp include/AngledSnakePoints.class.hpp
-	@$(COMPILE)
-o/init.cpp.o: srcs/init.cpp ../../common/nibbler.h include/Window.class.hpp
-	@$(COMPILE)
-o/Window.class.cpp.o: srcs/Window.class.cpp include/Window.class.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
-	@$(COMPILE)
-o/Window.draw.cpp.o: srcs/Window.draw.cpp include/Window.class.hpp
-	@$(COMPILE)
+# Cpp compiler
+CPP_CC := clang++
 
-MSG_0 := printf '\033[0;32m%-32.32s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-32.32s\033[0;0m\n'
+# Linking compiler
+LD_CC := clang++
 
-COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
+# Clang++ flags
+CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
-O_FILES := o/AngledSnakePoints.class.cpp.o \
-		o/init.cpp.o \
-		o/Window.class.cpp.o \
-		o/Window.draw.cpp.o
+# Linking flags
+LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lglfw3 -lGLEW -framework OpenGL
 
-$(NAME): o/ $(LIBS) $(O_FILES)
-	@$(MSG_0) $@ ; $(CC) $(FLAGS) -o $@ $(O_FILES) $(LINKS) && echo || $(MSG_1) $@
+# Clang++ include flags
+CPP_HEADS := -Iinclude -I../../common -I ~/.brew/include
 
-o/:
-	@mkdir -p $@ 2> /dev/null || true
+#
+# Internal
+#
 
-o/%:
-	@mkdir -p $@ 2> /dev/null || true
+O_FILES := o/srcs/Window.class.o \
+	o/srcs/Window.draw.o \
+	o/srcs/AngledSnakePoints.class.o \
+	o/srcs/init.o
+
+MSG_0 := printf '\033[0;32m%-35.35s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-35.35s\033[0;0m\n'
+
+.SILENT:
+
+all: $(LIBS)
+	@make -j$(THREADS) $(NAME)
+.PHONY: all
+
+$(NAME): $(O_FILES)
+	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
+
+o/srcs/Window.class.o: srcs/Window.class.cpp include/Window.class.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/Window.draw.o: srcs/Window.draw.cpp include/Window.class.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/AngledSnakePoints.class.o: srcs/AngledSnakePoints.class.cpp include/AngledSnakePoints.class.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/init.o: srcs/init.cpp ../../common/nibbler.h include/Window.class.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+include/AngledSnakePoints.class.hpp: include/OpenGLLib.h
+
+include/Window.class.hpp: ../../common/nibbler.h include/OpenGLLib.h ../../common/IUI.hpp include/AngledSnakePoints.class.hpp
+
+../../common/IGame.hpp: ../../common/nibbler.h
+
+../../common/ISnake.hpp: ../../common/nibbler.h
+
+../../common/IUI.hpp: ../../common/nibbler.h
+
+$(LIBS):
+	@make -C $@
+.PHONY: $(LIBS)
 
 clean:
 	@rm -f $(O_FILES) 2> /dev/null || true
-	@rmdir -p o 2> /dev/null || true
+	@rmdir -p o/srcs $(O_DIR) 2> /dev/null || true
+.PHONY: clean
 
 fclean: clean
-	@rm -f ../OpenGL.so 2> /dev/null || true
+	@rm -f $(NAME)
+.PHONY: fclean
 
 re: fclean all
+.PHONY: re
 
-make:
-	@bash './makemake.sh' re
-
-.PHONY: all clean fclean re make
+make: fclean
+	@python makemake.py
+.PHONY: make
