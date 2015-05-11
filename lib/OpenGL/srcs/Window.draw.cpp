@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/04 15:53:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 11:12:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -155,7 +155,110 @@ void						Window::_putSnakeChunk(
 	float x, y = 0.f;
 
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
-	{
+	{		
+		if (prevDelta.second > 0 && nextDelta.first < 0) //sinistro
+		{
+			auto const	&points = this->sinPoints[
+				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f))];
+			size_t		i = 0;
+			
+
+			std::cout << "[" <<
+				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f)) <<
+				"] "  << 
+				"MidMaxIn(" << points.middleBranchInLastIndex << ")" <<
+				"LeftMaxIn(" << points.leftBranchInLastIndex << ")" <<
+				"MidMaxOut(" << points.middleBranchOutLastIndex << ")" <<
+				"LeftMaxOut(" << points.leftBranchOutLastIndex << ") ";
+			
+			if (points.leftBranchInLastIndex > 0)
+			{
+				glBegin(GL_TRIANGLE_STRIP);
+				// glColor3f(.0f, 0.5f, 0.0f);
+
+				glColor3f(.0f, 0.5f, 0.0f);
+				glVertex3f(points.middleBranchInPoints[0].first,
+						   points.middleBranchInPoints[0].second, z);
+
+				while(i < points.leftBranchInLastIndex)
+				{					
+					glColor3f(.7f, 0.f, 0.0f);
+					glVertex3f(points.leftBranchInPoints[i].first,
+							   points.leftBranchInPoints[i].second, 0.f);
+					i++;
+					glColor3f(.0f, 0.5f, 0.0f);
+					glVertex3f(points.middleBranchInPoints[i].first,
+							   points.middleBranchInPoints[i].second, z);
+				}
+				glColor3f(.7f, 0.f, 0.0f);
+				glVertex3f(points.leftBranchIntersection.first,
+						   points.leftBranchIntersection.second, 0.f);
+				glEnd();
+			}
+			glBegin(GL_TRIANGLE_FAN);
+			// glColor3f(.0f, 0.f, 1.f);
+			glColor3f(.7f, 0.f, 0.0f);
+			glVertex3f(points.leftBranchIntersection.first,
+					   points.leftBranchIntersection.second, 0.f);
+			std::cout << "[left]";
+			std::cout << "in[";
+			glColor3f(.0f, 0.5f, 0.0f);
+			for (size_t j = i; j < points.middleBranchInLastIndex; j++)
+			{
+				std::cout << j << ",";
+				
+				glVertex3f(points.middleBranchInPoints[j].first,
+						   points.middleBranchInPoints[j].second, z);
+			}
+			std::cout << "][mid]";
+			
+			glVertex3f(points.middleBranchIntersection.first,
+					   points.middleBranchIntersection.second, 0.f);
+			// glColor3f(1.f, 0.f, 0.f);
+			i = points.leftBranchOutLastIndex;
+			std::cout << "out[";
+			
+			for (int j = points.middleBranchOutLastIndex - 1;
+				 j >= static_cast<int>(i); j--)
+			{
+				std::cout << j << ",";
+				glVertex3f(points.middleBranchOutPoints[j].first,
+						   points.middleBranchOutPoints[j].second, z);
+			}
+			
+			std::cout << "]";
+			std::cout << "   ";
+			
+			glEnd();
+			
+			if (points.leftBranchOutLastIndex > 0)
+			{
+				glBegin(GL_TRIANGLE_STRIP);
+				// glColor3f(0.f, 0.5f, 0.0f);
+				std::cout << "[left]";
+				glColor3f(.7f, 0.f, 0.0f);
+				glVertex3f(points.leftBranchIntersection.first,
+						   points.leftBranchIntersection.second, 0.f);
+				std::cout << "mid/left[";
+				for (i = points.leftBranchOutLastIndex;;i--)
+				{
+					std::cout << i << ", ";
+					
+					glColor3f(.0f, 0.5f, 0.0f);
+					glVertex3f(points.middleBranchOutPoints[i].first,
+							   points.middleBranchOutPoints[i].second, z);
+					glColor3f(.7f, 0.f, 0.0f);
+					glVertex3f(points.leftBranchOutPoints[i].first,
+							   points.leftBranchOutPoints[i].second, 0.f);
+					if (i == 0)
+						break ;
+				}
+				std::cout << "]";
+				glEnd();
+			}
+			std::cout << "" << std::endl;
+			
+		}
 		
 	}
 	else

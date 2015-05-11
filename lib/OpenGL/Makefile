@@ -12,19 +12,22 @@ HEADS := -I include -I ../../common -I ~/.brew/include
 
 all: $(NAME)
 
-o/init.cpp.o: srcs/init.cpp include/Window.class.hpp
+o/AngledSnakePoints.class.cpp.o: srcs/AngledSnakePoints.class.cpp include/AngledSnakePoints.class.hpp
 	@$(COMPILE)
-o/Window.class.cpp.o: srcs/Window.class.cpp include/Window.class.hpp
+o/init.cpp.o: srcs/init.cpp ../../common/nibbler.h include/Window.class.hpp
+	@$(COMPILE)
+o/Window.class.cpp.o: srcs/Window.class.cpp include/Window.class.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
 	@$(COMPILE)
 o/Window.draw.cpp.o: srcs/Window.draw.cpp include/Window.class.hpp
 	@$(COMPILE)
 
-MSG_0 := printf '\033[0;32m%-21.21s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-21.21s\033[0;0m\n'
+MSG_0 := printf '\033[0;32m%-32.32s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-32.32s\033[0;0m\n'
 
 COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
 
-O_FILES := o/init.cpp.o \
+O_FILES := o/AngledSnakePoints.class.cpp.o \
+		o/init.cpp.o \
 		o/Window.class.cpp.o \
 		o/Window.draw.cpp.o
 

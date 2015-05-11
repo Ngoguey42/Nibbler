@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 08:39:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 09:20:12 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,9 @@
 # include <GLFW/glfw3.h>
 
 # include "nibbler.h"
+# include "OpenGLLib.h"
 # include "IUI.hpp"
-// # include "Event.hpp"
-
-# ifndef DEG_TO_RAD
-#  define DEG_TO_RAD(angleDegrees) (angleDegrees * M_PI / 180.0)
-# endif
-
-# define CHUNK_SIZE 35
-# define SNAKE_WAVELENGTH 100.f
-# define SNAKE_WIDTH 0.66f
-# define POINTS_PER_SIDE 9 //nombre impair, ou pas
-# define PRECALC_POINTS_DELTA 1.f
-
-//are all those macro evaluated preprocessor?
-# define CHUNK_SIZEF static_cast<float>(CHUNK_SIZE)
-# define POINTS_PER_SIDEF static_cast<float>(POINTS_PER_SIDE)
-
-# define SNAKE_WIDTH_INV (1.f - SNAKE_WIDTH)
-# define SNAKE_WIDTH_HALF (SNAKE_WIDTH / 2.f)
-# define PHASE_PER_CHUNK (CHUNK_SIZEF / SNAKE_WAVELENGTH)
-# define PHASE_PER_TRIANGLE (PHASE_PER_CHUNK / POINTS_PER_SIDEF)
-# define TRIANGLES_DISTANCE (CHUNK_SIZEF / POINTS_PER_SIDEF)
-// Points precalculation macros: //
-# define PHASE_MAX_DELTA (CHUNK_SIZEF * (1 - SNAKE_WIDTH))
-# define NUM_PRECALC_POINTSF ceilf(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
-# define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
+# include "AngledSnakePoints.class.hpp"
 
 class Window : public IUI
 {
@@ -94,6 +71,8 @@ private:
 	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
 
 	float						_phase;
+
+	std::array<AngledSnakePoints, NUM_PRECALC_POINTS>	sinPoints;
 	
 };
 //std::ostream					&operator<<(std::ostream &o, Window const &rhs);
