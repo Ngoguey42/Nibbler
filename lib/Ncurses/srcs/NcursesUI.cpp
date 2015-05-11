@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/11 18:15:07 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 20:00:26 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	_events['5'] = EVENT_5;
 	_events['6'] = EVENT_6;
 	_events['7'] = EVENT_7;
+	_events['r'] = EVENT_R;
 	_events[' '] = EVENT_SPACE;
 	_events[KEY_UP] = EVENT_UP;
 	_events[KEY_RIGHT] = EVENT_RIGHT;

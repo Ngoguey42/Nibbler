@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 18:03:12 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 19:55:26 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 class	Snake : public ISnake
 {
 public:
+	Snake(void);
 	Snake(int x, int y);
 	virtual ~Snake(void);
 
@@ -42,6 +43,8 @@ public:
 
 	void							setDirection(int x, int y);
 
+	void							reset(int x, int y);
+
 protected:
 
 	std::deque<Chunk>				_chunks;
@@ -57,7 +60,6 @@ protected:
 	void							_move(Game &game);
 
 private:
-	Snake(void);
 	Snake(Snake const &src);
 	Snake							&operator=(Snake const &rhs);
 };

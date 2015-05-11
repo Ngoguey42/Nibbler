@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:36:29 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:51:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 18:47:23 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ WallSpawnBlock::~WallSpawnBlock(void)
 void					WallSpawnBlock::active(Game &game)
 {
 	_eaten = true;
-	game.addScore(-20);
+	game.addScore(5);
 	game.spawn(new WallBlock());
 	game.spawn(new WallSpawnBlock());
 }

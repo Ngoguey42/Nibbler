@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:45:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 13:24:17 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 19:18:39 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ protected:
 	void				_processDown(Game &game);
 	void				_processLeft(Game &game);
 	void				_processSpace(Game &game);
+	void				_processR(Game &game);
 	void				_process1(Game &game);
 	void				_process2(Game &game);
 	void				_process3(Game &game);

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 18:14:24 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 20:10:37 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 #include "Game.hpp"
 #include "ABlock.hpp"
 
-Snake::Snake(int x, int y)
-	: _direction(0, 1), _die(false),
-	_speed(std::chrono::milliseconds(INITIAL_SPEED)), _lastMove(0)
+Snake::Snake(void)
+	: _lastMove(0)
 {
-	_chunks.emplace_front(Snake::Chunk(x, y -= 4));
-	_chunks.emplace_front(Snake::Chunk(x, ++y));
-	_chunks.emplace_front(Snake::Chunk(x, ++y));
-	_chunks.emplace_front(Snake::Chunk(x, ++y));
-	_chunks.emplace_front(Snake::Chunk(x, ++y));
+}
+
+Snake::Snake(int x, int y)
+	: _lastMove(0)
+{
+	reset(x, y);
 }
 
 Snake::~Snake(void)
@@ -43,6 +43,16 @@ std::pair<int, int>				Snake::getDirection(void) const
 bool							Snake::isDie(void) const
 {
 	return (_die);
+}
+
+void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
+{
+	_lastMove += t;
+	while (!_die && _lastMove > _speed)
+	{
+		_move(game);
+		_lastMove -= _speed;
+	}
 }
 
 void							Snake::kill(void)
@@ -69,14 +79,15 @@ void							Snake::setDirection(int x, int y)
 	_direction.second = y;
 }
 
-void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
+void							Snake::reset(int x, int y)
 {
-	_lastMove += t;
-	while (!_die && _lastMove > _speed)
-	{
-		_move(game);
-		_lastMove -= _speed;
-	}
+	while (_chunks.size() > 0)
+		_chunks.pop_back();
+	_direction = std::make_pair(0, 1);
+	_die = false;
+	_speed = std::chrono::milliseconds(INITIAL_SPEED);
+	for (int i = 0; i < INITIAL_LENGTH; ++i)
+		_chunks.emplace_front(Snake::Chunk(x, y++));
 }
 
 void							Snake::_collide(Game &game)

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 13:33:03 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 19:26:45 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ void				Event::_processSpace(Game &game)
 	game.setPaused(!game.isPaused());
 }
 
+void				Event::_processR(Game &game)
+{
+	game.reset();
+}
+
 void				Event::_process1(Game &game)
 {
 	game.setPaused(true);
@@ -107,6 +112,7 @@ Event::event_t		Event::_events[EVENT_NOPE]  = {
 	&Event::_processDown,
 	&Event::_processLeft,
 	&Event::_processSpace,
+	&Event::_processR,
 	&Event::_process1,
 	&Event::_process2,
 	&Event::_process3,

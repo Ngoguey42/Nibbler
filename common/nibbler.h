@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 18:07:20 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 20:10:33 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ class	GrowBlock;
 # define GAME_WIDTH			17
 # define GAME_HEIGHT		20
 
+# define INITIAL_X			GAME_WIDTH / 2
+# define INITIAL_Y			5
+# define INITIAL_LENGTH		4
 # define INITIAL_SPEED		130
 
 # define WALL_COUNT			3
@@ -55,6 +58,7 @@ enum	EventType
 	EVENT_DOWN,
 	EVENT_LEFT,
 	EVENT_SPACE,
+	EVENT_R,
 	EVENT_1,
 	EVENT_2,
 	EVENT_3,
@@ -79,6 +83,8 @@ enum	EventType
 ** ========================================================================== **
 ** Utils
 */
+
+// # define EACH(it,c)			auto it = (c).begin(); it != (c).end(); ++it
 
 # define STR_VALUE(s)		#s
 # define STR(s)				STR_VALUE(s)

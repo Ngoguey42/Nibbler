@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:48:29 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 19:12:58 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ public:
 	Snake								&getSnake(void);
 
 	void								spawn(ABlock *block);
+
+	void								reset(void);
+	void								_destroyGame(void);
 
 	void								changeUI(char const *lib) throw(std::exception);
 

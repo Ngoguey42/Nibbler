@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:59:34 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 20:02:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,10 @@
 Game::Game(void)
 	: _uiLib(NULL), _ui(NULL),
 	_gameWidth(GAME_WIDTH), _gameHeight(GAME_HEIGHT),
-	_score(0), _paused(false), _fps(0), _snake(5, 5)
+	_paused(false), _fps(0), _snake()
 {
 	srand(time(NULL));
-	for (int i = 0; i < WALL_COUNT; ++i)
-		spawn(new WallBlock());
-	spawn(new WallSpawnBlock());
-	spawn(new GrowBlock());
+	reset();
 }
 
 Game::~Game(void)
@@ -46,6 +43,7 @@ Game::~Game(void)
 		delete _ui;
 		dlclose(_uiLib);
 	}
+	_destroyGame();
 }
 
 void						Game::start(void)
@@ -105,8 +103,8 @@ bool						Game::isPaused(void) const
 
 bool						Game::isBlock(int x, int y) const
 {
-	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
-		if ((*it)->getX() == x && (*it)->getY() == y)
+	for (IBlock *b : _blocks)
+		if (b->getX() == x && b->getY() == y)
 			return (true);
 	return (false);
 }
@@ -155,6 +153,24 @@ void						Game::spawn(ABlock *b)
 			}
 }
 
+void						Game::reset(void)
+{
+	_destroyGame();
+	_score = 0;
+	_snake.reset(INITIAL_X, INITIAL_Y);
+	for (int i = 0; i < WALL_COUNT; ++i)
+		spawn(new WallBlock());
+	spawn(new WallSpawnBlock());
+	spawn(new GrowBlock());
+}
+
+void						Game::_destroyGame(void)
+{
+	for (IBlock *b : _blocks)
+		delete b;
+	_blocks.clear();
+}
+
 void						Game::_update(std::chrono::steady_clock::duration t)
 {
 	if (_paused)
@@ -162,7 +178,10 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	_snake.update(*this, t);
 	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
 		if (static_cast<ABlock*>(*it)->shouldDestroy())
+		{
+			delete *it;
 			it = _blocks.erase(it);
+		}
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)
