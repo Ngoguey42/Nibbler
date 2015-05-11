@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 13:56:43 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:25:18 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,22 @@ bool							Snake::isDie(void) const
 	return (_die);
 }
 
+void							Snake::kill(void)
+{
+	_die = true;
+}
+
 bool							Snake::collide(Game const &game)
 {
 	auto			head = _chunks.begin();
 
 	if (head->first < 0 || head->first >= game.getGameWidth()
 		|| head->second < 0 || head->second >= game.getGameHeight())
-		return (_die = true);
+		return (kill(), true);
 	for (auto it = _chunks.begin(); it != _chunks.end(); ++it)
 		if (head->first == it->first && head->second == it->second
 			&& head != it)
-			return (_die = true);
+			return (kill(), true);
 	return (false);
 }
 
@@ -78,7 +83,7 @@ void							Snake::setDirection(int x, int y)
 	_direction.second = y;
 }
 
-void							Snake::update(Game const &game, std::chrono::steady_clock::duration t)
+void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
 {
 	_lastMove += t;
 	while (!_die && _lastMove > _speed)
@@ -88,13 +93,13 @@ void							Snake::update(Game const &game, std::chrono::steady_clock::duration t
 	}
 }
 
-void							Snake::_move(Game const &game)
+void							Snake::_move(Game &game)
 {
 	Snake::Chunk	&head = *_chunks.begin();
 
 	for (auto it = game.getBlocks().begin(); it != game.getBlocks().end(); ++it)
 		if (head.first == (*it)->getX() && head.second == (*it)->getY())
-			static_cast<ABlock*>(*it)->active(*this);
+			static_cast<ABlock*>(*it)->active(game);
 	_chunks.pop_back();
 	_chunks.emplace_front(Snake::Chunk(head.first + _direction.first,
 		head.second + _direction.second));

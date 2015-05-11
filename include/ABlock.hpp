@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:21:35 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 12:12:16 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:29:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ public:
 
 	void					setPos(int x, int y);
 
-	virtual void			active(Snake &snake) = 0;
+	virtual void			active(Game &game) = 0;
 	virtual bool			shouldDestroy(void) const = 0;
 
 protected:

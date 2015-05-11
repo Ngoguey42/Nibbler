@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 14:29:49 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:36:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ public:
 	virtual int							getGameHeight(void) const;
 
 	virtual int							getScore(void) const;
-
+	virtual int							getFPS(void) const;
 	virtual bool						isPaused(void) const;
 
+	virtual bool						isBlock(int x, int y) const;
+
 	virtual std::list<IBlock*> const	&getBlocks(void) const;
-	virtual Snake						&getSnake(void) const;
+	virtual Snake const					&getSnake(void) const;
 // -
 
 	void								start(void);
@@ -42,6 +44,10 @@ public:
 	void								setPaused(bool paused);
 
 	void								changeUI(char const *lib) throw(std::exception);
+
+	Snake								&getSnake(void);
+
+	void								spawn(ABlock *block);
 
 protected:
 
@@ -53,14 +59,13 @@ protected:
 
 	int									_score;
 	bool								_paused;
+	int									_fps;
 
 	std::list<IBlock*>					_blocks;
 
 	Snake								_snake;
 
 	void								_update(std::chrono::steady_clock::duration t);
-
-	void								_spawn(ABlock *block);
 
 private:
 	Game(Game const &src);

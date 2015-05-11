@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 13:33:09 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:38:46 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,20 @@
 #include "Game.hpp"
 #include "IUI.hpp"
 #include "Event.hpp"
-#include "GrowBonus.hpp"
 #include "IBlock.hpp"
 #include "ABlock.hpp"
+#include "GrowBlock.hpp"
+#include "WallBlock.hpp"
 
 Game::Game(void)
 	: _uiLib(NULL), _ui(NULL),
 	_gameWidth(GAME_WIDTH), _gameHeight(GAME_HEIGHT),
-	_score(0), _paused(false), _snake(5, 5)
+	_score(0), _paused(false), _fps(0), _snake(5, 5)
 {
 	srand(time(NULL));
+	for (int i = 0; i < WALL_COUNT; ++i)
+		spawn(new WallBlock());
+	spawn(new GrowBlock());
 }
 
 Game::~Game(void)
@@ -61,7 +65,7 @@ void						Game::start(void)
 		}
 		if ((tmp - lastFPS) > std::chrono::seconds(1))
 		{
-			PRINT("FPS: " << frames);
+			_fps = frames;
 			lastFPS = tmp;
 			frames = 0;
 		}
@@ -87,9 +91,22 @@ int							Game::getScore(void) const
 	return (_score);
 }
 
+int							Game::getFPS(void) const
+{
+	return (_fps);
+}
+
 bool						Game::isPaused(void) const
 {
 	return (_paused);
+}
+
+bool						Game::isBlock(int x, int y) const
+{
+	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
+		if ((*it)->getX() == x && (*it)->getY() == y)
+			return (true);
+	return (false);
 }
 
 std::list<IBlock*> const	&Game::getBlocks(void) const
@@ -97,14 +114,38 @@ std::list<IBlock*> const	&Game::getBlocks(void) const
 	return (_blocks);
 }
 
-Snake						&Game::getSnake(void) const
+Snake const					&Game::getSnake(void) const
 {
-	return (const_cast<Snake&>(_snake));
+	return (_snake);
+}
+
+Snake						&Game::getSnake(void)
+{
+	return (_snake);
 }
 
 void						Game::setPaused(bool paused)
 {
 	_paused = paused;
+}
+
+void						Game::spawn(ABlock *b)
+{
+	int			pos = _gameWidth * _gameHeight;
+
+	pos -= _snake.getChunks().size();
+	pos -= _blocks.size();
+	if (pos <= 0)
+		return ;
+	pos = rand() % pos;
+	_blocks.push_back(b);
+	for (int y = 0; y < _gameHeight; ++y)
+		for (int x = 0; x < _gameWidth; ++x)
+			if (!_snake.isChunk(x, y) && !isBlock(x, y) && --pos < 0)
+			{
+				b->setPos(x, y);
+				return ;
+			}
 }
 
 void						Game::_update(std::chrono::steady_clock::duration t)
@@ -117,25 +158,6 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 			it = _blocks.erase(it);
 	if (_snake.collide(*this))
 		return ;
-	if (_blocks.size() <= 0)
-		_spawn(new GrowBonus());
-}
-
-void						Game::_spawn(ABlock *b)
-{
-	int			pos = _gameWidth * _gameHeight - _snake.getChunks().size();
-
-	if (pos <= 0)
-		return ;
-	pos = rand() % pos;
-	_blocks.push_back(b);
-	for (int y = 0; y < _gameHeight; ++y)
-		for (int x = 0; x < _gameWidth; ++x)
-			if (!_snake.isChunk(x, y) && --pos < 0)
-			{
-				b->setPos(x, y);
-				return ;
-			}
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)

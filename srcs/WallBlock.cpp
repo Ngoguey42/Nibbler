@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   GrowBonus.hpp                                      :+:      :+:    :+:   */
+/*   WallBlock.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/04 13:25:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 11:49:05 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/11 17:18:17 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/11 17:30:22 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GROWBONUS_HPP
-# define GROWBONUS_HPP
+#include "WallBlock.hpp"
+#include "Snake.hpp"
+#include "Game.hpp"
 
-# include "nibbler.h"
-# include "ABlock.hpp"
-
-class	GrowBonus : public ABlock
+WallBlock::WallBlock(void)
+	: ABlock(ABlock::WALL)
 {
-public:
-	GrowBonus(void);
-	virtual ~GrowBonus(void);
+}
 
-	virtual void			active(Snake &snake);
-	virtual bool			shouldDestroy(void) const;
+WallBlock::~WallBlock(void)
+{
+}
 
-protected:
+void					WallBlock::active(Game &game)
+{
+	game.getSnake().kill();
+}
 
-	bool					_eaten;
-
-private:
-	GrowBonus(GrowBonus const &src);
-	GrowBonus				&operator=(GrowBonus const &rhs);
-};
-
-#endif
+bool					WallBlock::shouldDestroy(void) const
+{
+	return (false);
+}

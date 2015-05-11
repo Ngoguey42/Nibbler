@@ -6,8 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 12:48:22 by jaguillo         ###   ########.fr       */
-/*   Updated: 2015/05/11 12:48:38 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/11 17:23:32 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +29,7 @@ class	Snake;
 class	IUI;
 class	Event;
 class	ABlock;
-class	GrowBonus;
+class	GrowBlock;
 
 /*
 ** ========================================================================== **
@@ -41,6 +40,8 @@ class	GrowBonus;
 # define GAME_HEIGHT		19
 
 # define INITIAL_SPEED		130
+
+# define WALL_COUNT			4
 
 /*
 ** ========================================================================== **

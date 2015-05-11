@@ -44,8 +44,9 @@ CPP_HEADS := -Iinclude -Icommon
 
 O_FILES := o/srcs/Snake.o \
 	o/srcs/ABlock.o \
+	o/srcs/WallBlock.o \
 	o/srcs/main.o \
-	o/srcs/GrowBonus.o \
+	o/srcs/GrowBlock.o \
 	o/srcs/Game.o \
 	o/srcs/Event.o
 
@@ -69,15 +70,19 @@ o/srcs/ABlock.o: srcs/ABlock.cpp include/ABlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
+o/srcs/WallBlock.o: srcs/WallBlock.cpp include/WallBlock.hpp include/Snake.hpp include/Game.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
 o/srcs/main.o: srcs/main.cpp common/nibbler.h common/IUI.hpp include/Game.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/GrowBonus.o: srcs/GrowBonus.cpp include/GrowBonus.hpp include/Snake.hpp
+o/srcs/GrowBlock.o: srcs/GrowBlock.cpp include/GrowBlock.hpp include/Game.hpp include/Snake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Game.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp include/GrowBonus.hpp common/IBlock.hpp include/ABlock.hpp
+o/srcs/Game.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp common/IBlock.hpp include/ABlock.hpp include/GrowBlock.hpp include/WallBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
@@ -89,9 +94,11 @@ include/ABlock.hpp: common/nibbler.h common/IBlock.hpp
 
 include/Game.hpp: common/nibbler.h common/IGame.hpp include/Snake.hpp
 
-include/GrowBonus.hpp: common/nibbler.h include/ABlock.hpp
+include/GrowBlock.hpp: common/nibbler.h include/ABlock.hpp
 
 include/Snake.hpp: common/nibbler.h common/ISnake.hpp
+
+include/WallBlock.hpp: common/nibbler.h include/ABlock.hpp
 
 common/IGame.hpp: common/nibbler.h
 

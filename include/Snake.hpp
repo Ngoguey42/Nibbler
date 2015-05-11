@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 14:27:15 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:25:14 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ public:
 	virtual bool					isDie(void) const;
 // -
 
-	void							update(Game const &game, std::chrono::steady_clock::duration t);
+	void							update(Game &game, std::chrono::steady_clock::duration t);
+
+	void							kill(void);
 
 	bool							collide(Game const &game);
 
@@ -53,7 +55,7 @@ protected:
 	std::chrono::steady_clock::duration	_speed;
 	std::chrono::steady_clock::duration	_lastMove;
 
-	void							_move(Game const &game);
+	void							_move(Game &game);
 
 private:
 	Snake(void);
