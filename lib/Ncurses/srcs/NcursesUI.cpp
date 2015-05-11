@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/07 13:23:40 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 18:15:07 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	init_color(17, 125, 125, 125);
 	init_color(18, 110, 110, 110);
 	init_color(19, 95, 95, 95);
+	init_color(20, 500, 30, 30);
 	init_color(30, 140, 140, 140);
 	init_pair(1, COLOR_WHITE, 30);
 	init_pair(2, COLOR_RED, COLOR_RED);
-	init_pair(3, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(3, 20, 20);
+	init_pair(20, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(21, COLOR_BLUE, COLOR_BLUE);
+	init_pair(22, COLOR_BLACK, COLOR_BLACK);
 	init_pair(13, 17, 17);
 	init_pair(14, 18, 18);
 	init_pair(15, 19, 19);
@@ -84,17 +88,23 @@ void			NcursesUI::draw(IGame const &game)
 	for (auto it = game.getBlocks().begin();
 		it != game.getBlocks().end();
 		++it)
-		_drawChunk((*it)->getX(), (*it)->getY(), 3, '+');
+		_drawChunk((*it)->getX(), (*it)->getY(), 20 + (*it)->getType(), '+' + (*it)->getType());
 	// Draw snake
 	for (auto it = game.getSnake().getChunks().begin();
 		it != game.getSnake().getChunks().end();
 		++it)
 		_drawChunk(it->first, it->second, 2, 'X');
+	if (game.getSnake().isDie())
+	{
+		auto &head = *(game.getSnake().getChunks().begin());
+		_drawChunk(head.first, head.second, 3, 'x');
+	}
 	// Draw UI
 	for (int x = _gameSize.first - 1; x >= 0; --x)
 		_drawChunk(x, -1, 1, ' ');
 	_startText(1, -1);
-	printw("Score: %-3d Length: %d", game.getScore(), game.getSnake().getChunks().size());
+	printw("Score: %-3d Length: %-3d FPS: %d",
+		game.getScore(), game.getSnake().getChunks().size(), game.getFPS());
 	if (game.getSnake().isDie())
 		printw("  [[ DIE ]]");
 	else if (game.isPaused())
@@ -104,8 +114,8 @@ void			NcursesUI::draw(IGame const &game)
 
 void			NcursesUI::_startText(int x, int y)
 {
-	x = x * _chunkWidth + _offset.first ;//+ (_chunkWidth / 2);
-	y = y * _chunkHeight + _offset.second ;//+ (_chunkHeight / 2);
+	x = x * _chunkWidth + _offset.first;
+	y = y * _chunkHeight + _offset.second;
 	move(x, y);
 	attron(COLOR_PAIR(1));
 }
