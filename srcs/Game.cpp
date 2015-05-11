@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 14:30:41 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 13:33:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ Game::~Game(void)
 void						Game::start(void)
 {
 	auto		lastUpdate = std::chrono::steady_clock::now();
+	auto		lastFPS = std::chrono::steady_clock::now();
+	int			frames = 0;
 	auto		tmp = lastUpdate;
 
 	while (_ui != NULL && !_ui->windowShouldClose())
@@ -57,7 +59,14 @@ void						Game::start(void)
 				break ;
 			event.process(*this);
 		}
+		if ((tmp - lastFPS) > std::chrono::seconds(1))
+		{
+			PRINT("FPS: " << frames);
+			lastFPS = tmp;
+			frames = 0;
+		}
 		_ui->draw(*this);
+		frames++;
 		_update(tmp - lastUpdate);
 		lastUpdate = tmp;
 	}

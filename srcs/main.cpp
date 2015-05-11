@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 12:11:13 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/05/11 13:37:58 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int main(void)
 	try
 	{
 		game.changeUI(UI_2);
+		game.start();
 	}
 	catch (std::exception &e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
-	game.start();
 	return (0);
 }
