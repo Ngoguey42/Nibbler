@@ -1,67 +1,120 @@
-# LOL
+#
+# nibbler
+#
+# Makefile
+#
 
+#
+# Config
+#
+
+# Project name
 NAME := nibbler
-C_DIR := srcs
-H_DIRS := include common
+
+# Project directories
+DIRS := srcs include common
+
+# Obj directory
 O_DIR := o
+
+# Makefiles to call
 LIBS := lib/OpenGL lib/Ncurses
-CC := clang++
-FLAGS := -std=c++14 -Wall -Wextra -Werror -g
-LINKS := -Llib/Ncurses -Llib/OpenGL 
-HEADS := -I include -I common
 
-all: $(NAME)
+# Number of threads
+THREADS := 2
 
-o/ABlock.cpp.o: srcs/ABlock.cpp include/ABlock.hpp
-	@$(COMPILE)
-o/Event.cpp.o: srcs/Event.cpp common/nibbler.h include/Event.hpp include/Game.hpp
-	@$(COMPILE)
-o/Game.cpp.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp include/GrowBonus.hpp common/IBlock.hpp include/ABlock.hpp
-	@$(COMPILE)
-o/GrowBonus.cpp.o: srcs/GrowBonus.cpp include/GrowBonus.hpp include/Snake.hpp
-	@$(COMPILE)
-o/main.cpp.o: srcs/main.cpp common/nibbler.h common/IUI.hpp include/Game.hpp
-	@$(COMPILE)
-o/Snake.cpp.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp include/ABlock.hpp
-	@$(COMPILE)
-lib/OpenGL:
-	@make -C lib/OpenGL
+# Cpp compiler
+CPP_CC := clang++
 
-lib/Ncurses:
-	@make -C lib/Ncurses
+# Linking compiler
+LD_CC := clang++
 
+# Clang++ flags
+CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
-MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-18.18s\033[0;0m\n'
+# Linking flags
+LD_FLAGS := 
 
-COMPILE = $(MSG_0) $< ; $(CC) $(FLAGS) $(HEADS) -c -o $@ $< || $(MSG_1) $<
+# Clang++ include flags
+CPP_HEADS := -Iinclude -Icommon
 
-O_FILES := o/ABlock.cpp.o \
-		o/Event.cpp.o \
-		o/Game.cpp.o \
-		o/GrowBonus.cpp.o \
-		o/main.cpp.o \
-		o/Snake.cpp.o
+#
+# Internal
+#
 
-$(NAME): o/ $(LIBS) $(O_FILES)
-	@$(MSG_0) $@ ; $(CC) $(FLAGS) -o $@ $(O_FILES) $(LINKS) && echo || $(MSG_1) $@
+O_FILES := o/srcs/Snake.o \
+	o/srcs/ABlock.o \
+	o/srcs/main.o \
+	o/srcs/GrowBonus.o \
+	o/srcs/Game.o \
+	o/srcs/Event.o
 
-o/:
-	@mkdir -p $@ 2> /dev/null || true
+MSG_0 := printf '\033[0;32m%-21.21s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-21.21s\033[0;0m\n'
 
-o/%:
-	@mkdir -p $@ 2> /dev/null || true
+.SILENT:
+
+all: $(LIBS)
+	@make -j$(THREADS) $(NAME)
+.PHONY: all
+
+$(NAME): $(O_FILES)
+	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
+
+o/srcs/Snake.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp include/ABlock.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/ABlock.o: srcs/ABlock.cpp include/ABlock.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/main.o: srcs/main.cpp common/nibbler.h common/IUI.hpp include/Game.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/GrowBonus.o: srcs/GrowBonus.cpp include/GrowBonus.hpp include/Snake.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/Game.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp include/GrowBonus.hpp common/IBlock.hpp include/ABlock.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/Event.o: srcs/Event.cpp common/nibbler.h include/Event.hpp include/Game.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+include/ABlock.hpp: common/nibbler.h common/IBlock.hpp
+
+include/Game.hpp: common/nibbler.h common/IGame.hpp include/Snake.hpp
+
+include/GrowBonus.hpp: common/nibbler.h include/ABlock.hpp
+
+include/Snake.hpp: common/nibbler.h common/ISnake.hpp
+
+common/IGame.hpp: common/nibbler.h
+
+common/ISnake.hpp: common/nibbler.h
+
+common/IUI.hpp: common/nibbler.h
+
+$(LIBS):
+	@make -C $@
+.PHONY: $(LIBS)
 
 clean:
 	@rm -f $(O_FILES) 2> /dev/null || true
-	@rmdir -p o 2> /dev/null || true
+	@rmdir -p o/srcs $(O_DIR) 2> /dev/null || true
+.PHONY: clean
 
 fclean: clean
-	@rm -f nibbler 2> /dev/null || true
+	@rm -f $(NAME)
+.PHONY: fclean
 
 re: fclean all
+.PHONY: re
 
-make:
-	@bash './makemake.sh' re
-
-.PHONY: all clean fclean re make lib/OpenGL lib/Ncurses
+make: fclean
+	@python makemake.py
+.PHONY: make
