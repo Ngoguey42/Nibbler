@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 13:15:37 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 12:48:38 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ enum	EventType
 
 # define INIT_FUNCTION		init
 
-# define UI_1				"lib/OpenGL.so"
+# define UI_1				"lib/OpenGLUI.so"
 # define UI_2				"lib/NcursesUI.so"
 
 /*

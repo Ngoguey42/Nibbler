@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/11 08:56:31 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/11 10:37:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 14:31:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,7 +26,7 @@
 class AngledSnakePoints
 {
 public:
-	AngledSnakePoints();	
+	AngledSnakePoints();
 	virtual ~AngledSnakePoints();
 
     void                init(float const initRatio);

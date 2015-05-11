@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 12:45:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 15:09:14 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void						Window::draw(IGame const &game)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-	_put_grid();
+	// _put_grid();
 
 	(void)game;
 

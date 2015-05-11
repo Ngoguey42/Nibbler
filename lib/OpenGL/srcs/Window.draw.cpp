@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/11 12:46:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 15:18:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -146,16 +146,28 @@ void						Window::_putSnakeChunk(
 
 	float curphase = phase;
 
+	// float r, g, b;
 	float r = 0.f, g = 0.33f, b = .66f;
+	// #define TRUC 0.2f
+	// float colorratio = std::fmod(phase, TRUC) / TRUC;
+
+
+	// if (colorratio < 0.33f)
+	// 	r = 0.f, g = 0.33f, b = .66f;
+	// else if (colorratio > 0.33f)
+	// 	r = 0.33f, g = 0.66f, b = .0f;
+	// else
+	// 	r = 0.66f, g = 0.00f, b = .33f;
+		
 	float z = 20.f;
 	float x, y = 0.f;
 
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
 	{
-		// std::cout << prevDelta.second + prevDelta.first + nextDelta.first + nextDelta.second << std::endl;
+		// //std::cout << prevDelta.second + prevDelta.first + nextDelta.first + nextDelta.second << std::endl;
 
-		std::cout << prevDelta.first << "/" << prevDelta.second << " " <<
-			nextDelta.first << "/" << nextDelta.second << std::endl;
+		//std::cout << prevDelta.first << "/" << prevDelta.second << " " <<
+//			nextDelta.first << "/" << nextDelta.second << std::endl;
 
 		
 		if ((prevDelta.second > 0 && nextDelta.first > 0) ||
@@ -168,14 +180,17 @@ void						Window::_putSnakeChunk(
 			size_t		i = 0;
 			
 
-			std::cout << "[" <<
+			/*std::cout << "[" <<
 				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f)) <<
 				"] "  << 
 				"MidMaxIn(" << points.middleBranchInLastIndex << ")" <<
 				"LeftMaxIn(" << points.leftBranchInLastIndex << ")" <<
 				"MidMaxOut(" << points.middleBranchOutLastIndex << ")" <<
 				"LeftMaxOut(" << points.leftBranchOutLastIndex << ") ";
-			
+			*/
+			//PART1
+
+			// STRIP 1
 			if (points.leftBranchInLastIndex > 0)
 			{
 				glBegin(GL_TRIANGLE_STRIP);
@@ -200,54 +215,55 @@ void						Window::_putSnakeChunk(
 						   points.leftBranchIntersection.second, 0.f);
 				glEnd();
 			}
+			// FAN
 			glBegin(GL_TRIANGLE_FAN);
 			// glColor3f(.0f, 0.f, 1.f);
 			glColor3f(.7f, 0.f, 0.0f);
 			glVertex3f(points.leftBranchIntersection.first,
 					   points.leftBranchIntersection.second, 0.f);
-			std::cout << "[left]";
-			std::cout << "in[";
+			//std::cout << "[left]";
+			//std::cout << "in[";
 			glColor3f(.0f, 0.5f, 0.0f);
 			for (size_t j = i; j < points.middleBranchInLastIndex; j++)
 			{
-				std::cout << j << ",";
+				//std::cout << j << ",";
 				
 				glVertex3f(points.middleBranchInPoints[j].first,
 						   points.middleBranchInPoints[j].second, z);
 			}
-			std::cout << "][mid]";
+			//std::cout << "][mid]";
 			
 			glVertex3f(points.middleBranchIntersection.first,
 					   points.middleBranchIntersection.second, 0.f);
 			// glColor3f(1.f, 0.f, 0.f);
 			i = points.leftBranchOutLastIndex;
-			std::cout << "out[";
+			//std::cout << "out[";
 			
 			for (int j = points.middleBranchOutLastIndex - 1;
 				 j >= static_cast<int>(i); j--)
 			{
-				std::cout << j << ",";
+				//std::cout << j << ",";
 				glVertex3f(points.middleBranchOutPoints[j].first,
 						   points.middleBranchOutPoints[j].second, z);
 			}
 			
-			std::cout << "]";
-			std::cout << "   ";
+			//std::cout << "]";
+			//std::cout << "   ";
 			
 			glEnd();
-			
+			// STRIP2
 			if (points.leftBranchOutLastIndex > 0)
 			{
 				glBegin(GL_TRIANGLE_STRIP);
 				// glColor3f(0.f, 0.5f, 0.0f);
-				std::cout << "[left]";
+				//std::cout << "[left]";
 				glColor3f(.7f, 0.f, 0.0f);
 				glVertex3f(points.leftBranchIntersection.first,
 						   points.leftBranchIntersection.second, 0.f);
-				std::cout << "mid/left[";
+				//std::cout << "mid/left[";
 				for (i = points.leftBranchOutLastIndex;;i--)
 				{
-					std::cout << i << ", ";
+					//std::cout << i << ", ";
 					
 					glColor3f(.0f, 0.5f, 0.0f);
 					glVertex3f(points.middleBranchOutPoints[i].first,
@@ -258,10 +274,108 @@ void						Window::_putSnakeChunk(
 					if (i == 0)
 						break ;
 				}
-				std::cout << "]";
+				//std::cout << "]";
 				glEnd();
 			}
-			std::cout << "" << std::endl;
+			//std::cout << "" << std::endl;
+
+#define LOL glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));
+#define LOL2 glColor3f(.0f, 0.5f, 0.0f);
+			
+
+			//PART2
+			// STRIP 1
+			if (points.middleBranchInLastIndex > 0)
+			{
+				glBegin(GL_TRIANGLE_STRIP);
+				// LOL
+
+				LOL
+				glVertex3f(points.rightBranchInPoints[0].first,
+						   points.rightBranchInPoints[0].second, z);
+
+				while(i < points.middleBranchInLastIndex)
+				{					
+					LOL2
+					glVertex3f(points.middleBranchInPoints[i].first,
+							   points.middleBranchInPoints[i].second, 0.f);
+					i++;
+					LOL
+					glVertex3f(points.rightBranchInPoints[i].first,
+							   points.rightBranchInPoints[i].second, z);
+				}
+				LOL2
+				glVertex3f(points.middleBranchIntersection.first,
+						   points.middleBranchIntersection.second, 0.f);
+				glEnd();
+			}
+			// FAN
+			glBegin(GL_TRIANGLE_FAN);
+			// glColor3f(.0f, 0.f, 1.f);
+			LOL2
+			glVertex3f(points.middleBranchIntersection.first,
+					   points.middleBranchIntersection.second, 0.f);
+			//std::cout << "[middle]";
+			//std::cout << "in[";
+			for (size_t j = i; j < points.rightBranchInLastIndex; j++)
+			{
+				//std::cout << j << ",";
+				LOL
+				
+				glVertex3f(points.rightBranchInPoints[j].first,
+						   points.rightBranchInPoints[j].second, z);
+			}
+			//std::cout << "][mid]";
+			
+				LOL
+			glVertex3f(points.rightBranchIntersection.first,
+					   points.rightBranchIntersection.second, 0.f);
+			// glColor3f(1.f, 0.f, 0.f);
+			i = points.middleBranchOutLastIndex;
+			//std::cout << "out[";
+			
+			for (int j = points.rightBranchOutLastIndex - 1;
+				 j >= static_cast<int>(i); j--)
+			{
+				//std::cout << j << ",";
+				LOL
+				glVertex3f(points.rightBranchOutPoints[j].first,
+						   points.rightBranchOutPoints[j].second, z);
+			}
+			
+			//std::cout << "]";
+			//std::cout << "   ";
+			
+			glEnd();
+			// STRIP2
+			if (points.middleBranchOutLastIndex > 0)
+			{
+				glBegin(GL_TRIANGLE_STRIP);
+				// glColor3f(0.f, 0.5f, 0.0f);
+				//std::cout << "[middle]";
+				LOL2
+				glVertex3f(points.middleBranchIntersection.first,
+						   points.middleBranchIntersection.second, 0.f);
+				//std::cout << "mid/middle[";
+				for (i = points.middleBranchOutLastIndex;;i--)
+				{
+					//std::cout << i << ", ";
+					
+					LOL
+					glVertex3f(points.rightBranchOutPoints[i].first,
+							   points.rightBranchOutPoints[i].second, z);
+					LOL2
+					glVertex3f(points.middleBranchOutPoints[i].first,
+							   points.middleBranchOutPoints[i].second, 0.f);
+					if (i == 0)
+						break ;
+				}
+				//std::cout << "]";
+				glEnd();
+			}
+			//std::cout << "" << std::endl;
+
+			//fin
 			
 		}
 		
@@ -273,8 +387,10 @@ void						Window::_putSnakeChunk(
 		{
 			x = (cosf((0.5f + curphase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
 				
-			r += 0.33f; g += 0.33f; b += 0.33f;
-			glColor3f(fmod(r, 1.f), fmod(g, 1.f), fmod(b, 1.f));
+			// LOL
+			// glColor3f(fmod(r, 1.f), fmod(g, 1.f), fmod(b, 1.f));
+			glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));
+			
 			glVertex3f(x * CHUNK_SIZE, y, 0.f);
 			glColor3f(.0f, 0.5f, 0.0f);
 			glVertex3f((x + SNAKE_WIDTH_HALF) * CHUNK_SIZE, y, z);
