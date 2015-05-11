@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/04 16:17:47 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/05/11 08:39:07 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # include "nibbler.h"
 # include "IUI.hpp"
-# include "Event.hpp"
+// # include "Event.hpp"
 
 # ifndef DEG_TO_RAD
 #  define DEG_TO_RAD(angleDegrees) (angleDegrees * M_PI / 180.0)
@@ -55,9 +55,9 @@ public:
 	Window(std::pair<int, int> gridSize, float cellSize);
 	virtual ~Window();
 
-	Event::Type					getEvent(void);
+	EventType					getEvent(void);
 
-	void						draw(Game const &game);
+	void						draw(IGame const &game);
 	bool						windowShouldClose(void) const;
 	
 protected:

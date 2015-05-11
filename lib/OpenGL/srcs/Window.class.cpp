@@ -6,13 +6,16 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/04 17:08:06 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/05/11 08:45:07 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cmath>
 #include "Window.class.hpp"
-#include "Game.hpp"
+#include "IGame.hpp"
+#include "ISnake.hpp"
+#include "IBlock.hpp"
+// #include "Game.hpp"
 
 #define TMP_PADDING ((int)10)
 
@@ -86,9 +89,9 @@ Window::~Window()
 // * SETTERS **************************************************************** //
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 
-Event::Type					Window::getEvent(void)
+EventType					Window::getEvent(void)
 {
-	return (Event::Type::NOPE);
+	return (EventType::EVENT_NOPE);
 }
 
 void						Window::_put_grid(void) const
@@ -124,7 +127,7 @@ float				getRandRange(float selfDelta = 0.f)
 	return (1.f - randRange + 0.5f);
 }
 
-void						Window::draw(Game const &game)
+void						Window::draw(IGame const &game)
 {
 	// float randRange; //useless?
 	// int width, height; //useless?
@@ -146,8 +149,11 @@ void						Window::draw(Game const &game)
 	float curPhase = _phase;
 
 	// std::deque<std::pair<int, int>>		q;
-	std::deque<Snake::Chunk> const		&q = game.snake.chunks;
-	// q.push_front(std::make_pair(1, 1)); //tail
+
+		
+		// std::deque<Snake::Chunk> const		&q = game.getSnake().getChunks();
+	auto const		&q = game.getSnake().getChunks();
+		// q.push_front(std::make_pair(1, 1)); //tail
 	// q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 	// q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 	// q.push_front(std::make_pair(q.front().first, q.front().second + 1));
