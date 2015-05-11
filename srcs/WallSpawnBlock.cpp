@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   GrowBlock.cpp                                      :+:      :+:    :+:   */
+/*   WallSpawnBlock.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:36:29 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:47:46 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:51:18 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GrowBlock.hpp"
+#include "WallSpawnBlock.hpp"
+#include "WallBlock.hpp"
 #include "Game.hpp"
 #include "Snake.hpp"
 
-GrowBlock::GrowBlock(void)
-	: ABlock(ABlock::GROW), _eaten(false)
+WallSpawnBlock::WallSpawnBlock(void)
+	: ABlock(ABlock::WALL_SPAWN), _eaten(false)
 {
 }
 
-GrowBlock::~GrowBlock(void)
+WallSpawnBlock::~WallSpawnBlock(void)
 {
 }
 
-void					GrowBlock::active(Game &game)
+void					WallSpawnBlock::active(Game &game)
 {
 	_eaten = true;
-	game.getSnake().grow(_pos.first, _pos.second);
-	game.addScore(10);
-	game.spawn(new GrowBlock());
+	game.addScore(-20);
+	game.spawn(new WallBlock());
+	game.spawn(new WallSpawnBlock());
 }
 
-bool					GrowBlock::shouldDestroy(void) const
+bool					WallSpawnBlock::shouldDestroy(void) const
 {
 	return (_eaten);
 }

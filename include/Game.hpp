@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:36:40 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:48:29 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ public:
 
 	void								setPaused(bool paused);
 
-	void								changeUI(char const *lib) throw(std::exception);
+	void								addScore(int add);
 
 	Snake								&getSnake(void);
 
 	void								spawn(ABlock *block);
+
+	void								changeUI(char const *lib) throw(std::exception);
 
 protected:
 

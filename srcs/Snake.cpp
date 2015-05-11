@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:25:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 18:14:24 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,6 @@ void							Snake::kill(void)
 	_die = true;
 }
 
-bool							Snake::collide(Game const &game)
-{
-	auto			head = _chunks.begin();
-
-	if (head->first < 0 || head->first >= game.getGameWidth()
-		|| head->second < 0 || head->second >= game.getGameHeight())
-		return (kill(), true);
-	for (auto it = _chunks.begin(); it != _chunks.end(); ++it)
-		if (head->first == it->first && head->second == it->second
-			&& head != it)
-			return (kill(), true);
-	return (false);
-}
-
 void							Snake::grow(int x, int y)
 {
 	_chunks.emplace_back(Snake::Chunk(x, y));
@@ -93,14 +79,31 @@ void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
 	}
 }
 
-void							Snake::_move(Game &game)
+void							Snake::_collide(Game &game)
 {
 	Snake::Chunk	&head = *_chunks.begin();
 
+	// Borders
+	if (head.first < 0 || head.first >= game.getGameWidth()
+		|| head.second < 0 || head.second >= game.getGameHeight())
+		return (kill());
+	// Eat itself
+	for (auto it = _chunks.begin(); it != _chunks.end(); ++it)
+		if (head.first == it->first && head.second == it->second && head != *it)
+		return (kill());
+	// Blocks
 	for (auto it = game.getBlocks().begin(); it != game.getBlocks().end(); ++it)
 		if (head.first == (*it)->getX() && head.second == (*it)->getY())
 			static_cast<ABlock*>(*it)->active(game);
+}
+
+void							Snake::_move(Game &game)
+{
+	Snake::Chunk	newChunk(*_chunks.begin());
+
 	_chunks.pop_back();
-	_chunks.emplace_front(Snake::Chunk(head.first + _direction.first,
-		head.second + _direction.second));
+	newChunk.first += _direction.first;
+	newChunk.second += _direction.second;
+	_chunks.emplace_front(newChunk);
+	_collide(game);
 }

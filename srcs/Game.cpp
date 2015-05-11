@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:38:46 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 17:59:34 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include "ABlock.hpp"
 #include "GrowBlock.hpp"
 #include "WallBlock.hpp"
+#include "WallSpawnBlock.hpp"
 
 Game::Game(void)
 	: _uiLib(NULL), _ui(NULL),
@@ -34,6 +35,7 @@ Game::Game(void)
 	srand(time(NULL));
 	for (int i = 0; i < WALL_COUNT; ++i)
 		spawn(new WallBlock());
+	spawn(new WallSpawnBlock());
 	spawn(new GrowBlock());
 }
 
@@ -129,6 +131,11 @@ void						Game::setPaused(bool paused)
 	_paused = paused;
 }
 
+void						Game::addScore(int add)
+{
+	_score += add;
+}
+
 void						Game::spawn(ABlock *b)
 {
 	int			pos = _gameWidth * _gameHeight;
@@ -156,8 +163,6 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
 		if (static_cast<ABlock*>(*it)->shouldDestroy())
 			it = _blocks.erase(it);
-	if (_snake.collide(*this))
-		return ;
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)

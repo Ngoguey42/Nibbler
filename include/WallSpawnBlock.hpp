@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IBlock.hpp                                         :+:      :+:    :+:   */
+/*   WallSpawnBlock.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/07 11:55:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:44:26 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/04 13:25:00 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/11 17:44:01 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IBLOCK_HPP
-# define IBLOCK_HPP
+#ifndef WALLSPAWNBLOCK_HPP
+# define WALLSPAWNBLOCK_HPP
 
-class	IBlock
+# include "nibbler.h"
+# include "ABlock.hpp"
+
+class	WallSpawnBlock : public ABlock
 {
 public:
-	enum	Type
-	{
-		GROW,
-		WALL,
-		WALL_SPAWN,
-		NOPE
-	};
+	WallSpawnBlock(void);
+	virtual ~WallSpawnBlock(void);
 
-	IBlock(void){}
-	virtual ~IBlock(void){}
-
-	virtual int				getX(void) const = 0;
-	virtual int				getY(void) const = 0;
-
-	virtual Type			getType(void) const = 0;
+	virtual void			active(Game &game);
+	virtual bool			shouldDestroy(void) const;
 
 protected:
 
+	bool					_eaten;
+
 private:
-	IBlock(IBlock const &src);
-	IBlock					&operator=(IBlock const &rhs);
+	WallSpawnBlock(WallSpawnBlock const &src);
+	WallSpawnBlock			&operator=(WallSpawnBlock const &rhs);
 };
 
 #endif

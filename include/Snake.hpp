@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:25:14 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/11 18:03:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ public:
 
 	void							kill(void);
 
-	bool							collide(Game const &game);
-
 	void							grow(int x, int y);
 
 	void							setDirection(int x, int y);
@@ -55,6 +53,7 @@ protected:
 	std::chrono::steady_clock::duration	_speed;
 	std::chrono::steady_clock::duration	_lastMove;
 
+	void							_collide(Game &game);
 	void							_move(Game &game);
 
 private:

@@ -45,13 +45,14 @@ CPP_HEADS := -Iinclude -Icommon
 O_FILES := o/srcs/Snake.o \
 	o/srcs/ABlock.o \
 	o/srcs/WallBlock.o \
+	o/srcs/WallSpawnBlock.o \
 	o/srcs/main.o \
 	o/srcs/GrowBlock.o \
 	o/srcs/Game.o \
 	o/srcs/Event.o
 
-MSG_0 := printf '\033[0;32m%-21.21s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-21.21s\033[0;0m\n'
+MSG_0 := printf '\033[0;32m%-26.26s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-26.26s\033[0;0m\n'
 
 .SILENT:
 
@@ -74,6 +75,10 @@ o/srcs/WallBlock.o: srcs/WallBlock.cpp include/WallBlock.hpp include/Snake.hpp i
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
+o/srcs/WallSpawnBlock.o: srcs/WallSpawnBlock.cpp include/WallSpawnBlock.hpp include/WallBlock.hpp include/Game.hpp include/Snake.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
 o/srcs/main.o: srcs/main.cpp common/nibbler.h common/IUI.hpp include/Game.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
@@ -82,7 +87,7 @@ o/srcs/GrowBlock.o: srcs/GrowBlock.cpp include/GrowBlock.hpp include/Game.hpp in
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Game.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp common/IBlock.hpp include/ABlock.hpp include/GrowBlock.hpp include/WallBlock.hpp
+o/srcs/Game.o: srcs/Game.cpp common/nibbler.h include/Game.hpp common/IUI.hpp include/Event.hpp common/IBlock.hpp include/ABlock.hpp include/GrowBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
@@ -99,6 +104,8 @@ include/GrowBlock.hpp: common/nibbler.h include/ABlock.hpp
 include/Snake.hpp: common/nibbler.h common/ISnake.hpp
 
 include/WallBlock.hpp: common/nibbler.h include/ABlock.hpp
+
+include/WallSpawnBlock.hpp: common/nibbler.h include/ABlock.hpp
 
 common/IGame.hpp: common/nibbler.h
 
