@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 08:47:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 12:11:13 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(void)
 
 	try
 	{
-		game.changeUI(UI_1);
+		game.changeUI(UI_2);
 	}
 	catch (std::exception &e)
 	{

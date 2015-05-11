@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/11 11:04:06 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/11 12:12:55 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@
 //  ==================================  //
 #define CHUNK_SIZE 35                   // Pixels integer
 #define SNAKE_WAVELENGTH 105.f          // Pixels float
-// #define SNAKE_WAVELENGTH 70.f            // Pixels float
 #define SNAKE_WIDTH 0.66f               // Percent of CHUNK_SIZE
-// #define SNAKE_WIDTH 0.5f             // Percent of CHUNK_SIZE
 #define POINTS_PER_SIDE 9               //
-// #define POINTS_PER_SIDE 10               //
+
+/* #define SNAKE_WAVELENGTH 17.5f            // Pixels float */
+/* #define SNAKE_WIDTH 0.8f             // Percent of CHUNK_SIZE */
+/* #define POINTS_PER_SIDE 18               // */
+
 #define PRECALC_POINTS_DELTA 0.25f        // Density of pre-calculated points
-/* #define PRECALC_POINTS_DELTA 1.f        // Density of pre-calculated points */
 //  ==================================  //
 
 //are all those macro evaluated preprocessor?
@@ -54,7 +55,7 @@
 //      Number of pixels                //
 #define PHASE_MAX_DELTA (CHUNK_SIZEF * (1 - SNAKE_WIDTH))
 //      Number of points float          //
-/* #define NUM_PRECALC_POINTSF std::ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA) */
+/* #define NUM_PRECALC_POINTSF ceilf(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA) */
 #define NUM_PRECALC_POINTSF M_CEIL(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
 //      Number of points integer        //
 #define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)

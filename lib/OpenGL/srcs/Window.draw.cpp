@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/11 11:12:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 12:46:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,11 +19,8 @@
 static void					rotateChunk(
 	std::pair<int, int> const &prevDelta, std::pair<int, int> const &nextDelta)
 {
-	if ((prevDelta.first != 0) != (nextDelta.first != 0))
-	{
-		//angle
-	}
-	else if (prevDelta.first != 0)
+	(void)nextDelta;
+	if (prevDelta.first != 0)
 	{
 		//x changes
 		if (prevDelta.first > 0)
@@ -35,7 +32,6 @@ static void					rotateChunk(
 		{
 			glRotatef(90.f, 0, 0, 1);
 			glTranslatef(0.f, -CHUNK_SIZE, 0.f);
-			
 		}
 	}
 	else
@@ -131,8 +127,8 @@ void						Window::_putSnakeChunk(
 		std::make_pair<int, int>(selfPos.first - prevPos.first,
 								 selfPos.second - prevPos.second);
 	std::pair<int, int> const nextDelta =
-		std::make_pair<int, int>(selfPos.first - nextPos.first,
-								 selfPos.second - nextPos.second);
+		std::make_pair<int, int>(nextPos.first - selfPos.first,
+								 nextPos.second - selfPos.second);
 	std::pair<float, float> const	topLeft(
 		_topLeftCell.first + _cellSize * selfPos.first,
 		_topLeftCell.second + _cellSize * selfPos.second);
@@ -155,8 +151,17 @@ void						Window::_putSnakeChunk(
 	float x, y = 0.f;
 
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
-	{		
-		if (prevDelta.second > 0 && nextDelta.first < 0) //sinistro
+	{
+		// std::cout << prevDelta.second + prevDelta.first + nextDelta.first + nextDelta.second << std::endl;
+
+		std::cout << prevDelta.first << "/" << prevDelta.second << " " <<
+			nextDelta.first << "/" << nextDelta.second << std::endl;
+
+		
+		if ((prevDelta.second > 0 && nextDelta.first > 0) ||
+			(prevDelta.second < 0 && nextDelta.first < 0) ||
+			(prevDelta.first > 0 && nextDelta.second < 0) ||
+			(prevDelta.first < 0 && nextDelta.second > 0)) //sinistro
 		{
 			auto const	&points = this->sinPoints[
 				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f))];

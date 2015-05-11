@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 11:05:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/11 12:45:25 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void						Window::draw(IGame const &game)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-	// _put_grid();
+	_put_grid();
 
 	(void)game;
 
@@ -171,7 +171,12 @@ void						Window::draw(IGame const &game)
 	// auto const		&q = game.getSnake().getChunks();
 
 
-	q.push_front(std::make_pair(1, 1)); //tail
+	q.push_front(std::make_pair(3, 0)); //tail
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	
+	
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
@@ -196,7 +201,26 @@ void						Window::draw(IGame const &game)
 		
 	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
 	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1)); //head
+
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	// q.push_front(std::make_pair(q.front().first, q.front().second - 1)); //head
 
 	for (auto it = ++q.rbegin(), ite = --q.rend();
 		 it != ite;
