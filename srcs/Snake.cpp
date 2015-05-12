@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 20:10:37 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 14:01:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ bool							Snake::isDie(void) const
 
 void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
 {
+	if (_die)
+		return ;
 	_lastMove += t;
-	while (!_die && _lastMove > _speed)
+	while (_lastMove > _speed)
 	{
 		_move(game);
 		_lastMove -= _speed;
@@ -99,13 +101,13 @@ void							Snake::_collide(Game &game)
 		|| head.second < 0 || head.second >= game.getGameHeight())
 		return (kill());
 	// Eat itself
-	for (auto it = _chunks.begin(); it != _chunks.end(); ++it)
-		if (head.first == it->first && head.second == it->second && head != *it)
-		return (kill());
+	for (auto it = ++_chunks.begin(); it != _chunks.end(); ++it)
+		if (head == *it)
+			return (kill());
 	// Blocks
-	for (auto it = game.getBlocks().begin(); it != game.getBlocks().end(); ++it)
-		if (head.first == (*it)->getX() && head.second == (*it)->getY())
-			static_cast<ABlock*>(*it)->active(game);
+	for (IBlock *b : game.getBlocks())
+		if (head.first == b->getX() && head.second == b->getY())
+			static_cast<ABlock*>(b)->active(game);
 }
 
 void							Snake::_move(Game &game)
