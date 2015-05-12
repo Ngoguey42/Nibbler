@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 18:43:13 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 19:19:54 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <utility>
 # include <SFML/Graphics.hpp>
 # include "nibbler.h"
+# include "IBlock.hpp"
 # include "IUI.hpp"
 
 # define CHUNK_SIZE		64
@@ -38,6 +39,7 @@ protected:
 
 	std::map<int, EventType>	_events;
 
+	sf::Color					_chunkColor(IBlock::Type type);
 	void						_drawChunk(int x, int y, sf::Color color);
 
 private:
