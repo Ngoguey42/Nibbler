@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 19:26:45 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 18:05:50 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ void				Event::_process2(Game &game)
 	game.changeUI(UI_2);
 }
 
-void				Event::_process3(Game &)
+void				Event::_process3(Game &game)
 {
+	game.setPaused(true);
+	game.changeUI(UI_3);
 }
 
 void				Event::_process4(Game &)
