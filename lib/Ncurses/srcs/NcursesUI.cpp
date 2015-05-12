@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/11 20:00:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 14:36:08 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,11 @@ void			NcursesUI::draw(IGame const &game)
 		for (int y = _gameSize.second - 1; y >= 0; --y)
 			_drawChunk(x, y, (color = (x + y) % 3) + 13, '.');
 	// Draw blocks
-	for (auto it = game.getBlocks().begin();
-		it != game.getBlocks().end();
-		++it)
-		_drawChunk((*it)->getX(), (*it)->getY(), 20 + (*it)->getType(), '+' + (*it)->getType());
+	for (auto *b : game.getBlocks())
+		_drawChunk(b->getX(), b->getY(), 20 + b->getType(), '+' + b->getType());
 	// Draw snake
-	for (auto it = game.getSnake().getChunks().begin();
-		it != game.getSnake().getChunks().end();
-		++it)
-		_drawChunk(it->first, it->second, 2, 'X');
+	for (auto &c : game.getSnake().getChunks())
+		_drawChunk(c.first, c.second, 2, 'X');
 	if (game.getSnake().isDie())
 	{
 		auto &head = *(game.getSnake().getChunks().begin());

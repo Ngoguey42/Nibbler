@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 20:10:33 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 15:21:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ class	GrowBlock;
 # define INITIAL_Y			5
 # define INITIAL_LENGTH		4
 # define INITIAL_SPEED		130
+
+// # define WALL_THROUGH
 
 # define WALL_COUNT			3
 

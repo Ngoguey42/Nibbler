@@ -63,7 +63,7 @@ all: $(LIBS)
 $(NAME): $(O_FILES)
 	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
 
-o/srcs/Snake.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp include/ABlock.hpp
+o/srcs/Snake.o: srcs/Snake.cpp include/Snake.hpp include/Game.hpp include/ABlock.hpp common/nibbler.h
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 

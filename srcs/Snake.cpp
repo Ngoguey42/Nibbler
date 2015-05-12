@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 14:01:12 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 15:21:13 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "Snake.hpp"
 #include "Game.hpp"
 #include "ABlock.hpp"
+#include "nibbler.h"
 
 Snake::Snake(void)
 	: _lastMove(0)
@@ -117,6 +118,16 @@ void							Snake::_move(Game &game)
 	_chunks.pop_back();
 	newChunk.first += _direction.first;
 	newChunk.second += _direction.second;
+#ifdef WALL_THROUGH
+	if (newChunk.first < 0)
+		newChunk.first = game.getGameWidth() - 1;
+	if (newChunk.first >= game.getGameWidth())
+		newChunk.first = 0;
+	if (newChunk.second < 0)
+		newChunk.second = game.getGameHeight() - 1;
+	if (newChunk.second >= game.getGameHeight())
+		newChunk.second = 0;
+#endif
 	_chunks.emplace_front(newChunk);
 	_collide(game);
 }

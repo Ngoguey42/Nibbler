@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 13:54:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 15:09:01 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,9 @@ void						Game::start(void)
 	while (_ui != NULL && !_ui->windowShouldClose())
 	{
 		tmp = std::chrono::steady_clock::now();
-		while (true)
-		{
-			Event	event(_ui->getEvent());
-			if (event.getType() == EVENT_NOPE)
-				break ;
-			event.process(*this);
-		}
+		EventType	event = _ui->getEvent();
+		if (event != EVENT_NOPE)
+			Event(event).process(*this);
 		if ((tmp - lastFPS) > std::chrono::seconds(1))
 		{
 			_fps = frames;
