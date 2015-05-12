@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 15:21:13 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 16:50:19 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void							Snake::kill(void)
 void							Snake::grow(int x, int y)
 {
 	_chunks.emplace_back(Snake::Chunk(x, y));
+	_speed -= _speed * 2 / 100;
 }
 
 bool							Snake::isChunk(int x, int y) const

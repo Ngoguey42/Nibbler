@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 15:09:01 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 15:43:23 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,18 @@
 #include "WallBlock.hpp"
 #include "WallSpawnBlock.hpp"
 
-Game::Game(void)
+Game::Game(int argc, char **argv) throw(std::exception)
 	: _uiLib(NULL), _ui(NULL),
-	_gameWidth(GAME_WIDTH), _gameHeight(GAME_HEIGHT),
 	_paused(false), _fps(0), _snake()
 {
+	if (argc < 2)
+		throw std::invalid_argument("Not enougth arguments");
+	_gameWidth = atoi(argv[1]);
+	if (_gameWidth < MIN_GAME_WIDTH || _gameWidth > MAX_GAME_WIDTH)
+		throw std::invalid_argument("Invalid game_width");
+	_gameHeight = atoi(argv[2]);
+	if (_gameHeight < MIN_GAME_HEIGHT || _gameHeight > MAX_GAME_HEIGHT)
+		throw std::invalid_argument("Invalid game_height");
 	srand(time(NULL));
 	reset();
 }
@@ -155,7 +162,9 @@ void						Game::reset(void)
 	_snake.reset(INITIAL_X, INITIAL_Y);
 	for (int i = 0; i < WALL_COUNT; ++i)
 		spawn(new WallBlock());
+#ifdef WALL_SPAWNER
 	spawn(new WallSpawnBlock());
+#endif
 	spawn(new GrowBlock());
 }
 

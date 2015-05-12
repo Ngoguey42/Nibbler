@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 19:12:58 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 15:28:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 class	Game : public IGame
 {
 public:
-	Game(void);
+	Game(int argc, char **argv) throw(std::exception);
 	virtual ~Game(void);
 
 // Shared
@@ -73,6 +73,7 @@ protected:
 	void								_update(std::chrono::steady_clock::duration t);
 
 private:
+	Game(void);
 	Game(Game const &src);
 	Game								&operator=(Game const &rhs);
 };

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 15:21:40 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/12 16:55:35 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,21 @@ class	GrowBlock;
 ** Settings
 */
 
-# define GAME_WIDTH			17
-# define GAME_HEIGHT		20
-
-# define INITIAL_X			GAME_WIDTH / 2
-# define INITIAL_Y			5
+# define INITIAL_X			_gameWidth / 2
+# define INITIAL_Y			_gameHeight / 2 - 4
 # define INITIAL_LENGTH		4
-# define INITIAL_SPEED		130
+
+# define INITIAL_SPEED		150
 
 // # define WALL_THROUGH
+// # define WALL_SPAWNER
 
-# define WALL_COUNT			3
+# define WALL_COUNT			_gameWidth * _gameHeight / 60
+
+# define MIN_GAME_WIDTH		10
+# define MAX_GAME_WIDTH		30
+# define MIN_GAME_HEIGHT	10
+# define MAX_GAME_HEIGHT	40
 
 /*
 ** ========================================================================== **
