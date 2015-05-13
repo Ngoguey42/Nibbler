@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 17:53:48 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:46:43 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@
 class	IGame;
 class	ISnake;
 class	IBlock;
+class	IUI;
 // -
 
 class	Game;
 class	Snake;
-class	IUI;
 class	Event;
 class	ABlock;
 class	GrowBlock;
+class	WallBlock;
+class	WallSpawnBlock;
 
 /*
 ** ========================================================================== **
@@ -77,7 +79,7 @@ enum	EventType
 
 /*
 ** ========================================================================== **
-** Libs
+** UIs
 */
 
 # define WINDOW_TITLE		":: Nibbler ::"
@@ -87,6 +89,8 @@ enum	EventType
 # define UI_1				"lib/OpenGLUI.so"
 # define UI_2				"lib/NcursesUI.so"
 # define UI_3				"lib/SfmlUI.so"
+
+# define INITIAL_UI			UI_3
 
 /*
 ** ========================================================================== **

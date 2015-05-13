@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 15:18:30 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:41:39 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,28 @@ void				Event::_processUp(Game &game)
 {
 	if (game.isPaused() || game.getSnake().getDirection().second == 1)
 		return ;
-	game.getSnake().setDirection(0, -1);
+	game.getSnake().setNextDirection(0, -1);
 }
 
 void				Event::_processRight(Game &game)
 {
 	if (game.isPaused() || game.getSnake().getDirection().first == -1)
 		return ;
-	game.getSnake().setDirection(1, 0);
+	game.getSnake().setNextDirection(1, 0);
 }
 
 void				Event::_processDown(Game &game)
 {
 	if (game.isPaused() || game.getSnake().getDirection().second == -1)
 		return ;
-	game.getSnake().setDirection(0, 1);
+	game.getSnake().setNextDirection(0, 1);
 }
 
 void				Event::_processLeft(Game &game)
 {
 	if (game.isPaused() || game.getSnake().getDirection().first == 1)
 		return ;
-	game.getSnake().setDirection(-1, 0);
+	game.getSnake().setNextDirection(-1, 0);
 }
 
 void				Event::_processSpace(Game &game)

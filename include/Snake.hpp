@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 15:18:07 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:41:27 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ public:
 
 	void							grow(int x, int y);
 
-	void							setDirection(int x, int y);
+	void							setNextDirection(int x, int y);
 
 	void							reset(int x, int y);
 
@@ -50,6 +50,7 @@ protected:
 	std::deque<Chunk>				_chunks;
 
 	std::pair<int, int>				_direction;
+	std::pair<int, int>				_nextDirection;
 
 	bool							_die;
 
