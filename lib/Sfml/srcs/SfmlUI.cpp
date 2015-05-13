@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 13:46:36 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:38:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ SfmlUI::SfmlUI(std::pair<int, int> gameSize)
 	_gameSize(gameSize),
 	_line(sf::LinesStrip, 2)
 {
+	if (!_font.loadFromFile(FONT_LOCATION))
+		throw std::runtime_error("Cannot load font");
 	_events[sf::Keyboard::Up] = EVENT_UP;
 	_events[sf::Keyboard::Right] = EVENT_RIGHT;
 	_events[sf::Keyboard::Down] = EVENT_DOWN;
@@ -78,12 +80,28 @@ void				SfmlUI::draw(IGame const &game)
 		_drawWallBlock(head.first, head.second);
 		_drawGrowBlock(head.first, head.second);
 	}
+	// Draw UI
+	_drawText(1, 0.2,
+		std::string("Score: ") += std::to_string(game.getScore()), _chunkSize / 2);
+	_drawText(1, _gameSize.second + 1.3,
+		std::string("FPS: ") += std::to_string(game.getFPS()), _chunkSize / 4);
 	display();
 }
 
 bool				SfmlUI::windowShouldClose(void) const
 {
 	return (!isOpen());
+}
+
+void				SfmlUI::_drawText(float x, float y, std::string const &text, unsigned int size)
+{
+	static sf::Text		textDraw("", _font);
+
+	textDraw.setString(text);
+	textDraw.setFont(_font);
+	textDraw.setCharacterSize(size);
+	textDraw.setPosition(x * _chunkSize, y * _chunkSize);
+	sf::RenderWindow::draw(textDraw);
 }
 
 void				SfmlUI::_drawGrid(void)
@@ -114,7 +132,7 @@ void				SfmlUI::_drawGrowBlock(int x, int y)
 
 	x *= _chunkSize;
 	y *= _chunkSize;
-	for (int w = 0; w < _chunkSize - 1; w += d)
+	for (int w = 0; w <= _chunkSize; w += d)
 		_drawLine(x + w, y, 0, _chunkSize);
 }
 
@@ -124,7 +142,7 @@ void				SfmlUI::_drawSnakeChunk(int x, int y)
 
 	x *= _chunkSize;
 	y *= _chunkSize;
-	for (int h = 0; h < _chunkSize - 1; h += d)
+	for (int h = 0; h <= _chunkSize; h += d)
 		_drawLine(x, y + h, _chunkSize, 0);
 }
 

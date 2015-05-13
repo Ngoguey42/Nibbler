@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 13:27:06 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:20:51 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "nibbler.h"
 # include "IBlock.hpp"
 # include "IUI.hpp"
+
+# define FONT_LOCATION		"lib/Sfml/misc/font.ttf"
 
 # define MAX_CHUNK_SIZE		64
 
@@ -40,10 +42,13 @@ protected:
 	std::pair<int, int>			_gameSize;
 	int							_chunkSize;
 
+	sf::Font					_font;
+
 	std::map<int, EventType>	_events;
 
 	sf::VertexArray				_line;
 
+	void						_drawText(float x, float y, std::string const &text, unsigned int size);
 	void						_drawGrid(void);
 	void						_drawWallBlock(int x, int y);
 	void						_drawGrowBlock(int x, int y);
