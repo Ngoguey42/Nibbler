@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 20:11:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 13:46:36 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "ISnake.hpp"
 
 SfmlUI::SfmlUI(std::pair<int, int> gameSize)
-	: sf::RenderWindow(sf::VideoMode(gameSize.first * CHUNK_SIZE, 
-		gameSize.second * CHUNK_SIZE), WINDOW_TITLE, sf::Style::Close),
+	: sf::RenderWindow(_getWindowSize(gameSize, _chunkSize), WINDOW_TITLE, sf::Style::Close),
 	_gameSize(gameSize),
 	_line(sf::LinesStrip, 2)
 {
@@ -65,18 +64,19 @@ void				SfmlUI::draw(IGame const &game)
 	// Draw blocks
 	for (auto *b : game.getBlocks())
 	{
-		if (b->getType() == IBlock::WALL)
-			_drawWallBlock(b->getX(), b->getY());
+		if (b->getType() == IBlock::GROW)
+			_drawGrowBlock(b->getX(), b->getY());
 		else
-			_drawChunk(b->getX(), b->getY(), _chunkColor(b->getType()));
+			_drawWallBlock(b->getX(), b->getY());
 	}
 	// Draw snake
 	for (auto &c : game.getSnake().getChunks())
-		_drawChunk(c.first, c.second, sf::Color::Red);
+		_drawSnakeChunk(c.first, c.second);
 	if (game.getSnake().isDie())
 	{
 		auto &head = *(game.getSnake().getChunks().begin());
-		_drawChunk(head.first, head.second, sf::Color(240, 10, 10));
+		_drawWallBlock(head.first, head.second);
+		_drawGrowBlock(head.first, head.second);
 	}
 	display();
 }
@@ -86,48 +86,68 @@ bool				SfmlUI::windowShouldClose(void) const
 	return (!isOpen());
 }
 
-sf::Color			SfmlUI::_chunkColor(IBlock::Type type)
-{
-	if (type == IBlock::GROW)
-		return (sf::Color::Yellow);
-	else if (type == IBlock::WALL_SPAWN)
-		return (sf::Color(50, 50, 50));
-	return (sf::Color::Black);
-}
-
 void				SfmlUI::_drawGrid(void)
 {
-	for (int y = 0; y < _gameSize.second; ++y)
-	{
-		_line[0].position = sf::Vector2f(0, y * CHUNK_SIZE);
-		_line[1].position = sf::Vector2f(_gameSize.first * CHUNK_SIZE, y * CHUNK_SIZE);
-		sf::RenderWindow::draw(_line);
-	}
-	for (int x = 0; x < _gameSize.first; ++x)
-	{
-		_line[0].position = sf::Vector2f(x * CHUNK_SIZE, 0);
-		_line[1].position = sf::Vector2f(x * CHUNK_SIZE, _gameSize.second * CHUNK_SIZE);
-		sf::RenderWindow::draw(_line);
-	}
+	static sf::RectangleShape	rect = sf::RectangleShape(sf::Vector2f(
+		_gameSize.first * _chunkSize, _gameSize.second * _chunkSize));
+
+	rect.setPosition(_chunkSize, _chunkSize);
+	rect.setFillColor(sf::Color(GRID_COLOR, 30));
+	sf::RenderWindow::draw(rect);
+	for (int y = 0; y <= _gameSize.second; ++y)
+		_drawLine(0, y * _chunkSize, _gameSize.first * _chunkSize, 0);
+	for (int x = 0; x <= _gameSize.first; ++x)
+		_drawLine(x * _chunkSize, 0, 0, _gameSize.second * _chunkSize);
 }
 
 void				SfmlUI::_drawWallBlock(int x, int y)
 {
-	x *= CHUNK_SIZE;
-	y *= CHUNK_SIZE;
+	x *= _chunkSize;
+	y *= _chunkSize;
+	_drawLine(x, y, _chunkSize, _chunkSize);
+	_drawLine(x + _chunkSize, y, -_chunkSize, _chunkSize);
+}
+
+void				SfmlUI::_drawGrowBlock(int x, int y)
+{
+	static int			d = _chunkSize / 4;
+
+	x *= _chunkSize;
+	y *= _chunkSize;
+	for (int w = 0; w < _chunkSize - 1; w += d)
+		_drawLine(x + w, y, 0, _chunkSize);
+}
+
+void				SfmlUI::_drawSnakeChunk(int x, int y)
+{
+	static int			d = _chunkSize / 4;
+
+	x *= _chunkSize;
+	y *= _chunkSize;
+	for (int h = 0; h < _chunkSize - 1; h += d)
+		_drawLine(x, y + h, _chunkSize, 0);
+}
+
+void				SfmlUI::_drawLine(int x, int y, int w, int h)
+{
+	x += _chunkSize;
+	y += _chunkSize;
 	_line[0].position = sf::Vector2f(x, y);
-	_line[1].position = sf::Vector2f(x + CHUNK_SIZE, y + CHUNK_SIZE);
-	sf::RenderWindow::draw(_line);
-	_line[0].position = sf::Vector2f(x + CHUNK_SIZE, y);
-	_line[1].position = sf::Vector2f(x, y + CHUNK_SIZE);
+	_line[1].position = sf::Vector2f(x + w, y + h);
 	sf::RenderWindow::draw(_line);
 }
 
-void				SfmlUI::_drawChunk(int x, int y, sf::Color color)
+sf::VideoMode		SfmlUI::_getWindowSize(std::pair<int, int> gameSize, int &chunkSize)
 {
-	static sf::RectangleShape	rect(sf::Vector2f(CHUNK_SIZE, CHUNK_SIZE));
+	sf::VideoMode		mode = sf::VideoMode::getDesktopMode();
 
-	rect.setFillColor(color);
-	rect.setPosition(x * CHUNK_SIZE, y * CHUNK_SIZE);
-	sf::RenderWindow::draw(rect);
+	gameSize.first += 2;
+	gameSize.second += 2;
+	mode.width -= 100;
+	mode.height -= 100;
+	chunkSize = std::min(mode.width / gameSize.first, mode.height / gameSize.second);
+	chunkSize = std::min(chunkSize - (chunkSize % 2), MAX_CHUNK_SIZE);
+	mode.width = chunkSize * gameSize.first;
+	mode.height = chunkSize * gameSize.second;
+	return (mode);
 }
