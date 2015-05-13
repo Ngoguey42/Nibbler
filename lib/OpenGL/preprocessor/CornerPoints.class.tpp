@@ -1,16 +1,6 @@
 
-
-
-// template<std::size_t N>
-// constexpr CornerPoints<N>::CornerPoints(std::array<t_vertexf, N> leftStrip1) :
-	// _leftStrip1(leftStrip1)
-// {
-// }
-
-// template<>
-
-// template <size_t S1>
-constexpr CornerPoints::CornerPoints() :
+template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
+constexpr CornerPoints<S1,S2,S3,S4,S5,S6>::CornerPoints() :
 	i(),
 	leftStrip1(),
 	leftFan(),
@@ -20,8 +10,8 @@ constexpr CornerPoints::CornerPoints() :
 	rightStrip2()
 	{}
 	
-// template <size_t S1>
-constexpr CornerPoints		&CornerPoints::operator=(CornerPoints const &rhs)
+template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
+constexpr CornerPoints<S1,S2,S3,S4,S5,S6>		&CornerPoints<S1,S2,S3,S4,S5,S6>::operator=(CornerPoints<S1,S2,S3,S4,S5,S6> const &rhs)
 {
 	// for (int i = 0; i <= this->leftStrip1.getLastIndex(); i++)
 	this->leftStrip1 = rhs.leftStrip1;
@@ -34,19 +24,13 @@ constexpr CornerPoints		&CornerPoints::operator=(CornerPoints const &rhs)
 	return (*this);
 }
 
-// template<std::size_t N>
-// constexpr CornerPoints<N>::CornerPoints(CornerPoints<N> const &src) :
-	// _leftStrip1(src._leftStrip1)
-// {
-// }
 
-// template<std::size_t N>
-// void						CornerPoints<N>::describe(void) const
-// {
-	// std::cout << "Size: " << N << std::endl;
-	// for (int i = 0; i < N; i++)
-	// {
-		// std::cout << this->_leftStrip1[i] << std::endl;
-	// }
-	// return ;
-// }
+template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
+constexpr float				CornerPoints<S1,S2,S3,S4,S5,S6>::init(float ratio, bool sinistro)
+{
+	this->leftStrip1[0].x = 2.f;
+	this->leftStrip1[0].y = 3.f;
+	this->leftStrip2[0].x = 42.f;
+	this->leftStrip2[1].x = 42.f;
+	return (ratio);
+}

@@ -4,8 +4,6 @@
 #include "CornerPoints.class.hpp"
 #include <cmath>
 
-typedef FtArray<CornerPoints, NUM_PRECALC_POINTS>		t_phasePointsArray;
-
 class CornerPointsSize
 {
 public:
@@ -16,27 +14,28 @@ public:
 		s1(src.s1), s2(src.s2), s3(src.s3), s4(src.s4), s5(src.s5), s6(src.s6)
 		{}
 
-	size_t					s1;
-	size_t					s2;
-	size_t					s3;
-	size_t					s4;
-	size_t					s5;
-	size_t					s6;
+	size_t		s1;
+	size_t		s2;
+	size_t		s3;
+	size_t		s4;
+	size_t		s5;
+	size_t		s6;
 private:
 	CornerPointsSize const	&operator=(CornerPointsSize const &rhs);
 };
 
-template <size_t S1 = MAX_POINTS_PER_GROUP,
-size_t S2 = MAX_POINTS_PER_GROUP,
-size_t S3 = MAX_POINTS_PER_GROUP,
-size_t S4 = MAX_POINTS_PER_GROUP,
-size_t S5 = MAX_POINTS_PER_GROUP,
-size_t S6 = MAX_POINTS_PER_GROUP>
-constexpr t_phasePointsArray		buildPointsArray(bool sinistro)
+#define ARRAY_CUSTOM_SIZE										\
+FtArray<CornerPoints<S1,S2,S3,S4,S5,S6>, NUM_PRECALC_POINTS>
+
+#define ARRAY_DEFAULT_SIZE										\
+FtArray<CornerPoints<>, NUM_PRECALC_POINTS>
+
+template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
+constexpr ARRAY_CUSTOM_SIZE		buildPointsArray(bool sinistro)
 {
-	t_phasePointsArray		points{};
+	ARRAY_CUSTOM_SIZE		points{};
 	float					phase(0.f);
-	
+
 	for (int i = 0; i < points.size(); i++, phase += 1 / NUM_PRECALC_POINTS)
 		points[i].init(phase, sinistro);
 	return points;
@@ -44,9 +43,9 @@ constexpr t_phasePointsArray		buildPointsArray(bool sinistro)
 
 constexpr CornerPointsSize			calcPointsArraySize(bool sinistro)
 {
-	CornerPointsSize		ret;
-	t_phasePointsArray		points{};
-	float					phase(0.f);
+	CornerPointsSize	ret;
+	ARRAY_DEFAULT_SIZE	points{};
+	float				phase(0.f);
 
 	for (int i = 0; i < points.size(); i++, phase += 1 / NUM_PRECALC_POINTS)
 	{
@@ -64,20 +63,21 @@ constexpr CornerPointsSize			calcPointsArraySize(bool sinistro)
 		if (points[i].rightStrip2.getLastIndex() >= ret.s6)
 			ret.s6 = points[i].rightStrip2.getLastIndex() + 1;
 	}
-	
 	return (ret);
 }
 
 
 int main(void)
 {
-	CornerPoints	state;
-
-	constexpr t_phasePointsArray	sinPoints(buildPointsArray(true));
-	constexpr CornerPointsSize		classSize(calcPointsArraySize(true));
+	// Calculating 'sinPoints' array's size in 'sinSize'	//
+	constexpr CornerPointsSize		sinSize(calcPointsArraySize(true));
+	// Creating 'sinPoints' with 'sinSize' size				//
+#define TEMPLATE_SIZE(S) S.s1, S.s2, S.s3, S.s4, S.s5, S.s6
+	constexpr FtArray<CornerPoints<TEMPLATE_SIZE(sinSize)>, NUM_PRECALC_POINTS>
+		sinPoints(buildPointsArray<TEMPLATE_SIZE(sinSize)>(true));
 	
 #define PRINT(i)\
-	std::cout << #i << ": " << classSize. i << std::endl;
+	std::cout << #i << ": " << sinSize. i << std::endl;
 	PRINT(s1)
 	PRINT(s2)
 	PRINT(s3)
@@ -85,25 +85,19 @@ int main(void)
 	PRINT(s5)
 	PRINT(s6)
 #undef PRINT
-	state.test(12);
 	
-	static_assert(state, "test");
 	static_assert(sinPoints[0], "test");
-	// static_assert(sinPoints[0].leftStrip1[0].first == 0.f, "test");
 	static_assert(sinPoints[0].leftStrip1[0].x != -5.f, "test");
-	static_assert(ft_ceil(1.f) == 1, "test");
-	// static_assert(state == false, "test");
-
 	
 #define PRINT(array)\
 	for (auto const & v : sinPoints[0]. array)\
 		std::cout << #array << "[] = " << v << std::endl;
-	PRINT(leftStrip1)
-	PRINT(leftFan)
-	PRINT(leftStrip2)
-	PRINT(rightStrip1)
-	PRINT(rightFan)
-	PRINT(rightStrip2)
+	// PRINT(leftStrip1)
+	// PRINT(leftFan)
+	// PRINT(leftStrip2)
+	// PRINT(rightStrip1)
+	// PRINT(rightFan)
+	// PRINT(rightStrip2)
 #undef PRINT
 
 	return 0;
