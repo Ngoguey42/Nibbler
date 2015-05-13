@@ -114,7 +114,7 @@ constexpr AngledSnakePoints::t_vertexf				AngledSnakePoints::calcIntersection(
 			auto const &x = outPoints[j];
 			float const	dx = w.x - x.x;
 			float const	dy = w.y - x.y;
-			float const	distance = sqrtf(dx * dx + dy * dy);
+			float const	distance = ftce::sqrt(dx * dx + dy * dy);
 			
 			if (bestDistance > distance)
 			{
