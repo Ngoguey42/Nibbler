@@ -17,7 +17,6 @@
 
 // # include "OpenGLLib.h"
 
-
 template <size_t S1 = MAX_POINTS_PER_GROUP,	\
 size_t S2 = MAX_POINTS_PER_GROUP,			\
 size_t S3 = MAX_POINTS_PER_GROUP,			\
@@ -27,18 +26,18 @@ size_t S6 = MAX_POINTS_PER_GROUP>
 class CornerPoints
 {
 public:
-	// constexpr CornerPoints(std::array<t_vertexf, N> leftStrip1);
-	// void							describe(void) const;
-	// constexpr CornerPoints(CornerPoints const &src);
+	// * CTORS / DTORS ************** //
 	constexpr CornerPoints();
+	
+	// * OPERATORS ****************** //
 	constexpr CornerPoints			&operator=(CornerPoints const &rhs);
-	
-	constexpr float				init(float ratio, bool sinistro);
-	
 	constexpr operator bool() { return true; } //debug
 	constexpr operator bool() const { return true; } //debug
-
-	int i;
+	
+	// * MEMBER FUNCTIONS / METHODS * //
+	constexpr float				init(float ratio, bool sinistro);
+	
+	// * ATTRIBUTES ***************** //
 	FtArray<t_vertexf, S1>	leftStrip1;
 	FtArray<t_vertexf, S2>	leftFan;
 	FtArray<t_vertexf, S3>	leftStrip2;
@@ -54,4 +53,5 @@ private:
 //std::ostream					&operator<<(std::ostream &o, CornerPoints const &rhs);
 
 # include "CornerPoints.class.tpp"
+
 #endif // *************************************** CORNERPOINTS_CLASS_HPP //

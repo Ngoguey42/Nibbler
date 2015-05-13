@@ -66,6 +66,8 @@ constexpr CornerPointsSize			calcPointsArraySize(bool sinistro)
 	return (ret);
 }
 
+#undef ARRAY_CUSTOM_SIZE
+#undef ARRAY_DEFAULT_SIZE
 
 int main(void)
 {
@@ -92,12 +94,12 @@ int main(void)
 #define PRINT(array)\
 	for (auto const & v : sinPoints[0]. array)\
 		std::cout << #array << "[] = " << v << std::endl;
-	// PRINT(leftStrip1)
-	// PRINT(leftFan)
-	// PRINT(leftStrip2)
-	// PRINT(rightStrip1)
-	// PRINT(rightFan)
-	// PRINT(rightStrip2)
+	PRINT(leftStrip1)
+	PRINT(leftFan)
+	PRINT(leftStrip2)
+	PRINT(rightStrip1)
+	PRINT(rightFan)
+	PRINT(rightStrip2)
 #undef PRINT
 
 	return 0;

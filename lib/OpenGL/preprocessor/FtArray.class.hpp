@@ -25,32 +25,28 @@ public:
 	public:
 		iterator();
 		iterator(iterator const &src);
-		~iterator();
+		virtual ~iterator();
+		
 		iterator				&operator=(iterator const &rhs);
 		bool					operator!=(iterator const &rhs);
-
-		// T						&operator*(void);
 		T const					&operator*(void) const;
 		iterator				&operator++(void);
-		// iterator				operator++(int);
-		// iterator				&operator--(void);
-		// iterator				operator--(int);
+		
 		void					setPtr(T const *ptr);
-		// void					printAdress(void);
 		
 	private:
 		T const					*_ptr;
-		
 	};
-
+	
+	// * CTORS / DTORS ************** //
 	constexpr FtArray();
-	// virtual ~FtArray();
 	constexpr FtArray(FtArray const &src);
+	
+	// * OPERATORS ****************** //
 	constexpr FtArray			&operator=(FtArray const &rhs);
 	constexpr T					&operator[](size_t s);
 	constexpr T const			&operator[](size_t s) const;
 	
-
 	// * MEMBER FUNCTIONS / METHODS * //
 	constexpr size_t			getLastIndex(void) const;
 	constexpr size_t			size(void) const;
@@ -59,6 +55,7 @@ public:
 	
 protected:
 private:
+	// * ATTRIBUTES ***************** //
 	T							_data[S];
 	size_t						_lastIndex;
 };

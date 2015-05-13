@@ -1,7 +1,11 @@
 
+#define DY_CLASS CornerPoints<S1,S2,S3,S4,S5,S6>
+#define TEMPLATE_ARGS														\
 template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
-constexpr CornerPoints<S1,S2,S3,S4,S5,S6>::CornerPoints() :
-	i(),
+
+// * CONSTRUCTORS *********************************************************** //
+TEMPLATE_ARGS
+constexpr DY_CLASS::CornerPoints() :
 	leftStrip1(),
 	leftFan(),
 	leftStrip2(),
@@ -9,24 +13,23 @@ constexpr CornerPoints<S1,S2,S3,S4,S5,S6>::CornerPoints() :
 	rightFan(),
 	rightStrip2()
 	{}
-	
-template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
-constexpr CornerPoints<S1,S2,S3,S4,S5,S6>		&CornerPoints<S1,S2,S3,S4,S5,S6>::operator=(CornerPoints<S1,S2,S3,S4,S5,S6> const &rhs)
+
+// * OPERATORS ************************************************************** //
+TEMPLATE_ARGS
+constexpr DY_CLASS		&DY_CLASS::operator=(DY_CLASS const &rhs)
 {
-	// for (int i = 0; i <= this->leftStrip1.getLastIndex(); i++)
 	this->leftStrip1 = rhs.leftStrip1;
 	this->leftFan = rhs.leftFan;
 	this->leftStrip2 = rhs.leftStrip2;
 	this->rightStrip1 = rhs.rightStrip1;
 	this->rightFan = rhs.rightFan;
 	this->rightStrip2 = rhs.rightStrip2;
-	// this->_data = rhs._data;
 	return (*this);
 }
 
-
-template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
-constexpr float				CornerPoints<S1,S2,S3,S4,S5,S6>::init(float ratio, bool sinistro)
+// * MEMBER FUNCTIONS / METHODS ********************************************* //
+TEMPLATE_ARGS
+constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 {
 	this->leftStrip1[0].x = 2.f;
 	this->leftStrip1[0].y = 3.f;
@@ -34,3 +37,6 @@ constexpr float				CornerPoints<S1,S2,S3,S4,S5,S6>::init(float ratio, bool sinis
 	this->leftStrip2[1].x = 42.f;
 	return (ratio);
 }
+
+#undef DY_CLASS
+#undef TEMPLATE_ARGS

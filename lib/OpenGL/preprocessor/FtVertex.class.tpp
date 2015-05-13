@@ -1,4 +1,6 @@
 
+
+// * CONSTRUCTORS *********************************************************** //
 constexpr FtVertex::FtVertex() :
 	x(0.f),
 	y(0.f)
@@ -18,6 +20,7 @@ constexpr FtVertex::FtVertex(FtVertex const &src) :
 	return ;
 }
 
+// * OPERATORS ************************************************************** //
 constexpr FtVertex			&FtVertex::operator=(FtVertex const &rhs)
 {
 	this->x = rhs.x;

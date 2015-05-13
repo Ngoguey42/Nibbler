@@ -2,25 +2,20 @@
 #ifndef FTVERTEX_CLASS_HPP
 # define FTVERTEX_CLASS_HPP
 
-//# include <string>
 # include <iostream>
-//# include <stdexcept>
-// #include <iostream>
-// #include <iomanip>
-// #include <cmath>
-// #include <array>
-// #include <vector>
-
-// # include "OpenGLLib.h"
 
 class FtVertex
 {
 public:
+	// * CTORS / DTORS ************** //
 	constexpr FtVertex();
 	constexpr FtVertex(float x, float y);
 	constexpr FtVertex(FtVertex const &src);
+	
+	// * OPERATORS ****************** //
 	constexpr FtVertex			&operator=(FtVertex const &rhs);
-
+	
+	// * ATTRIBUTES ***************** //
 	float						x;
 	float						y;
 protected:
