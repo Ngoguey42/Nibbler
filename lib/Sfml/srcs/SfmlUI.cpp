@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 14:50:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:09:53 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,23 +87,16 @@ void				SfmlUI::draw(IGame const &game)
 		std::string("Time: ") += std::to_string(game.getPlayTime()), _chunkSize / 3);
 	_drawText(1, _gameSize.second + 1.3,
 		std::string("FPS: ") += std::to_string(game.getFPS()), _chunkSize / 4);
+	if (game.getSnake().isDie())
+		_drawOverlay("Game over");
+	else if (game.isPaused())
+		_drawOverlay("Pause");
 	display();
 }
 
 bool				SfmlUI::windowShouldClose(void) const
 {
 	return (!isOpen());
-}
-
-void				SfmlUI::_drawText(float x, float y, std::string const &text, unsigned int size)
-{
-	static sf::Text		textDraw("", _font);
-
-	textDraw.setString(text);
-	textDraw.setFont(_font);
-	textDraw.setCharacterSize(size);
-	textDraw.setPosition(x * _chunkSize, y * _chunkSize);
-	sf::RenderWindow::draw(textDraw);
 }
 
 void				SfmlUI::_drawGrid(void)
@@ -148,6 +141,23 @@ void				SfmlUI::_drawSnakeChunk(int x, int y)
 		_drawLine(x, y + h, _chunkSize, 0);
 }
 
+void				SfmlUI::_drawOverlay(std::string const &text)
+{
+	static sf::Text				textDraw("", _font);
+	static sf::RectangleShape	rect(sf::Vector2f(_chunkSize * (_gameSize.first + 2),
+		_chunkSize * (_gameSize.second + 2)));
+
+	rect.setPosition(0, 0);
+	rect.setFillColor(sf::Color(GRID_COLOR, 30));
+	sf::RenderWindow::draw(rect);
+	textDraw.setString(text);
+	textDraw.setCharacterSize(_chunkSize * 2);
+	sf::FloatRect				bounds = textDraw.getLocalBounds();
+	textDraw.setPosition(((_chunkSize * _gameSize.first + _chunkSize) - bounds.width) / 2,
+		((_chunkSize * _gameSize.second) - bounds.height + _chunkSize) / 2);
+	sf::RenderWindow::draw(textDraw);
+}
+
 void				SfmlUI::_drawLine(int x, int y, int w, int h)
 {
 	x += _chunkSize;
@@ -155,6 +165,16 @@ void				SfmlUI::_drawLine(int x, int y, int w, int h)
 	_line[0].position = sf::Vector2f(x, y);
 	_line[1].position = sf::Vector2f(x + w, y + h);
 	sf::RenderWindow::draw(_line);
+}
+
+void				SfmlUI::_drawText(float x, float y, std::string const &text, unsigned int size)
+{
+	static sf::Text		textDraw("", _font);
+
+	textDraw.setString(text);
+	textDraw.setCharacterSize(size);
+	textDraw.setPosition(x * _chunkSize, y * _chunkSize);
+	sf::RenderWindow::draw(textDraw);
 }
 
 sf::VideoMode		SfmlUI::_getWindowSize(std::pair<int, int> gameSize, int &chunkSize)
