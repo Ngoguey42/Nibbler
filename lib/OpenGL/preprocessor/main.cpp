@@ -2,9 +2,6 @@
 #include "Vertex.class.hpp"
 #include "Array.class.hpp"
 #include "CornerPoints.class.hpp"
-#include <cmath>
-
-// class CornerPointsSize
 
 #define ARRAY_CUSTOM_SIZE										\
 ftce::Array<CornerPoints<S1,S2,S3,S4,S5,S6>, NUM_PRECALC_POINTS>
@@ -13,7 +10,7 @@ ftce::Array<CornerPoints<S1,S2,S3,S4,S5,S6>, NUM_PRECALC_POINTS>
 ftce::Array<CornerPoints<>, NUM_PRECALC_POINTS>
 
 template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
-constexpr ARRAY_CUSTOM_SIZE		buildPointsArray(bool sinistro)
+constexpr ARRAY_CUSTOM_SIZE			buildPointsArray(bool sinistro)
 {
 	ARRAY_CUSTOM_SIZE		points{};
 	float					phase(0.f);
@@ -24,7 +21,7 @@ constexpr ARRAY_CUSTOM_SIZE		buildPointsArray(bool sinistro)
 }
 
 
-constexpr ftce::Array<size_t, 6>		calcPointsArraySize(bool sinistro)
+constexpr ftce::Array<size_t, 6>	calcPointsArraySize(bool sinistro)
 {
 	ftce::Array<size_t, 6>	ret;
 	ARRAY_DEFAULT_SIZE		points{};
@@ -46,7 +43,9 @@ constexpr ftce::Array<size_t, 6>		calcPointsArraySize(bool sinistro)
 #undef ARRAY_CUSTOM_SIZE
 #undef ARRAY_DEFAULT_SIZE
 
-int main(void)
+# include "AngledSnakePoints.class.hpp"
+
+int									main(void)
 {
 	// Calculating 'sinPoints' array's size in 'sinSize'	//
 	constexpr ftce::Array<size_t, 6>	sinSize(calcPointsArraySize(true));
@@ -57,7 +56,7 @@ int main(void)
 	
 	std::cout << "size of CornerPoints<>: " << sizeof(CornerPoints<>) << std::endl;
 	std::cout << "size of CornerPoints<TEMPLATE_SIZE(sinSize)>: " << sizeof(CornerPoints<TEMPLATE_SIZE(sinSize)>) << std::endl;
-	
+#undef TEMPLATE_SIZE
 	
 #define PRINT(i)\
 	std::cout << #i << ": " << sinSize[i] << std::endl;
@@ -83,5 +82,7 @@ int main(void)
 	PRINT(rightStrip2)
 #undef PRINT
 
+	AngledSnakePoints		pts;
+	pts.init(0.5f);
 	return 0;
 }

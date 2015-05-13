@@ -12,10 +12,6 @@
 #  define M_PI 3.14159265358979323846f
 # endif
 
-// # ifndef M_CEIL
-// #  define M_CEIL(x) ((int(x) == x) ? int(x) : (x >= 0.0) ? int(x) + 1 : int(x))
-// # endif
-
 namespace ftce //ft_ConstExpr
 {
 template<typename T>
@@ -23,7 +19,21 @@ constexpr T			ceil(T x)
 {
 	const T		r = static_cast<T>(static_cast<int>(x));
 
-	return ((r == x) ? r : (x > static_cast<T>(0)) ? r + static_cast<T>(1) : r);
+	return ((r == x) ? r : (x > static_cast<T>(0)) ? r + static_cast<T>(1) : r); //A VERIFIER !!
+}
+
+template<typename T>
+constexpr T			floor(T x)
+{
+	const T		r = static_cast<T>(static_cast<int>(x));
+
+	return ((r == x) ? r : (x > static_cast<T>(0)) ? r : r - static_cast<T>(1)); //A VERIFIER !!
+}
+
+template<typename T>
+constexpr T			cos(T x)
+{
+	return (x);
 }
 
 template<typename T>
@@ -80,18 +90,12 @@ constexpr T			fmod(T x, T y)
 #define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
 //  ==================================  //
 
-#define MAX_POINTS_BEFORE_ANGLEF floorf(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
+// #define MAX_POINTS_BEFORE_ANGLEF floorf(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
+#define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)
 
 #define MAX_POINTS_PER_GROUP 10
 
-// typedef std::pair<float, float>                         t_vertexf;
-// typedef ftce::Vertex                         t_vertexf;
-
-// std::ostream					&operator<<(std::ostream &o,t_vertexf const &rhs)
-// {
-	// return (o << "(" << rhs.first << "/" << rhs.second << ")");
-// }
 
 #endif
