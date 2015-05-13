@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 11:55:27 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:36:50 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:47:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ public:
 
 	virtual int							getScore(void) const = 0;
 	virtual int							getFPS(void) const = 0;
+	virtual int							getPlayTime(void) const = 0;
 	virtual bool						isPaused(void) const = 0;
 
 	virtual bool						isBlock(int x, int y) const = 0;

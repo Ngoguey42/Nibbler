@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 15:28:09 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:46:59 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ public:
 
 	virtual int							getScore(void) const;
 	virtual int							getFPS(void) const;
+	virtual int							getPlayTime(void) const;
 	virtual bool						isPaused(void) const;
 
 	virtual bool						isBlock(int x, int y) const;
@@ -61,6 +62,8 @@ protected:
 
 	int									_gameWidth;
 	int									_gameHeight;
+
+	std::chrono::steady_clock::duration	_playTime;
 
 	int									_score;
 	bool								_paused;

@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/12 14:36:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:48:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,9 @@ void			NcursesUI::draw(IGame const &game)
 	for (int x = _gameSize.first - 1; x >= 0; --x)
 		_drawChunk(x, -1, 1, ' ');
 	_startText(1, -1);
-	printw("Score: %-3d Length: %-3d FPS: %d",
-		game.getScore(), game.getSnake().getChunks().size(), game.getFPS());
+	printw("Score: %-3d Time: %-3d Length: %-3d FPS: %d",
+		game.getScore(), game.getPlayTime(),
+		game.getSnake().getChunks().size(), game.getFPS());
 	if (game.getSnake().isDie())
 		printw("  [[ DIE ]]");
 	else if (game.isPaused())

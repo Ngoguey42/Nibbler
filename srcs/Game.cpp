@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 15:43:23 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:46:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #include "WallSpawnBlock.hpp"
 
 Game::Game(int argc, char **argv) throw(std::exception)
-	: _uiLib(NULL), _ui(NULL),
+	: _uiLib(NULL), _ui(NULL), _playTime(0),
 	_paused(false), _fps(0), _snake()
 {
 	if (argc < 2)
@@ -96,6 +96,11 @@ int							Game::getScore(void) const
 int							Game::getFPS(void) const
 {
 	return (_fps);
+}
+
+int							Game::getPlayTime(void) const
+{
+	return (std::chrono::duration_cast<std::chrono::seconds>(_playTime).count());
 }
 
 bool						Game::isPaused(void) const
@@ -179,6 +184,7 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 {
 	if (_paused)
 		return ;
+	_playTime += t;
 	_snake.update(*this, t);
 	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
 		if (static_cast<ABlock*>(*it)->shouldDestroy())
