@@ -18,7 +18,7 @@ DIRS := srcs include common
 O_DIR := o
 
 # Makefiles to call
-LIBS := lib/OpenGL lib/Ncurses
+LIBS := lib/OpenGL lib/Ncurses lib/Sfml
 
 # Number of threads
 THREADS := 2
