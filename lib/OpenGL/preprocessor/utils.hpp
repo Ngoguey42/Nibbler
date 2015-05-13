@@ -12,12 +12,14 @@
 #  define M_PI 3.14159265358979323846f
 # endif
 
-# ifndef M_CEIL
-#  define M_CEIL(x) ((int(x) == x) ? int(x) : (x >= 0.0) ? int(x) + 1 : int(x))
-# endif
+// # ifndef M_CEIL
+// #  define M_CEIL(x) ((int(x) == x) ? int(x) : (x >= 0.0) ? int(x) + 1 : int(x))
+// # endif
 
+namespace ftce //ft_ConstExpr
+{
 template<typename T>
-constexpr T			ft_ceil(T x)
+constexpr T			ceil(T x)
 {
 	const T		r = static_cast<T>(static_cast<int>(x));
 
@@ -25,7 +27,7 @@ constexpr T			ft_ceil(T x)
 }
 
 template<typename T>
-constexpr T const	&ft_max(T const &x, T const &y)
+constexpr T const	&max(T const &x, T const &y)
 {
 	if (x > y)
 		return (x);
@@ -33,7 +35,7 @@ constexpr T const	&ft_max(T const &x, T const &y)
 }
 
 template<typename T>
-constexpr T			ft_fmod(T x, T y)
+constexpr T			fmod(T x, T y)
 {
 	while(x < static_cast<T>(0))
 		x += y;
@@ -41,6 +43,7 @@ constexpr T			ft_fmod(T x, T y)
 		x -= y;
 	return (x);
 }
+};
 
 //  ==================================  //
 #define CHUNK_SIZE 35                   // Pixels integer
@@ -72,7 +75,7 @@ constexpr T			ft_fmod(T x, T y)
 //      Number of points float          //
 /* #define NUM_PRECALC_POINTSF ceilf(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA) */
 // #define NUM_PRECALC_POINTSF M_CEIL(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
-#define NUM_PRECALC_POINTSF ft_ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
+#define NUM_PRECALC_POINTSF ftce::ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
 //      Number of points integer        //
 #define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
 //  ==================================  //
@@ -84,7 +87,7 @@ constexpr T			ft_fmod(T x, T y)
 #define MAX_POINTS_PER_GROUP 10
 
 // typedef std::pair<float, float>                         t_vertexf;
-typedef FtVertex                         t_vertexf;
+// typedef ftce::Vertex                         t_vertexf;
 
 // std::ostream					&operator<<(std::ostream &o,t_vertexf const &rhs)
 // {

@@ -1,6 +1,6 @@
 
-#ifndef FTARRAY_CLASS_HPP
-# define FTARRAY_CLASS_HPP
+#ifndef ARRAY_CLASS_HPP
+# define ARRAY_CLASS_HPP
 
 //# include <string>
 //# include <iostream>
@@ -14,8 +14,10 @@
 # include "utils.hpp"
 // # include "OpenGLLib.h"
 
+namespace ftce //ft_ConstExpr
+{
 template<typename T, size_t S>
-class FtArray
+class Array
 {
 public:
 
@@ -39,11 +41,11 @@ public:
 	};
 	
 	// * CTORS / DTORS ************** //
-	constexpr FtArray();
-	constexpr FtArray(FtArray const &src);
+	constexpr Array();
+	constexpr Array(Array const &src);
 	
 	// * OPERATORS ****************** //
-	constexpr FtArray			&operator=(FtArray const &rhs);
+	constexpr Array			&operator=(Array const &rhs);
 	constexpr T					&operator[](size_t s);
 	constexpr T const			&operator[](size_t s) const;
 	
@@ -61,6 +63,7 @@ private:
 };
 //std::ostream					&operator<<(std::ostream &o, CornerPoints const &rhs);
 
-#include "FtArray.class.tpp"
+#include "Array.class.tpp"
+};
 
-#endif // *************************************** FTARRAY_CLASS_HPP //
+#endif // *************************************** ARRAY_CLASS_HPP //

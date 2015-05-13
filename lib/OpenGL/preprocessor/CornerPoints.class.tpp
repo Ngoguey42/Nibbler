@@ -12,7 +12,9 @@ constexpr DY_CLASS::CornerPoints() :
 	rightStrip1(),
 	rightFan(),
 	rightStrip2()
-	{}
+{
+	return ;
+}
 
 // * OPERATORS ************************************************************** //
 TEMPLATE_ARGS

@@ -1,7 +1,7 @@
 
 // * CONSTRUCTORS *********************************************************** //
 template<typename T, size_t S>
-constexpr FtArray<T, S>::FtArray() :
+constexpr Array<T, S>::Array() :
 	_data(),
 	_lastIndex(0)
 {
@@ -9,7 +9,7 @@ constexpr FtArray<T, S>::FtArray() :
 }
 
 template<typename T, size_t S>
-constexpr  FtArray<T, S>::FtArray(FtArray<T, S> const &src) :
+constexpr  Array<T, S>::Array(Array<T, S> const &src) :
 	_data(),
 	_lastIndex(src._lastIndex)
 {
@@ -20,7 +20,7 @@ constexpr  FtArray<T, S>::FtArray(FtArray<T, S> const &src) :
 
 // * OPERATORS ************************************************************** //
 template<typename T, size_t S>
-constexpr FtArray<T, S>		&FtArray<T, S>::operator=(FtArray<T, S> const &rhs)
+constexpr Array<T, S>		&Array<T, S>::operator=(Array<T, S> const &rhs)
 {
 	this->_lastIndex = rhs._lastIndex;
 	for (int i = 0; i < S; i++)
@@ -29,7 +29,7 @@ constexpr FtArray<T, S>		&FtArray<T, S>::operator=(FtArray<T, S> const &rhs)
 }
 
 template<typename T, size_t S>
-constexpr T					&FtArray<T, S>::operator[](size_t s)
+constexpr T					&Array<T, S>::operator[](size_t s)
 {
 	//check overflow?
 	if (s > this->_lastIndex)
@@ -38,7 +38,7 @@ constexpr T					&FtArray<T, S>::operator[](size_t s)
 }
 
 template<typename T, size_t S>
-constexpr T const			&FtArray<T, S>::operator[](size_t s) const
+constexpr T const			&Array<T, S>::operator[](size_t s) const
 {
 	//check overflow?
 	return (this->_data[s]);
@@ -46,30 +46,30 @@ constexpr T const			&FtArray<T, S>::operator[](size_t s) const
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 template<typename T, size_t S>
-typename FtArray<T, S>::iterator	FtArray<T, S>::begin(void) const
+typename Array<T, S>::iterator	Array<T, S>::begin(void) const
 {
-	typename FtArray<T, S>::iterator	it;
+	typename Array<T, S>::iterator	it;
 
 	it.setPtr(&this->_data[0]);
 	return (it);
 }
 template<typename T, size_t S>
-typename FtArray<T, S>::iterator	FtArray<T, S>::end(void) const
+typename Array<T, S>::iterator	Array<T, S>::end(void) const
 {
-	typename FtArray<T, S>::iterator	it;
+	typename Array<T, S>::iterator	it;
 
 	it.setPtr(&this->_data[this->_lastIndex + 1]);
 	return (it);	
 }
 
 template<typename T, size_t S>
-constexpr size_t			FtArray<T, S>::getLastIndex(void) const
+constexpr size_t			Array<T, S>::getLastIndex(void) const
 {
 	return (this->_lastIndex);
 }
 
 template<typename T, size_t S>
-constexpr size_t			FtArray<T, S>::size(void) const
+constexpr size_t			Array<T, S>::size(void) const
 {
 	// return (this->_lastIndex);
 	return (S);
@@ -79,38 +79,38 @@ constexpr size_t			FtArray<T, S>::size(void) const
 
 // * CTORS / DTORS ************** //
 template<typename T, size_t S>
-FtArray<T, S>::iterator::iterator()
+Array<T, S>::iterator::iterator()
 {
 	return ;
 }
 template<typename T, size_t S>
-FtArray<T, S>::iterator::~iterator()
+Array<T, S>::iterator::~iterator()
 {
 	return ;
 }
 template<typename T, size_t S>
-FtArray<T, S>::iterator::iterator(
-	typename FtArray<T, S>::iterator const &src)
+Array<T, S>::iterator::iterator(
+	typename Array<T, S>::iterator const &src)
 {
 	iterator::operator=(src);
 	return ;
 }
 	// * OPERATORS ****************** //
 template<typename T, size_t S>
-typename FtArray<T, S>::iterator	&FtArray<T, S>::iterator::operator=(
-	typename FtArray<T, S>::iterator const &rhs)
+typename Array<T, S>::iterator	&Array<T, S>::iterator::operator=(
+	typename Array<T, S>::iterator const &rhs)
 {
 	_ptr = rhs._ptr;
 	return (*this);
 }
 template<typename T, size_t S>
-bool						FtArray<T, S>::iterator::operator!=(
-	typename FtArray<T, S>::iterator const &rhs)
+bool						Array<T, S>::iterator::operator!=(
+	typename Array<T, S>::iterator const &rhs)
 {
 	return (_ptr != rhs._ptr);
 }
 template<typename T, size_t S>
-typename FtArray<T, S>::iterator	&FtArray<T, S>::iterator::operator++(
+typename Array<T, S>::iterator	&Array<T, S>::iterator::operator++(
 	void)
 {
 	_ptr++;
@@ -118,13 +118,13 @@ typename FtArray<T, S>::iterator	&FtArray<T, S>::iterator::operator++(
 }
 
 template<typename T, size_t S>
-T const						&FtArray<T, S>::iterator::operator*(void) const
+T const						&Array<T, S>::iterator::operator*(void) const
 {
 	return (*_ptr);
 }
 	// * MEMBER FUNCTIONS / METHODS * //
 template<typename T, size_t S>
-void						FtArray<T, S>::iterator::setPtr(T const *ptr)
+void						Array<T, S>::iterator::setPtr(T const *ptr)
 {
 	this->_ptr = ptr;
 	return ;

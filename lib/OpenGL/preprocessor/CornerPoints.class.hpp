@@ -12,8 +12,8 @@
 #include <vector>
 
 # include "utils.hpp"
-# include "FtVertex.class.hpp"
-# include "FtArray.class.hpp"
+# include "Vertex.class.hpp"
+# include "Array.class.hpp"
 
 // # include "OpenGLLib.h"
 
@@ -38,12 +38,12 @@ public:
 	constexpr float				init(float ratio, bool sinistro);
 	
 	// * ATTRIBUTES ***************** //
-	FtArray<t_vertexf, S1>	leftStrip1;
-	FtArray<t_vertexf, S2>	leftFan;
-	FtArray<t_vertexf, S3>	leftStrip2;
-	FtArray<t_vertexf, S4>	rightStrip1;
-	FtArray<t_vertexf, S5>	rightFan;
-	FtArray<t_vertexf, S6>	rightStrip2;
+	ftce::Array<ftce::Vertex, S1>	leftStrip1;
+	ftce::Array<ftce::Vertex, S2>	leftFan;
+	ftce::Array<ftce::Vertex, S3>	leftStrip2;
+	ftce::Array<ftce::Vertex, S4>	rightStrip1;
+	ftce::Array<ftce::Vertex, S5>	rightFan;
+	ftce::Array<ftce::Vertex, S6>	rightStrip2;
 	
 protected:
 private:
