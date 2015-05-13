@@ -37,6 +37,8 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 	this->leftStrip1[0].y = 3.f;
 	this->leftStrip2[0].x = 42.f;
 	this->leftStrip2[1].x = 42.f;
+	AngledSnakePoints		pts;
+	pts.init(0.5f);
 	return (ratio);
 }
 

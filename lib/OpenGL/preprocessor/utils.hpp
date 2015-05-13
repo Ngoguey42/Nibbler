@@ -31,6 +31,13 @@ constexpr T			floor(T x)
 }
 
 template<typename T>
+constexpr T			sqrt(T x)
+{
+	// return (__builtin_sqrt(x));
+	return (x);
+}
+
+template<typename T>
 constexpr T			cos(T x)
 {
 	return (x);
@@ -54,7 +61,7 @@ constexpr T			fmod(T x, T y)
 	return (x);
 }
 };
-
+// /usr/lib/gcc/i686-pc-cygwin/4.9.2/include/c++/cmath
 //  ==================================  //
 #define CHUNK_SIZE 35                   // Pixels integer
 #define SNAKE_WAVELENGTH 105.f          // Pixels float
@@ -86,11 +93,12 @@ constexpr T			fmod(T x, T y)
 /* #define NUM_PRECALC_POINTSF ceilf(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA) */
 // #define NUM_PRECALC_POINTSF M_CEIL(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
 #define NUM_PRECALC_POINTSF ftce::ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
+// #define NUM_PRECALC_POINTSF std::ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
 //      Number of points integer        //
 #define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
 //  ==================================  //
 
-// #define MAX_POINTS_BEFORE_ANGLEF floorf(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
+// #define MAX_POINTS_BEFORE_ANGLEF std::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
 #define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)

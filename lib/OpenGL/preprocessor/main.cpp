@@ -82,7 +82,7 @@ int									main(void)
 	PRINT(rightStrip2)
 #undef PRINT
 
-	AngledSnakePoints		pts;
-	pts.init(0.5f);
+	// AngledSnakePoints		pts;
+	// pts.init(0.5f);
 	return 0;
 }

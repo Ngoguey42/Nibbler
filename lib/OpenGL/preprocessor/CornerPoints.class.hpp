@@ -10,7 +10,7 @@
 # include "utils.hpp"
 # include "Vertex.class.hpp"
 # include "Array.class.hpp"
-// # include "AngledSnakePoints.class.hpp"
+# include "AngledSnakePoints.class.hpp"
 
 // # include "OpenGLLib.h"
 
