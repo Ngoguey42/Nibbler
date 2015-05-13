@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 14:38:09 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 14:50:51 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void				SfmlUI::draw(IGame const &game)
 	// Draw UI
 	_drawText(1, 0.2,
 		std::string("Score: ") += std::to_string(game.getScore()), _chunkSize / 2);
+	_drawText(5, 0.35,
+		std::string("Time: ") += std::to_string(game.getPlayTime()), _chunkSize / 3);
 	_drawText(1, _gameSize.second + 1.3,
 		std::string("FPS: ") += std::to_string(game.getFPS()), _chunkSize / 4);
 	display();
