@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 14:28:42 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 18:05:50 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:18:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,15 @@ void				Event::_processLeft(Game &game)
 
 void				Event::_processSpace(Game &game)
 {
+	if (game.getSnake().isDie())
+		return ;
 	game.setPaused(!game.isPaused());
 }
 
 void				Event::_processR(Game &game)
 {
 	game.reset();
+	game.setPaused(false);
 }
 
 void				Event::_process1(Game &game)

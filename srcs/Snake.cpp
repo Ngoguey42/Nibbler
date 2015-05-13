@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 16:50:19 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:17:43 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
 	}
 }
 
-void							Snake::kill(void)
+void							Snake::kill(Game &game)
 {
+	game.setPaused(true);
 	_die = true;
 }
 
@@ -101,11 +102,11 @@ void							Snake::_collide(Game &game)
 	// Borders
 	if (head.first < 0 || head.first >= game.getGameWidth()
 		|| head.second < 0 || head.second >= game.getGameHeight())
-		return (kill());
+		return (kill(game));
 	// Eat itself
 	for (auto it = ++_chunks.begin(); it != _chunks.end(); ++it)
 		if (head == *it)
-			return (kill());
+			return (kill(game));
 	// Blocks
 	for (IBlock *b : game.getBlocks())
 		if (head.first == b->getX() && head.second == b->getY())

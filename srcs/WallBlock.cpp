@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 17:18:17 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:30:22 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:18:50 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ WallBlock::~WallBlock(void)
 
 void					WallBlock::active(Game &game)
 {
-	game.getSnake().kill();
+	game.getSnake().kill(game);
 }
 
 bool					WallBlock::shouldDestroy(void) const

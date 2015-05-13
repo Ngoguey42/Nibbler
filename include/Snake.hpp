@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 19:55:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:18:07 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ public:
 
 	void							update(Game &game, std::chrono::steady_clock::duration t);
 
-	void							kill(void);
+	void							kill(Game &game);
 
 	void							grow(int x, int y);
 
