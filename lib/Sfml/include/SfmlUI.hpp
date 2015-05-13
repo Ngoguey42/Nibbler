@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 14:20:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:02:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ protected:
 
 	sf::VertexArray				_line;
 
-	void						_drawText(float x, float y, std::string const &text, unsigned int size);
 	void						_drawGrid(void);
 	void						_drawWallBlock(int x, int y);
 	void						_drawGrowBlock(int x, int y);
 	void						_drawSnakeChunk(int x, int y);
+	void						_drawOverlay(std::string const &text);
+	void						_drawText(float x, float y, std::string const &text, unsigned int size);
 	void						_drawLine(int x, int y, int w, int h);
 
 	static sf::VideoMode		_getWindowSize(std::pair<int, int> gameSize, int &chunkSize);

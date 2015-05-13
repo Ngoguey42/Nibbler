@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/12 16:50:19 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/13 15:42:34 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,15 @@ void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
 	_lastMove += t;
 	while (_lastMove > _speed)
 	{
+		_direction = _nextDirection;
 		_move(game);
 		_lastMove -= _speed;
 	}
 }
 
-void							Snake::kill(void)
+void							Snake::kill(Game &game)
 {
+	game.setPaused(true);
 	_die = true;
 }
 
@@ -77,17 +79,17 @@ bool							Snake::isChunk(int x, int y) const
 	return (false);
 }
 
-void							Snake::setDirection(int x, int y)
+void							Snake::setNextDirection(int x, int y)
 {
-	_direction.first = x;
-	_direction.second = y;
+	_nextDirection.first = x;
+	_nextDirection.second = y;
 }
 
 void							Snake::reset(int x, int y)
 {
 	while (_chunks.size() > 0)
 		_chunks.pop_back();
-	_direction = std::make_pair(0, 1);
+	_nextDirection = std::make_pair(0, 1);
 	_die = false;
 	_speed = std::chrono::milliseconds(INITIAL_SPEED);
 	for (int i = 0; i < INITIAL_LENGTH; ++i)
@@ -101,11 +103,11 @@ void							Snake::_collide(Game &game)
 	// Borders
 	if (head.first < 0 || head.first >= game.getGameWidth()
 		|| head.second < 0 || head.second >= game.getGameHeight())
-		return (kill());
+		return (kill(game));
 	// Eat itself
 	for (auto it = ++_chunks.begin(); it != _chunks.end(); ++it)
 		if (head == *it)
-			return (kill());
+			return (kill(game));
 	// Blocks
 	for (IBlock *b : game.getBlocks())
 		if (head.first == b->getX() && head.second == b->getY())
