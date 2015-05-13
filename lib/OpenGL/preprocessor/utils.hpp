@@ -81,7 +81,7 @@ constexpr T			ft_fmod(T x, T y)
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)
 
-#define MAX_POINTS_PER_POLYGON 10
+#define MAX_POINTS_PER_GROUP 10
 
 // typedef std::pair<float, float>                         t_vertexf;
 typedef FtVertex                         t_vertexf;

@@ -16,7 +16,13 @@
 # include "FtArray.class.hpp"
 
 // # include "OpenGLLib.h"
-// template<>
+// template <size_t S1 = MAX_POINTS_PER_GROUP,
+// size_t S2 = MAX_POINTS_PER_GROUP,
+// size_t S3 = MAX_POINTS_PER_GROUP,
+// size_t S4 = MAX_POINTS_PER_GROUP,
+// size_t S5 = MAX_POINTS_PER_GROUP,
+// size_t S6 = MAX_POINTS_PER_GROUP>
+// template <size_t S1 = MAX_POINTS_PER_GROUP>
 class CornerPoints
 {
 public:
@@ -49,12 +55,12 @@ public:
 	constexpr operator bool() const { return true; }
 
 	int i;
-	FtArray<t_vertexf, MAX_POINTS_PER_POLYGON>	leftStrip1;
-	FtArray<t_vertexf, MAX_POINTS_PER_POLYGON>	leftFan;
-	FtArray<t_vertexf, MAX_POINTS_PER_POLYGON>	leftStrip2;
-	FtArray<t_vertexf, MAX_POINTS_PER_POLYGON>	rightStrip1;
-	FtArray<t_vertexf, MAX_POINTS_PER_POLYGON>	rightFan;
-	FtArray<t_vertexf, MAX_POINTS_PER_POLYGON>	rightStrip2;
+	FtArray<t_vertexf, MAX_POINTS_PER_GROUP>	leftStrip1;
+	FtArray<t_vertexf, MAX_POINTS_PER_GROUP>	leftFan;
+	FtArray<t_vertexf, MAX_POINTS_PER_GROUP>	leftStrip2;
+	FtArray<t_vertexf, MAX_POINTS_PER_GROUP>	rightStrip1;
+	FtArray<t_vertexf, MAX_POINTS_PER_GROUP>	rightFan;
+	FtArray<t_vertexf, MAX_POINTS_PER_GROUP>	rightStrip2;
 	
 protected:
 private:

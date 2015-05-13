@@ -8,6 +8,8 @@
 // }
 
 // template<>
+
+// template <size_t S1>
 constexpr CornerPoints::CornerPoints() :
 	i(),
 	leftStrip1(),
@@ -17,7 +19,8 @@ constexpr CornerPoints::CornerPoints() :
 	rightFan(),
 	rightStrip2()
 	{}
-
+	
+// template <size_t S1>
 constexpr CornerPoints		&CornerPoints::operator=(CornerPoints const &rhs)
 {
 	// for (int i = 0; i <= this->leftStrip1.getLastIndex(); i++)
