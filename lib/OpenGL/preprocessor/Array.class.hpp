@@ -2,17 +2,7 @@
 #ifndef ARRAY_CLASS_HPP
 # define ARRAY_CLASS_HPP
 
-//# include <string>
-//# include <iostream>
-//# include <stdexcept>
-#include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <array>
-#include <vector>
-
-# include "utils.hpp"
-// # include "OpenGLLib.h"
+// #include <iostream>
 
 namespace ftce //ft_ConstExpr
 {
@@ -45,7 +35,7 @@ public:
 	constexpr Array(Array const &src);
 	
 	// * OPERATORS ****************** //
-	constexpr Array			&operator=(Array const &rhs);
+	constexpr Array				&operator=(Array const &rhs);
 	constexpr T					&operator[](size_t s);
 	constexpr T const			&operator[](size_t s) const;
 	
@@ -61,7 +51,6 @@ private:
 	T							_data[S];
 	size_t						_lastIndex;
 };
-//std::ostream					&operator<<(std::ostream &o, CornerPoints const &rhs);
 
 #include "Array.class.tpp"
 };

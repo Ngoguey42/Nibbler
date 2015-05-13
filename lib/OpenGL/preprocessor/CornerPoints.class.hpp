@@ -6,22 +6,19 @@
 //# include <iostream>
 //# include <stdexcept>
 #include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <array>
-#include <vector>
 
 # include "utils.hpp"
 # include "Vertex.class.hpp"
 # include "Array.class.hpp"
+// # include "AngledSnakePoints.class.hpp"
 
 // # include "OpenGLLib.h"
 
-template <size_t S1 = MAX_POINTS_PER_GROUP,	\
-size_t S2 = MAX_POINTS_PER_GROUP,			\
-size_t S3 = MAX_POINTS_PER_GROUP,			\
-size_t S4 = MAX_POINTS_PER_GROUP,			\
-size_t S5 = MAX_POINTS_PER_GROUP,			\
+template <size_t S1 = MAX_POINTS_PER_GROUP,
+size_t S2 = MAX_POINTS_PER_GROUP,
+size_t S3 = MAX_POINTS_PER_GROUP,
+size_t S4 = MAX_POINTS_PER_GROUP,
+size_t S5 = MAX_POINTS_PER_GROUP,
 size_t S6 = MAX_POINTS_PER_GROUP>
 class CornerPoints
 {

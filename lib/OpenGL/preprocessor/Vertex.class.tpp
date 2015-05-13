@@ -29,6 +29,12 @@ constexpr Vertex			&Vertex::operator=(Vertex const &rhs)
 	this->y = rhs.y;
 	return (*this);
 }
+constexpr Vertex			&Vertex::operator*=(float m)
+{
+	this->x *= m;
+	this->y *= m;
+	return (*this);
+}
 
 std::ostream					&operator<<(std::ostream &o, Vertex const &rhs)
 {

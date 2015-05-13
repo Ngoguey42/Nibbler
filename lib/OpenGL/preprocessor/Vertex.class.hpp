@@ -4,7 +4,6 @@
 
 # include <iostream>
 
-
 namespace ftce //ft_ConstExpr
 {
 class Vertex
@@ -17,6 +16,7 @@ public:
 	
 	// * OPERATORS ****************** //
 	constexpr Vertex			&operator=(Vertex const &rhs);
+	constexpr Vertex			&operator*=(float m);
 	
 	// * ATTRIBUTES ***************** //
 	float						x;
