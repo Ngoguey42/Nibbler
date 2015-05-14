@@ -25,7 +25,6 @@ class CornerPoints
 public:
 	// * STATICS ******************** //
 	// * CTORS / DTORS ************** //
-	// constexpr CornerPoints(float ratio);
 	constexpr CornerPoints();
 	
 	// * OPERATORS ****************** //

@@ -1,4 +1,7 @@
 
+#ifndef CONSTEXPRMATHTEST_HPP
+# define CONSTEXPRMATHTEST_HPP
+
 #include <iostream>
 #include <cmath>
 #include <iomanip>
@@ -6,9 +9,11 @@
 #include <tuple>
 #include <functional>
 
+# include "ConstexprMath.hpp"
+
 namespace ftce //ft_ConstExpr
 {
-template<typename T>
+template<typename T = float>
 void								test_sqrt(void)
 {
 #define STEP static_cast<T>(0.01f)
@@ -61,7 +66,7 @@ void								test_sqrt(void)
 #undef STEP
 }
 
-template<typename T>
+template<typename T = float>
 void								test_cos(void)
 {
 #define STEP static_cast<T>(0.00001f)
@@ -122,6 +127,41 @@ void								test_cos(void)
 	}
 #undef STEP
 }
+
+template<typename T = float>
+void								test_floorceil(void)
+{
+	T const		tests[] = {
+		-2.9, -2.6, -2.5, -2.4, -2.1, -2.0,
+		-1.9, -1.6, -1.5, -1.4, -1.1, -1.0,
+		-0.9, -0.6, -0.5, -0.4, -0.1, -0.0,
+		+0.0, +0.1, +0.4, +0.5, +0.6, +0.9,
+		+1.0, +1.1, +1.4, +1.5, +1.6, +1.9,
+		+2.0, +2.1, +2.4, +2.5, +2.6, +2.9
+	};
+    std::cout << std::boolalpha;
+	std::cout << std::showpos;
+	for (auto const &v : tests)
+	{
+		std::cout << std::setw(9);
+		std::cout << v;
+		std::cout << std::setw(9);
+		std::cout << std::floor(v);
+		std::cout << std::setw(9);
+		std::cout << ftce::floor(v);
+		std::cout << std::setw(9);
+		std::cout << (std::floor(v) == ftce::floor(v));
+		std::cout << std::setw(9);
+		std::cout << std::ceil(v);
+		std::cout << std::setw(9);
+		std::cout << ftce::ceil(v);
+		std::cout << std::setw(9);
+		std::cout << (std::ceil(v) == ftce::ceil(v));
+		std::cout << std::endl;
+	}
+	return ;
+}
+
 };
 
 // int									main(void)
@@ -130,3 +170,4 @@ void								test_cos(void)
 	// ftce::test_sqrt<float>();
 	// return (0);
 // }
+#endif
