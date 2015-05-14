@@ -12,15 +12,19 @@ public:
 	// * CTORS / DTORS ************** //
 	constexpr Vertex();
 	constexpr Vertex(float x, float y);
+	constexpr Vertex(float x, float y, float z);
 	constexpr Vertex(Vertex const &src);
 	
 	// * OPERATORS ****************** //
 	constexpr Vertex			&operator=(Vertex const &rhs);
 	constexpr Vertex			&operator*=(float m);
 	
+	constexpr Vertex			&set(float x, float y, float z);
+	
 	// * ATTRIBUTES ***************** //
 	float						x;
 	float						y;
+	float						z;
 protected:
 private:
 };

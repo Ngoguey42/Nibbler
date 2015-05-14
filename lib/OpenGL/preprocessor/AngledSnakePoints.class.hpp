@@ -29,6 +29,11 @@ class AngledSnakePoints
 {
 public:
 	constexpr AngledSnakePoints();
+	constexpr AngledSnakePoints(AngledSnakePoints const &src);
+	constexpr AngledSnakePoints			&operator=(AngledSnakePoints const &rhs);
+	constexpr operator bool() { return true; } //debug
+	constexpr operator bool() const { return true; } //debug
+	
 	
 	// typedef std::pair<float, float>                         t_vertexf;
 	// typedef std::array<t_vertexf, MAX_POINTS_BEFORE_ANGLE>  t_snakepoints;
@@ -58,8 +63,6 @@ public:
 	
 protected:
 private:
-	constexpr AngledSnakePoints(AngledSnakePoints const &src);
-	constexpr AngledSnakePoints			&operator=(AngledSnakePoints const &rhs);
 
 	constexpr t_vertexf				setBranchIntersection(t_vertexf const &a,
 														  t_vertexf const &b);

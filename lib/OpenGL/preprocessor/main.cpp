@@ -44,9 +44,38 @@ constexpr ftce::Array<size_t, 6>	calcPointsArraySize(bool sinistro)
 #undef ARRAY_DEFAULT_SIZE
 
 # include "AngledSnakePoints.class.hpp"
+# include "ConstexprMathTest.hpp"
+
+// constexpr AngledSnakePoints		test(float ratio)
+// {
+	// AngledSnakePoints tmp;
+
+	// tmp.init(ratio);
+	// return (tmp);
+// }
+
+// constexpr ftce::Array<AngledSnakePoints, NUM_PRECALC_POINTS>		test2()
+// {
+	// ftce::Array<AngledSnakePoints, NUM_PRECALC_POINTS>	tmp;
+	// float												ratio(0.f);
+	
+	// for (int i = 0; i < 800000; i++);
+	// for (int i = 0; i < NUM_PRECALC_POINTS; i++, ratio += 1.f / NUM_PRECALC_POINTS)
+		// tmp[i].init(ratio);
+	// return (tmp);
+// }
 
 int									main(void)
 {
+	
+	// ftce::test_cos<float>();
+	// constexpr float test1 = ftce::cos(1.f);
+	// constexpr float test2 = ftce::sqrt(1.f);
+	
+	
+	// ftce::test_sqrt<float>();
+	// return (0);
+	// /*
 	// Calculating 'sinPoints' array's size in 'sinSize'	//
 	constexpr ftce::Array<size_t, 6>	sinSize(calcPointsArraySize(true));
 	// Creating 'sinPoints' with 'sinSize' size				//
@@ -56,6 +85,8 @@ int									main(void)
 	
 	std::cout << "size of CornerPoints<>: " << sizeof(CornerPoints<>) << std::endl;
 	std::cout << "size of CornerPoints<TEMPLATE_SIZE(sinSize)>: " << sizeof(CornerPoints<TEMPLATE_SIZE(sinSize)>) << std::endl;
+	std::cout << "size of ftce::Array<CornerPoints<>, NUM_PRECALC_POINTS>: " << sizeof(ftce::Array<CornerPoints<>, NUM_PRECALC_POINTS>) << std::endl;
+	std::cout << "size of ftce::Array<CornerPoints<TEMPLATE_SIZE(sinSize)>, NUM_PRECALC_POINTS>: " << sizeof(ftce::Array<CornerPoints<TEMPLATE_SIZE(sinSize)>, NUM_PRECALC_POINTS>) << std::endl;
 #undef TEMPLATE_SIZE
 	
 #define PRINT(i)\
@@ -81,8 +112,12 @@ int									main(void)
 	PRINT(rightFan)
 	PRINT(rightStrip2)
 #undef PRINT
-
-	// AngledSnakePoints		pts;
-	// pts.init(0.5f);
+// */
+	// constexpr AngledSnakePoints		pts(test(0.5));
+	// constexpr ftce::Array<AngledSnakePoints, NUM_PRECALC_POINTS>	rawPoints(test2());
+	
+	// static_assert(pts, "test");
+	// static_assert(rawPoints[0], "test");
+	// test(pts);
 	return 0;
 }

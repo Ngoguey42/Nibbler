@@ -34,26 +34,69 @@ constexpr AngledSnakePoints::AngledSnakePoints() :
 {
 	return ;
 }
+constexpr AngledSnakePoints::AngledSnakePoints(AngledSnakePoints const &src) :
+	leftBranchIntersection(src.leftBranchIntersection),
+	leftBranchInPoints(src.leftBranchInPoints),
+	leftBranchInLastIndex(src.leftBranchInLastIndex),
+	leftBranchOutPoints(src.leftBranchOutPoints),
+	leftBranchOutLastIndex(src.leftBranchOutLastIndex),
+
+	middleBranchIntersection(src.middleBranchIntersection),
+	middleBranchInPoints(src.middleBranchInPoints),
+	middleBranchInLastIndex(src.middleBranchInLastIndex),
+	middleBranchOutPoints(src.middleBranchOutPoints),
+	middleBranchOutLastIndex(src.middleBranchOutLastIndex),
+
+	rightBranchIntersection(src.rightBranchIntersection),
+	rightBranchInPoints(src.rightBranchInPoints),
+	rightBranchInLastIndex(src.rightBranchInLastIndex),
+	rightBranchOutPoints(src.rightBranchOutPoints),
+	rightBranchOutLastIndex(src.rightBranchOutLastIndex)
+{
+	return ;
+}
+
+constexpr AngledSnakePoints		&AngledSnakePoints::operator=(AngledSnakePoints const &rhs)
+{
+	this->leftBranchIntersection = rhs.leftBranchIntersection;
+	this->leftBranchInPoints = rhs.leftBranchInPoints;
+	this->leftBranchInLastIndex = rhs.leftBranchInLastIndex;
+	this->leftBranchOutPoints = rhs.leftBranchOutPoints;
+	this->leftBranchOutLastIndex = rhs.leftBranchOutLastIndex;
+	this->middleBranchIntersection = rhs.middleBranchIntersection;
+	this->middleBranchInPoints = rhs.middleBranchInPoints;
+	this->middleBranchInLastIndex = rhs.middleBranchInLastIndex;
+	this->middleBranchOutPoints = rhs.middleBranchOutPoints;
+	this->middleBranchOutLastIndex = rhs.middleBranchOutLastIndex;
+	this->rightBranchIntersection = rhs.rightBranchIntersection;
+	this->rightBranchInPoints = rhs.rightBranchInPoints;
+	this->rightBranchInLastIndex = rhs.rightBranchInLastIndex;
+	this->rightBranchOutPoints = rhs.rightBranchOutPoints;
+	this->rightBranchOutLastIndex = rhs.rightBranchOutLastIndex;
+	return (*this);
+}
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 constexpr int				AngledSnakePoints::init(float const initRatio)
 {
-	float	curphase(ftce::fmod(initRatio, 1.f));
+	float	curphase(initRatio);
 	
 	// Setting this->leftBranchInPoints		//
 	// curphase = ;
 	for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
 	{
-		this->leftBranchInPoints[j] = t_vertexf(
-			(ftce::cos((0.5f + curphase) * M_PI * 2.f) + 1.f) /
-			2.f * SNAKE_WIDTH_INV + SNAKE_WIDTH,
+		t_vertexf	&ref(this->leftBranchInPoints[j]);
+
+		ref = t_vertexf(
+			((ftce::cos((0.5f + curphase) * M_PI * 2.f) + 1.f) /
+			2.f * SNAKE_WIDTH_INV + SNAKE_WIDTH),
 			j * (TRIANGLES_DISTANCE / CHUNK_SIZEF));
 		this->rightBranchInPoints[j] = t_vertexf(
-			this->leftBranchInPoints[j].x - SNAKE_WIDTH,
-			this->leftBranchInPoints[j].y);
+			ref.x - SNAKE_WIDTH,
+			ref.y);
 		this->middleBranchInPoints[j] = t_vertexf(
-			this->leftBranchInPoints[j].x - SNAKE_WIDTH_HALF,
-			this->leftBranchInPoints[j].y);
+			ref.x - SNAKE_WIDTH_HALF,
+			ref.y);
 		curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
 	}
 	// Setting this->leftBranchOutPoints		//
@@ -114,7 +157,8 @@ constexpr AngledSnakePoints::t_vertexf				AngledSnakePoints::calcIntersection(
 			auto const &x = outPoints[j];
 			float const	dx = w.x - x.x;
 			float const	dy = w.y - x.y;
-			float const	distance = ftce::sqrt(dx * dx + dy * dy);
+			// float const	distance = ftce::sqrt(dx * dx + dy * dy);
+			float const	distance = dx * dx + dy * dy;
 			
 			if (bestDistance > distance)
 			{

@@ -23,7 +23,9 @@ size_t S6 = MAX_POINTS_PER_GROUP>
 class CornerPoints
 {
 public:
+	// * STATICS ******************** //
 	// * CTORS / DTORS ************** //
+	// constexpr CornerPoints(float ratio);
 	constexpr CornerPoints();
 	
 	// * OPERATORS ****************** //

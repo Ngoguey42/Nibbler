@@ -12,56 +12,8 @@
 #  define M_PI 3.14159265358979323846f
 # endif
 
-namespace ftce //ft_ConstExpr
-{
-template<typename T>
-constexpr T			ceil(T x)
-{
-	const T		r = static_cast<T>(static_cast<int>(x));
+# include "ConstexprMath.hpp"
 
-	return ((r == x) ? r : (x > static_cast<T>(0)) ? r + static_cast<T>(1) : r); //A VERIFIER !!
-}
-
-template<typename T>
-constexpr T			floor(T x)
-{
-	const T		r = static_cast<T>(static_cast<int>(x));
-
-	return ((r == x) ? r : (x > static_cast<T>(0)) ? r : r - static_cast<T>(1)); //A VERIFIER !!
-}
-
-template<typename T>
-constexpr T			sqrt(T x)
-{
-	// return (__builtin_sqrt(x));
-	return (x);
-}
-
-template<typename T>
-constexpr T			cos(T x)
-{
-	return (x);
-}
-
-template<typename T>
-constexpr T const	&max(T const &x, T const &y)
-{
-	if (x > y)
-		return (x);
-	return (y);
-}
-
-template<typename T>
-constexpr T			fmod(T x, T y)
-{
-	while(x < static_cast<T>(0))
-		x += y;
-	while(x > y)
-		x -= y;
-	return (x);
-}
-};
-// /usr/lib/gcc/i686-pc-cygwin/4.9.2/include/c++/cmath
 //  ==================================  //
 #define CHUNK_SIZE 35                   // Pixels integer
 #define SNAKE_WAVELENGTH 105.f          // Pixels float
@@ -80,6 +32,7 @@ constexpr T			fmod(T x, T y)
 #define POINTS_PER_SIDEF static_cast<float>(POINTS_PER_SIDE)
 
 #define SNAKE_WIDTH_ABSOLUTE (SNAKE_WIDTH * CHUNK_SIZEF)
+#define SNAKE_WIDTH_ABSHALF (SNAKE_WIDTH_ABSOLUTE / 2.f)
 #define SNAKE_WIDTH_INV (1.f - SNAKE_WIDTH)
 #define SNAKE_WIDTH_HALF (SNAKE_WIDTH / 2.f)
 #define PHASE_PER_CHUNK (CHUNK_SIZEF / SNAKE_WAVELENGTH)
@@ -103,7 +56,7 @@ constexpr T			fmod(T x, T y)
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)
 
-#define MAX_POINTS_PER_GROUP 10
+#define MAX_POINTS_PER_GROUP 20
 
 
 #endif

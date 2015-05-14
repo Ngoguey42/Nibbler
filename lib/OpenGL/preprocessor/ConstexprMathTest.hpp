@@ -2,99 +2,6 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
-
-namespace ftce //ft_ConstExpr
-{
-template<typename T>
-constexpr T			pow(T x, int p)
-{
-	T	ret(static_cast<T>(1));
-
-	if (p > 0)
-		for (int i = 0; i < p; i++)
-			ret *= x;
-	else if (p < 0)
-		for (int i = 0; i < -p; i++)
-			ret /= x;
-	return (ret);
-}
-
-template<typename T>
-constexpr T			factorial(T x)
-{
-	T	ret(x);
-
-	while ((x -= static_cast<T>(1)) > static_cast<T>(0))
-		ret *= x;
-	return (ret);
-}
-
-template<typename T>
-constexpr T			sqrt(T a)
-{
-	T		z = a; 
-	T		ret = 0.0;
-	T		j = 1.0;
-
-	for(int i = 2 ; i > 0 ; i--)
-	{
-		T const		ip10 = ftce::pow(static_cast<T>(10.f), i);
-		T const		ret2 = static_cast<T>(2.f) * ret;
-
-		if (z - (ret2 + j * ip10) * j * ip10 >= 0)
-		{
-			while(z - (ret2 + j * ip10) * j * ip10 >= 0)
-			{
-				j++;
-				if (j >= 10)
-					break;
-			}
-			j--;
-			z -= (ret2 + j * ip10) * j * ip10;
-			ret += j * ip10;
-			j = 1.0;
-		}
-	}
-	for(int i = 0 ; i >= -2 ; i--)
-	{
-		T const		ip10 = ftce::pow(static_cast<T>(10.f), i);
-		T const		ret2 = static_cast<T>(2.f) * ret;
-
-		if (z - (ret2 + j * ip10) * j * ip10 >= 0)
-		{
-			while (z - (ret2 + j * ip10) * j * ip10 >= 0)
-				j++;
-			j--;
-			z -= (ret2 + j * ip10) * j * ip10;
-			ret += j * ip10;
-			j = 1.0;
-		}
-	}
-	return (ret);
-}
-
-template<typename T>
-constexpr T			cos(T x)
-{
-	while (x > M_PI)
-		x -= 2.f * M_PI;
-	while (x < -M_PI)
-		x += 2.f * M_PI;
-	return (static_cast<T>(1)
-		- (ftce::pow(x, 2) / ftce::factorial(2))
-		+ (ftce::pow(x, 4) / ftce::factorial(4))
-		- (ftce::pow(x, 6) / ftce::factorial(6))
-		+ (ftce::pow(x, 8) / ftce::factorial(8))	// MaxError: +0.0239781(-2.3978114%)
-		- (ftce::pow(x, 10) / ftce::factorial(10))	// MaxError: +0.0018293(-0.1829267%)
-		+ (ftce::pow(x, 12) / ftce::factorial(12))	// MaxError: +0.0001009(-0.0100911%)
-		// - (ftce::pow(x, 14) / ftce::factorial(14))	// MaxError: +0.0070322(-0.7032156%)
-		// + (ftce::pow(x, 16) / ftce::factorial(16))	// MaxError: +0.0378902(-3.7890196%)
-		);
-}
-};
-
-
-
 #include <vector>
 #include <tuple>
 #include <functional>
@@ -115,7 +22,7 @@ void								test_sqrt(void)
 		T	his(std::sqrt(f));
 		T	mine(ftce::sqrt<T>(f));
 		vect.push_back(std::make_tuple(f, his, mine,
-			fabs(his - mine) / his));
+			fabs(his - mine)));
 	}
 	
 	std::cout << "Greatest deltas in " << vect.size() << " samples" << std::endl;
@@ -147,8 +54,7 @@ void								test_sqrt(void)
 		std::cout << std::setw(16);
 		std::cout << std::get<2>(*ptr);
 		std::cout << std::setw(16);
-		std::cout << maxdiff * 100 << "%";
-		// std::cout << maxdiff << "(" << maxdiff / std::get<2>(*ptr) * 100 << "%)";
+		std::cout << maxdiff << "(" << maxdiff / std::get<2>(*ptr) * 100 << "%)";
 		std::cout << std::endl;
 		std::get<3>(*ptr) = 0.f;
 	}
@@ -218,13 +124,9 @@ void								test_cos(void)
 }
 };
 
-int									main(void)
-{
+// int									main(void)
+// {
 	// ftce::test_cos<float>();
-	// constexpr float test1 = ftce::cos(1.f);
-	// constexpr float test2 = ftce::sqrt(1.f);
-	
-	
-	ftce::test_sqrt<float>();
-	return (0);
-}
+	// ftce::test_sqrt<float>();
+	// return (0);
+// }
