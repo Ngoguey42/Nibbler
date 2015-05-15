@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 15:10:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 16:22:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -57,12 +57,29 @@ void						Window::_putSnakeChunk(
 	std::tuple<float, float, float> color1,
 	std::tuple<float, float, float> color2) const
 {
-	std::pair<int, int> const prevDelta =
+	std::pair<int, int> prevDelta =
 		std::make_pair<int, int>(selfPos.first - prevPos.first,
 								 selfPos.second - prevPos.second);
-	std::pair<int, int> const nextDelta =
+	std::pair<int, int> nextDelta =
 		std::make_pair<int, int>(nextPos.first - selfPos.first,
 								 nextPos.second - selfPos.second);
+	if (prevDelta.first > 1)
+		prevDelta.first = -1;
+	else if (prevDelta.first < -1)
+		prevDelta.first = 1;
+	if (prevDelta.second > 1)
+		prevDelta.second = -1;
+	else if (prevDelta.second < -1)
+		prevDelta.second = 1;
+	if (nextDelta.first > 1)
+		nextDelta.first = -1;
+	else if (nextDelta.first < -1)
+		nextDelta.first = 1;
+	if (nextDelta.second > 1)
+		nextDelta.second = -1;
+	else if (nextDelta.second < -1)
+		nextDelta.second = 1;
+
 	std::pair<float, float> const	topLeft(
 		_topLeftCell.first + CHUNK_SIZEF * selfPos.first,
 		_topLeftCell.second + CHUNK_SIZEF * selfPos.second);
@@ -253,14 +270,24 @@ void						Window::_putSnakeChunk(
 	return ;
 }
 
-void                        Window::_put_block(std::pair<int, int> const &topLeft) const
-{	
+void                        Window::_put_block(std::pair<int, int> const &topLeft,
+											   std::tuple<float, float, float> c) const
+{
 	glLoadIdentity();
-	glTranslatef(topLeft.first * CHUNK_SIZEF, topLeft.second * CHUNK_SIZEF, -0.0f);
+	glTranslatef(topLeft.first * CHUNK_SIZEF + 10
+				 , topLeft.second * CHUNK_SIZEF + 10
+				 , -0.0f);
 	glBegin(GL_TRIANGLE_STRIP);
+	glColor3f(std::get<0>(c) * 1.f, std::get<1>(c) * 1.f, std::get<2>(c) * 1.f);
 	glVertex3f(0.5f * CHUNK_SIZEF, 0.f * CHUNK_SIZEF, 0.f);
+	glColor3f(std::get<0>(c) * 0.8f, std::get<1>(c) * 0.8f, std::get<2>(c) * 0.8f);
 	glVertex3f(0.f * CHUNK_SIZEF, 1.f * CHUNK_SIZEF, 0.f);
+	glColor3f(std::get<0>(c) * 0.6f, std::get<1>(c) * 0.6f, std::get<2>(c) * 0.6f);
+	glVertex3f(0.5f * CHUNK_SIZEF, 0.5f * CHUNK_SIZEF, CHUNK_SIZEF);
+	glColor3f(std::get<0>(c) * 0.4f, std::get<1>(c) * 0.4f, std::get<2>(c) * 0.4f);
 	glVertex3f(1.f * CHUNK_SIZEF, 1.f * CHUNK_SIZEF, 0.f);
+	glColor3f(std::get<0>(c) * 1.f, std::get<1>(c) * 1.f, std::get<2>(c) * 1.f);
+	glVertex3f(0.5f * CHUNK_SIZEF, 0.f * CHUNK_SIZEF, 0.f);
 	glEnd();
 	return ;
 }

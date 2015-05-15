@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 15:11:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 16:32:20 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 		Window::pendingEvents.push(EventType::EVENT_RIGHT);
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 		Window::pendingEvents.push(EventType::EVENT_DOWN);
+	if (key == GLFW_KEY_R && action == GLFW_PRESS)
+		Window::pendingEvents.push(EventType::EVENT_R);
+	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		Window::pendingEvents.push(EventType::EVENT_SPACE);
 }
 
 Window::Window(std::pair<int, int> gridSize) :
@@ -91,12 +97,6 @@ Window::Window(std::pair<int, int> gridSize) :
 
 	glEnable(GL_DEPTH_TEST);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(.0f, static_cast<float>(_winSize.first),
-			static_cast<float>(_winSize.second), .0f,
-			-CHUNK_SIZEF * 10.f, CHUNK_SIZEF * 10.f);
-	glRotatef(45.5f, 0.f, 1.f, 0.f);
 
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -134,7 +134,7 @@ void						Window::_put_grid(void) const
 	int		i;
 
 	glBegin(GL_LINES);
-	glColor3f(1.f, 0.f, 0.f);
+	glColor3f(0.f, .3f, 0.f);
 	i = 0;
 	for (float y = _topLeftCell.second; i <= _tmpGridSize.second;
 		 i++, y += CHUNK_SIZEF)
@@ -153,13 +153,19 @@ void						Window::_put_grid(void) const
 	return ;
 }
 
-float				getRandRange(float selfDelta = 0.f)
+float				getPhase(float fullTime = 3.f, float selfDelta = 0.f)
 {
-	float randRange = fmod(glfwGetTime() + selfDelta, 3.f) / 1.5f;
+	float randRange = fmod(glfwGetTime() + selfDelta, fullTime) /
+		(fullTime / 2.f);
 
 	if (randRange < 1.f)
 		return (randRange - 0.5f);
 	return (1.f - randRange + 0.5f);
+}
+
+float				getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f)
+{
+	return (fmod(glfwGetTime() + selfDelta, fullTime) / fullTime);
 }
 
 
@@ -231,32 +237,32 @@ void						Window::draw(IGame const &game)
 	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
-			-CHUNK_SIZEF * 10.f, CHUNK_SIZEF * 10.f);
+			-CHUNK_SIZEF * 100.f, CHUNK_SIZEF * 100.f);
 	// glRotatef(25.f , 0.f, 1.f, 0.f);
-	// glRotatef(
-	// 	getRandRange() * 80.f
-	// 	, 0.f, 1.f, 0.f);
-	
+	// glRotatef(getPhase(10.f) * 90.f
+		// , 1.f, 0.f, 0.f);
+	glRotatef(50.f, 1.f, 0.f, 0.f);
+	glRotatef(-3.f, 0.f, 0.f, 1.f);
+	glTranslatef(-25.f, 130.f, -80.f);
 	
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-
+	this->_put_grid();
+	glLoadIdentity();
+	
 
 	for (auto const *v : game.getBlocks())
 	{
 		if (v->getType() == IBlock::GROW)
 		{
-			glColor3f(.99f, 0.5f, 0.0f);
-			this->_put_block(std::make_pair(v->getX(), v->getY()));
+			this->_put_block(std::make_pair(v->getX(), v->getY()), std::make_tuple(1.f, 0.5f, 0.f));
 		}
 		else
 		{
-			glColor3f(.0f, 0.5f, 0.0f);
-			this->_put_block(std::make_pair(v->getX(), v->getY()));
+			this->_put_block(std::make_pair(v->getX(), v->getY()), std::make_tuple(0.f, 0.5f, 0.f));
 		}
 	}
 
-	
 	// _phase -= 0.001; //speed
 	// _phase -= 0.01; //speed
 	_phase -= 0.02; //speed

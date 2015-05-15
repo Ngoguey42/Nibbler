@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 14:59:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 16:21:09 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <iostream>
 # include <stdexcept>
 # include <queue>
+# include <tuple>
 # include <deque>
 
 # include <GLFW/glfw3.h>
@@ -47,8 +48,8 @@ private:
 
 	void						_put_grid(void) const;
 	void						_put_lol(void) const;
-	void						_put_block(std::pair<int, int> const &pos)
-		const;
+	void						_put_block(std::pair<int, int> const &pos,
+										   std::tuple<float, float, float> c) const;
 	void						_putSnakeChunk(
 		std::pair<int, int> selfPos,
 		std::pair<int, int> prevPos,
