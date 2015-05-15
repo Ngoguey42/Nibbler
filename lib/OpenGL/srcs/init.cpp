@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:23:27 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/01 19:25:30 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/05/15 14:52:15 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 extern "C"
 {
 
-Window			*INIT_FUNCTION(std::pair<int, int> gridSize, float cellSize)
+Window			*INIT_FUNCTION(std::pair<int, int> gridSize)
 {
-	return (new Window(gridSize, cellSize));
+	return (new Window(gridSize));
 }
 
 }

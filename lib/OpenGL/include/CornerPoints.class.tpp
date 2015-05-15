@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 09:07:00 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 11:04:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 14:15:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -120,7 +120,7 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 	if (sinistro)
 	{
 		savePoints<S1>(points.leftBranchInLastIndex,
-					   points.leftBranchIntersection, 0.f, z,
+					   points.leftBranchIntersection, z, 0.f,
 					   this->leftStrip1,
 					   points.middleBranchInPoints,
 					   points.leftBranchInPoints);
@@ -136,7 +136,7 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 					   points.middleBranchOutPoints,
 					   points.leftBranchOutPoints);
 		savePoints<S4>(points.middleBranchInLastIndex,
-					   points.middleBranchIntersection, z, 0.f,
+					   points.middleBranchIntersection, 0.f, z,
 					   this->rightStrip1,
 					   points.rightBranchInPoints,
 					   points.middleBranchInPoints);
@@ -147,7 +147,7 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 			points.rightBranchOutLastIndex, points.middleBranchOutLastIndex,
 			points.rightBranchIntersection, 0.f, points.rightBranchOutPoints);
 		savePoints<S6>(points.middleBranchOutLastIndex, true,
-					   points.middleBranchIntersection, 0.f, z,
+					   points.middleBranchIntersection, z, 0.f,
 					   this->rightStrip2,
 					   points.rightBranchOutPoints,
 					   points.middleBranchOutPoints);
@@ -155,7 +155,7 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 	else
 	{
 		savePoints<S1>(points.middleBranchInLastIndex,
-					   points.middleBranchIntersection, z, 0.f,
+					   points.middleBranchIntersection, 0.f, z,
 					   this->leftStrip1,
 					   points.leftBranchInPoints,
 					   points.middleBranchInPoints);
@@ -172,7 +172,7 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 					   points.middleBranchOutPoints);
 		// return (ratio);
 		savePoints<S4>(points.rightBranchInLastIndex,
-					   points.rightBranchIntersection, 0.f, z,
+					   points.rightBranchIntersection, z, 0.f,
 					   this->rightStrip1,
 					   points.middleBranchInPoints,
 					   points.rightBranchInPoints);
@@ -183,7 +183,7 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 			points.middleBranchOutLastIndex, points.rightBranchOutLastIndex,
 			points.middleBranchIntersection, z, points.middleBranchOutPoints);
 		savePoints<S6>(points.rightBranchOutLastIndex, true,
-					   points.rightBranchIntersection, z, 0.f,
+					   points.rightBranchIntersection, 0.f, z,
 					   this->rightStrip2,
 					   points.middleBranchOutPoints,
 					   points.rightBranchOutPoints);

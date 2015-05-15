@@ -30,7 +30,7 @@ CPP_CC := clang++
 LD_CC := clang++
 
 # Clang++ flags
-CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
+CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14 -g
 
 # Linking flags
 LD_FLAGS := 
