@@ -1,16 +1,50 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   AngledSnakePoints.class.cpp                        :+:      :+:    :+:   //
+//   AngledSnakePoints.class.tpp                        :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/05/11 08:57:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/11 14:34:40 by ngoguey          ###   ########.fr       //
+//   Created: 2015/05/15 08:02:43 by ngoguey           #+#    #+#             //
+//   Updated: 2015/05/15 09:41:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "AngledSnakePoints.class.hpp"
+// #include "AngledSnakePoints.class.hpp"
+
+constexpr ftce::Array<size_t, 6>    AngledSnakePoints::calcPointsArraySize(
+	bool sinistro)
+{
+	ftce::Array<size_t, 6>  ret;
+	ARRAY_DEFAULT_SIZE      points{};
+	float                   phase(0.f);
+
+	for (size_t i = 0; i < points.size(); i++, phase += 1.f / NUM_PRECALC_POINTSF)
+	{
+		points[i].init(phase, sinistro);
+		ret[0] = ftce::max(points[i].leftStrip1.getLastIndex() + 1, ret[0]);
+		ret[1] = ftce::max(points[i].leftFan.getLastIndex() + 1, ret[1]);
+		ret[2] = ftce::max(points[i].leftStrip2.getLastIndex() + 1, ret[2]);
+		ret[3] = ftce::max(points[i].rightStrip1.getLastIndex() + 1, ret[3]);
+		ret[4] = ftce::max(points[i].rightFan.getLastIndex() + 1, ret[4]);
+		ret[5] = ftce::max(points[i].rightStrip2.getLastIndex() + 1, ret[5]);
+	}
+	return (ret);
+}
+
+template <size_t S1, size_t S2, size_t S3, size_t S4, size_t S5, size_t S6>
+constexpr ARRAY_CUSTOM_SIZE         AngledSnakePoints::buildPointsArray(bool sinistro)
+{
+	ARRAY_CUSTOM_SIZE       points{};
+	float                   phase(0.f);
+
+	for (size_t i = 0; i < points.size(); i++, phase += 1.f / NUM_PRECALC_POINTSF)
+	{
+		points[i].init(phase, sinistro);
+	}
+	return points;
+}
+
 
 // * CONSTRUCTORS *********************************************************** //
 constexpr AngledSnakePoints::AngledSnakePoints() :
@@ -77,55 +111,98 @@ constexpr AngledSnakePoints		&AngledSnakePoints::operator=(AngledSnakePoints con
 }
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
-constexpr int				AngledSnakePoints::init(float const initRatio)
+constexpr int				AngledSnakePoints::init(float const initRatio,
+													bool sinistro)
 {
 	float	curphase(initRatio);
-	
+
+	(void)sinistro;
 	// Setting this->leftBranchInPoints		//
 	// curphase = ;
-	for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
+	if (sinistro)
 	{
-		t_vertexf	&ref(this->leftBranchInPoints[j]);
+		for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
+		{
+			t_vertexf	&ref(this->leftBranchInPoints[j]);
 
-		ref = t_vertexf(
-			((ftce::cos((0.5f + curphase) * M_PI * 2.f) + 1.f) /
-			2.f * SNAKE_WIDTH_INV + SNAKE_WIDTH),
-			j * (TRIANGLES_DISTANCE / CHUNK_SIZEF));
-		this->rightBranchInPoints[j] = t_vertexf(
-			ref.x - SNAKE_WIDTH,
-			ref.y);
-		this->middleBranchInPoints[j] = t_vertexf(
-			ref.x - SNAKE_WIDTH_HALF,
-			ref.y);
-		curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
+			ref = t_vertexf(
+				((ftce::cos((0.5f + curphase) * M_PI * 2.f) + 1.f) /
+				 2.f * SNAKE_WIDTH_INV + SNAKE_WIDTH),
+				j * (TRIANGLES_DISTANCE / CHUNK_SIZEF));
+			this->rightBranchInPoints[j] = t_vertexf(
+				ref.x - SNAKE_WIDTH,
+				ref.y);
+			this->middleBranchInPoints[j] = t_vertexf(
+				ref.x - SNAKE_WIDTH_HALF,
+				ref.y);
+			curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
+		}
+		// Setting this->leftBranchOutPoints		//
+		curphase = ftce::fmod(initRatio + PHASE_PER_CHUNK, 1.f);
+		for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
+		{
+			t_vertexf   &ref(this->leftBranchOutPoints[j]);
+
+			ref = t_vertexf(
+				1.f - j * (TRIANGLES_DISTANCE / CHUNK_SIZEF),
+				SNAKE_WIDTH_INV - (ftce::cos((0.5f + curphase) * M_PI * 2.f)
+								   + 1.f) / 2.f * SNAKE_WIDTH_INV);
+			this->rightBranchOutPoints[j] = t_vertexf(
+				ref.x,
+				ref.y + SNAKE_WIDTH);
+			this->middleBranchOutPoints[j] = t_vertexf(
+				ref.x,
+				ref.y + SNAKE_WIDTH_HALF);
+			curphase = ftce::fmod(curphase - PHASE_PER_TRIANGLE, 1.f);
+		}
 	}
-	// Setting this->leftBranchOutPoints		//
-	curphase = ftce::fmod(initRatio + PHASE_PER_CHUNK, 1.f);
-	for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
+	else
 	{
-		this->leftBranchOutPoints[j] = t_vertexf(
-			1.f - j * (TRIANGLES_DISTANCE / CHUNK_SIZEF),
-			SNAKE_WIDTH_INV - (ftce::cos((0.5f + curphase) * M_PI * 2.f) + 1.f) /
-			2.f * SNAKE_WIDTH_INV);
-		this->rightBranchOutPoints[j] = t_vertexf(
-			this->leftBranchOutPoints[j].x,
-			this->leftBranchOutPoints[j].y + SNAKE_WIDTH);
-		this->middleBranchOutPoints[j] = t_vertexf(
-			this->leftBranchOutPoints[j].x,
-			this->leftBranchOutPoints[j].y + SNAKE_WIDTH_HALF);
-		curphase = ftce::fmod(curphase - PHASE_PER_TRIANGLE, 1.f);
+		for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
+		{
+			t_vertexf	&ref(this->leftBranchInPoints[j]);
+
+			ref = t_vertexf(
+				((ftce::cos((0.5f + curphase) * M_PI * 2.f) + 1.f) /
+				 2.f * SNAKE_WIDTH_INV + SNAKE_WIDTH),
+				j * (TRIANGLES_DISTANCE / CHUNK_SIZEF));
+			this->rightBranchInPoints[j] = t_vertexf(
+				ref.x - SNAKE_WIDTH,
+				ref.y);
+			this->middleBranchInPoints[j] = t_vertexf(
+				ref.x - SNAKE_WIDTH_HALF,
+				ref.y);
+			curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
+		}
+		// Setting this->leftBranchOutPoints		//
+		curphase = ftce::fmod(initRatio + PHASE_PER_CHUNK, 1.f);
+		for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
+		{
+			this->leftBranchOutPoints[j] = t_vertexf(
+				j * (TRIANGLES_DISTANCE / CHUNK_SIZEF),
+				SNAKE_WIDTH + (ftce::cos((0.5f + curphase) * M_PI * 2.f)
+							   + 1.f) / 2.f * SNAKE_WIDTH_INV);
+			this->rightBranchOutPoints[j] = t_vertexf(
+				this->leftBranchOutPoints[j].x,
+				this->leftBranchOutPoints[j].y - SNAKE_WIDTH);
+			this->middleBranchOutPoints[j] = t_vertexf(
+				this->leftBranchOutPoints[j].x,
+				this->leftBranchOutPoints[j].y - SNAKE_WIDTH_HALF);
+			curphase = ftce::fmod(curphase - PHASE_PER_TRIANGLE, 1.f);
+		}
 	}
-	for (int i = 0; i <= this->leftBranchInPoints.getLastIndex(); i++)
+
+	for (size_t i = 0; i <= this->leftBranchInPoints.getLastIndex(); i++)
 		this->leftBranchInPoints[i] *= CHUNK_SIZEF;
-	for (int i = 0; i <= this->leftBranchOutPoints.getLastIndex(); i++)
+	for (size_t i = 0; i <= this->leftBranchOutPoints.getLastIndex(); i++)
 		this->leftBranchOutPoints[i] *= CHUNK_SIZEF;
-	for (int i = 0; i <= this->middleBranchInPoints.getLastIndex(); i++)
+	for (size_t i = 0; i <= this->middleBranchInPoints.getLastIndex(); i++)
 		this->middleBranchInPoints[i] *= CHUNK_SIZEF;
-	for (int i = 0; i <= this->middleBranchOutPoints.getLastIndex(); i++)
+	for (size_t i = 0; i <= this->middleBranchOutPoints.getLastIndex(); i++)
 		this->middleBranchOutPoints[i] *= CHUNK_SIZEF;
-	for (int i = 0; i <= this->rightBranchInPoints.getLastIndex(); i++)
+	for (size_t i = 0; i <= this->rightBranchInPoints.getLastIndex(); i++)
 		this->rightBranchInPoints[i] *= CHUNK_SIZEF;
-	for (int i = 0; i <= this->rightBranchOutPoints.getLastIndex(); i++)
+	for (size_t i = 0; i <= this->rightBranchOutPoints.getLastIndex(); i++)
 		this->rightBranchOutPoints[i] *= CHUNK_SIZEF;
 	this->leftBranchIntersection = this->calcIntersection(
 		this->leftBranchInPoints, this->leftBranchOutPoints,
@@ -147,12 +224,12 @@ constexpr AngledSnakePoints::t_vertexf				AngledSnakePoints::calcIntersection(
 	// int		i = 0, j = 0;
 
 	// for (auto const &w : inPoints)
-	for (int i = 0; i <= inPoints.getLastIndex(); i++)
+	for (size_t i = 0; i <= inPoints.getLastIndex(); i++)
 	{
 		auto const &w = inPoints[i];
 		// j = 0;
 		// for (auto const &x : outPoints)
-		for (int j = 0; j <= outPoints.getLastIndex(); j++)
+		for (size_t j = 0; j <= outPoints.getLastIndex(); j++)
 		{
 			auto const &x = outPoints[j];
 			float const	dx = w.x - x.x;
@@ -178,6 +255,6 @@ constexpr AngledSnakePoints::t_vertexf				AngledSnakePoints::setBranchIntersecti
 	t_vertexf const &a, t_vertexf const &b)
 {
 	return (t_vertexf(
-		b.x + (a.x - b.x) / 2,
-		b.y + (a.y - b.y) / 2));
+				b.x + (a.x - b.x) / 2,
+				b.y + (a.y - b.y) / 2));
 }

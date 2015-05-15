@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/11 12:12:55 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/15 09:18:07 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@
 #  define M_PI 3.14159265358979323846f
 # endif
 
-# ifndef M_CEIL
-#  define M_CEIL(x) ((int(x) == x) ? int(x) : (x >= 0.0) ? int(x) + 1 : int(x))
-# endif
+# include "ftconstexpr/ConstexprMath.hpp"
 
 //  ==================================  //
 #define CHUNK_SIZE 35                   // Pixels integer
@@ -55,14 +53,25 @@
 //      Number of pixels                //
 #define PHASE_MAX_DELTA (CHUNK_SIZEF * (1 - SNAKE_WIDTH))
 //      Number of points float          //
-/* #define NUM_PRECALC_POINTSF ceilf(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA) */
-#define NUM_PRECALC_POINTSF M_CEIL(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
+#define NUM_PRECALC_POINTSF ftce::ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
 //      Number of points integer        //
 #define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
 //  ==================================  //
 
-#define MAX_POINTS_BEFORE_ANGLEF floorf(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
+#define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)
 
+#define MAX_POINTS_PER_GROUP 40
+
+class AngledSnakePoints;
+template <size_t S1 = MAX_POINTS_PER_GROUP,
+	size_t S2 = MAX_POINTS_PER_GROUP,
+	size_t S3 = MAX_POINTS_PER_GROUP,
+	size_t S4 = MAX_POINTS_PER_GROUP,
+	size_t S5 = MAX_POINTS_PER_GROUP,
+	size_t S6 = MAX_POINTS_PER_GROUP>
+class CornerPoints;
+class Window;
+	
 #endif

@@ -28,9 +28,14 @@ public:
 protected:
 private:
 };
-std::ostream					&operator<<(std::ostream &o, Vertex const &rhs);
 
 #include "Vertex.class.tpp"
 };
+/*
+std::ostream					&operator<<(std::ostream &o, ftce::Vertex const &rhs)
+{
+	return (o << "(" << rhs.x << "/" << rhs.y << ")");
+}
+*/
 
 #endif // *************************************** VERTEX_CLASS_HPP //

@@ -41,11 +41,10 @@ CPP_HEADS := -Iinclude -I../../common -I ~/.brew/include
 
 O_FILES := o/srcs/Window.class.o \
 	o/srcs/Window.draw.o \
-	o/srcs/AngledSnakePoints.class.o \
 	o/srcs/init.o
 
-MSG_0 := printf '\033[0;32m%-32.32s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-32.32s\033[0;0m\n'
+MSG_0 := printf '\033[0;32m%-21.21s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-21.21s\033[0;0m\n'
 
 .SILENT:
 
@@ -61,10 +60,6 @@ o/srcs/Window.class.o: srcs/Window.class.cpp include/Window.class.hpp ../../comm
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
 o/srcs/Window.draw.o: srcs/Window.draw.cpp include/Window.class.hpp ../../common/nibbler.h include/OpenGLLib.h ../../common/IUI.hpp include/AngledSnakePoints.class.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
-	@mkdir -p o/srcs 2> /dev/null || true
-	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
-
-o/srcs/AngledSnakePoints.class.o: srcs/AngledSnakePoints.class.cpp include/Window.class.hpp ../../common/nibbler.h include/OpenGLLib.h ../../common/IUI.hpp include/AngledSnakePoints.class.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 

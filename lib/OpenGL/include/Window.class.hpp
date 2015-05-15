@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 09:20:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 09:08:51 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,6 @@ private:
 		const;
 	void						_putSnakeChunk(
 		std::pair<int, int> selfPos,
-		std::pair<int, int> prevPos, float entryAngle,
-		std::pair<int, int> nextPos, float exitAngle,
-		std::tuple<float, float, float> color1 = std::make_tuple(0.f, 1.f, 0.f),
-		std::tuple<float, float, float> color2 = std::make_tuple(0.f, 0.f, 1.f)
-		) const;
-	void						_putSnakeChunk(
-		std::pair<int, int> selfPos,
 		std::pair<int, int> prevPos,
 		std::pair<int, int> nextPos,
 		float phase,
@@ -72,7 +65,21 @@ private:
 
 	float						_phase;
 
-	std::array<AngledSnakePoints, NUM_PRECALC_POINTS>	sinPoints;
+	static constexpr ftce::Array<size_t, 6>    sinSize
+		{AngledSnakePoints::calcPointsArraySize(true)};
+#define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
+	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(sinSize)>,
+								 NUM_PRECALC_POINTS>
+	sinPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(sinSize)>(true)};
+
+	static constexpr ftce::Array<size_t, 6>    dexSize
+		{AngledSnakePoints::calcPointsArraySize(false)};
+	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(dexSize)>,
+								 NUM_PRECALC_POINTS>
+	dexPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};
+
+#undef TEMPLATE_SIZE
+	// std::array<AngledSnakePoints, NUM_PRECALC_POINTS>	sinPoints;
 	
 };
 //std::ostream					&operator<<(std::ostream &o, Window const &rhs);

@@ -48,12 +48,12 @@ constexpr Vertex			&Vertex::operator*=(float m)
 	this->z *= m;
 	return (*this);
 }
-
+/*
 std::ostream					&operator<<(std::ostream &o, Vertex const &rhs)
 {
 	return (o << "(" << rhs.x << "/" << rhs.y << ")");
 }
-
+*/
 
 constexpr Vertex			&Vertex::set(float x, float y, float z)
 {

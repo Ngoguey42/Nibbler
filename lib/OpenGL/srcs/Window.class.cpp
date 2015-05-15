@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/11 15:09:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 09:15:22 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,20 @@
 #include "IGame.hpp"
 #include "ISnake.hpp"
 #include "IBlock.hpp"
-// #include "Game.hpp"
 
 #define TMP_PADDING ((int)10)
 
 // * STATICS **************************************************************** //
+#define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
+
+constexpr ftce::Array<size_t, 6>    Window::sinSize;
+constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::sinSize)>, NUM_PRECALC_POINTS>
+Window::sinPoints;
+constexpr ftce::Array<size_t, 6>    Window::dexSize;
+constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::dexSize)>, NUM_PRECALC_POINTS>
+Window::dexPoints;
+
+#undef TEMPLATE_SIZE
 // * CONSTRUCTORS *********************************************************** //
 static void error_callback(int error, const char* description)
 {
@@ -48,7 +57,7 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 								static_cast<float>(TMP_PADDING))),
 	_phase(0.f)
 {
-	int	i = 0;
+	// int	i = 0;
 
 	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -72,14 +81,25 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 			static_cast<float>(_winSize.second), .0f,
 			-cellSize, cellSize);
 	glEnable(GL_DEPTH_TEST);
-	// gluLookAt(3,3,3,0,0,0,0,0,1); // to test	
-	for (auto &v : sinPoints)
+/*
+	for (auto const &v : Window::sinPoints)
 	{
-		v.init(fmodf(i * (1.f / NUM_PRECALC_POINTS), 1.f));
-		v.describe();
-		std::cout << std::endl;
-		i++;
+		std::cout <<
+			v.leftStrip1[0].x << " " <<
+			v.leftStrip1[0].y << " " <<
+			v.leftStrip1[0].z << " "
+				  << std::endl;
+		
 	}
+*/
+// gluLookAt(3,3,3,0,0,0,0,0,1); // to test	
+	// for (auto &v : sinPoints)
+	// {
+		// v.init(fmodf(i * (1.f / NUM_PRECALC_POINTS), 1.f));
+		// v.describe();
+		// std::cout << std::endl;
+		// i++;
+	// }
 	std::cout << "[Window](std::pair<int, int>,float) Ctor called" << std::endl;
 	return ;
 }

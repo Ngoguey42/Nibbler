@@ -13,7 +13,7 @@ constexpr  Array<T, S>::Array(Array<T, S> const &src) :
 	_data(),
 	_lastIndex(src._lastIndex)
 {
-	for (int i = 0; i < S; i++)
+	for (size_t i = 0; i < S; i++)
 		this->_data[i] = src._data[i];
 	return ;
 }
@@ -23,7 +23,7 @@ template<typename T, size_t S>
 constexpr Array<T, S>		&Array<T, S>::operator=(Array<T, S> const &rhs)
 {
 	this->_lastIndex = rhs._lastIndex;
-	for (int i = 0; i < S; i++)
+	for (size_t i = 0; i < S; i++)
 		this->_data[i] = rhs._data[i];
 	return (*this);
 }
