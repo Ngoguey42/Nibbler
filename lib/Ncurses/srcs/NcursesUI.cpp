@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/13 14:48:06 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 18:05:47 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	init_pair(20, COLOR_YELLOW, COLOR_YELLOW);
 	init_pair(21, COLOR_BLUE, COLOR_BLUE);
 	init_pair(22, COLOR_BLACK, COLOR_BLACK);
+	init_pair(23, COLOR_CYAN, COLOR_CYAN);
 	init_pair(13, 17, 17);
 	init_pair(14, 18, 18);
 	init_pair(15, 19, 19);

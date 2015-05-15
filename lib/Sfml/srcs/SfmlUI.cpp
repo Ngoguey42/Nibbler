@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 15:09:53 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 18:12:22 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ EventType			SfmlUI::getEvent(void)
 	{
 		if (_events.find(event.key.code) != _events.end())
 			return (_events[event.key.code]);
-		if (event.key.code == sf::Keyboard::Q || sf::Keyboard::Escape)
+		if (event.key.code == sf::Keyboard::Q || event.key.code == sf::Keyboard::Escape)
 			close();
 	}
 	return (EVENT_NOPE);
@@ -68,6 +68,8 @@ void				SfmlUI::draw(IGame const &game)
 	{
 		if (b->getType() == IBlock::GROW)
 			_drawGrowBlock(b->getX(), b->getY());
+		else if (b->getType() == IBlock::BONUS)
+			_drawBonusBlock(b->getX(), b->getY());
 		else
 			_drawWallBlock(b->getX(), b->getY());
 	}
@@ -129,6 +131,12 @@ void				SfmlUI::_drawGrowBlock(int x, int y)
 	y *= _chunkSize;
 	for (int w = 0; w <= _chunkSize; w += d)
 		_drawLine(x + w, y, 0, _chunkSize);
+}
+
+void				SfmlUI::_drawBonusBlock(int x, int y)
+{
+	_drawSnakeChunk(x, y);
+	_drawGrowChunk(x, y);
 }
 
 void				SfmlUI::_drawSnakeChunk(int x, int y)
