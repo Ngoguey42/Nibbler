@@ -54,11 +54,11 @@ all: $(LIBS)
 $(NAME): $(O_FILES)
 	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
 
-o/srcs/SfmlUI.o: srcs/SfmlUI.cpp include/SfmlUI.hpp ../../common/nibbler.h ../../common/IUI.hpp
+o/srcs/SfmlUI.o: srcs/SfmlUI.cpp include/SfmlUI.hpp ../../common/nibbler.h ../../common/IBlock.hpp ../../common/IUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/init.o: srcs/init.cpp include/SfmlUI.hpp ../../common/nibbler.h ../../common/IUI.hpp
+o/srcs/init.o: srcs/init.cpp include/SfmlUI.hpp ../../common/nibbler.h ../../common/IBlock.hpp ../../common/IUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 

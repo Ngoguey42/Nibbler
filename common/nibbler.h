@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 07:37:10 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/15 12:01:39 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ enum	EventType
 # define UI_2				"lib/NcursesUI.so"
 # define UI_3				"lib/SfmlUI.so"
 
-# define INITIAL_UI			UI_1
+# define INITIAL_UI			UI_2
 
 /*
 ** ========================================================================== **
