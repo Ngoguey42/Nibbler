@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 09:07:00 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 10:48:45 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 11:04:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -95,27 +95,18 @@ static constexpr int		savePoints(
 	ftce::Array<ftce::Vertex, S>		&dest,
 	size_t startIndex1, size_t limiterIndex1, ftce::Vertex intersection1,
 	float z1, AngledSnakePoints::t_snakepoints	const &array1,
-	size_t startIndex2, size_t limiterIndex2, ftce::Vertex intersection2,
+	size_t startIndex2, int limiterIndex2, ftce::Vertex intersection2,
 	float z2, AngledSnakePoints::t_snakepoints	const &array2
 	)
 {
 	int	index = 0;
 
-	dest[index++].set(intersection1.x,
-					  intersection1.y, z1);
+	dest[index++].set(intersection1.x, intersection1.y, z1);
 	for (size_t j = startIndex1; j < limiterIndex1; j++)
-	{
-		dest[index++].set(array1[j].x,
-						  array1[j].y, z2);
-	}
-	dest[index++].set(intersection2.x,
-					  intersection2.y, z2);
-	for (int j = startIndex2 - 1;
-		 j >= static_cast<int>(limiterIndex2); j--)
-	{
-		dest[index++].set(array2[j].x,
-						  array2[j].y, z2);
-	}	
+		dest[index++].set(array1[j].x, array1[j].y, z2);
+	dest[index++].set(intersection2.x, intersection2.y, z2);
+	for (int j = startIndex2 - 1; j >= limiterIndex2; j--)
+		dest[index++].set(array2[j].x, array2[j].y, z2);
 	return (0);
 }
 
@@ -126,38 +117,78 @@ constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 	float					z(20.f);
 
 	points.init(ratio, sinistro);
-	savePoints<S1>(points.leftBranchInLastIndex,
-				   points.leftBranchIntersection, 0.f, z,
-				   this->leftStrip1,
-				   points.middleBranchInPoints,
-				   points.leftBranchInPoints);
-	savePoints<S2>(
-		this->leftFan,
-		points.leftBranchInLastIndex, points.middleBranchInLastIndex,
-		points.leftBranchIntersection, 0.f, points.middleBranchInPoints,
-		points.middleBranchOutLastIndex, points.leftBranchOutLastIndex,
-		points.middleBranchIntersection, z, points.middleBranchOutPoints);
-	savePoints<S3>(points.leftBranchOutLastIndex, true,
-				   points.leftBranchIntersection, 0.f, z,
-				   this->leftStrip2,
-				   points.middleBranchOutPoints,
-				   points.leftBranchOutPoints);
-	savePoints<S4>(points.middleBranchInLastIndex,
-				   points.middleBranchIntersection, z, 0.f,
-				   this->rightStrip1,
-				   points.rightBranchInPoints,
-				   points.middleBranchInPoints);
-	savePoints<S5>(
-		this->rightFan,
-		points.middleBranchInLastIndex, points.rightBranchInLastIndex,
-		points.middleBranchIntersection, z, points.rightBranchInPoints,
-		points.rightBranchOutLastIndex, points.middleBranchOutLastIndex,
-		points.rightBranchIntersection, 0.f, points.rightBranchOutPoints);
-	savePoints<S6>(points.middleBranchOutLastIndex, true,
-				   points.middleBranchIntersection, 0.f, z,
-				   this->rightStrip2,
-				   points.rightBranchOutPoints,
-				   points.middleBranchOutPoints);
+	if (sinistro)
+	{
+		savePoints<S1>(points.leftBranchInLastIndex,
+					   points.leftBranchIntersection, 0.f, z,
+					   this->leftStrip1,
+					   points.middleBranchInPoints,
+					   points.leftBranchInPoints);
+		savePoints<S2>(
+			this->leftFan,
+			points.leftBranchInLastIndex, points.middleBranchInLastIndex,
+			points.leftBranchIntersection, 0.f, points.middleBranchInPoints,
+			points.middleBranchOutLastIndex, points.leftBranchOutLastIndex,
+			points.middleBranchIntersection, z, points.middleBranchOutPoints);
+		savePoints<S3>(points.leftBranchOutLastIndex, true,
+					   points.leftBranchIntersection, 0.f, z,
+					   this->leftStrip2,
+					   points.middleBranchOutPoints,
+					   points.leftBranchOutPoints);
+		savePoints<S4>(points.middleBranchInLastIndex,
+					   points.middleBranchIntersection, z, 0.f,
+					   this->rightStrip1,
+					   points.rightBranchInPoints,
+					   points.middleBranchInPoints);
+		savePoints<S5>(
+			this->rightFan,
+			points.middleBranchInLastIndex, points.rightBranchInLastIndex,
+			points.middleBranchIntersection, z, points.rightBranchInPoints,
+			points.rightBranchOutLastIndex, points.middleBranchOutLastIndex,
+			points.rightBranchIntersection, 0.f, points.rightBranchOutPoints);
+		savePoints<S6>(points.middleBranchOutLastIndex, true,
+					   points.middleBranchIntersection, 0.f, z,
+					   this->rightStrip2,
+					   points.rightBranchOutPoints,
+					   points.middleBranchOutPoints);
+	}
+	else
+	{
+		savePoints<S1>(points.middleBranchInLastIndex,
+					   points.middleBranchIntersection, z, 0.f,
+					   this->leftStrip1,
+					   points.leftBranchInPoints,
+					   points.middleBranchInPoints);
+		savePoints<S2>(
+			this->leftFan,
+			points.middleBranchInLastIndex, points.leftBranchInLastIndex,
+			points.middleBranchIntersection, z, points.leftBranchInPoints,
+			points.leftBranchOutLastIndex, points.middleBranchOutLastIndex,
+			points.leftBranchIntersection, 0.f, points.leftBranchOutPoints);
+		savePoints<S3>(points.middleBranchOutLastIndex, true,
+					   points.middleBranchIntersection, z, 0.f,
+					   this->leftStrip2,
+					   points.leftBranchOutPoints,
+					   points.middleBranchOutPoints);
+		// return (ratio);
+		savePoints<S4>(points.rightBranchInLastIndex,
+					   points.rightBranchIntersection, 0.f, z,
+					   this->rightStrip1,
+					   points.middleBranchInPoints,
+					   points.rightBranchInPoints);
+		savePoints<S5>(
+			this->rightFan,
+			points.rightBranchInLastIndex, points.middleBranchInLastIndex,
+			points.rightBranchIntersection, 0.f, points.middleBranchInPoints,
+			points.middleBranchOutLastIndex, points.rightBranchOutLastIndex,
+			points.middleBranchIntersection, z, points.middleBranchOutPoints);
+		savePoints<S6>(points.rightBranchOutLastIndex, true,
+					   points.rightBranchIntersection, z, 0.f,
+					   this->rightStrip2,
+					   points.middleBranchOutPoints,
+					   points.rightBranchOutPoints);
+	}
+	
 	return (ratio);
 }
 
