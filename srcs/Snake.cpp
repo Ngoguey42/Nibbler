@@ -73,7 +73,7 @@ void							Snake::kill(Game &game)
 void							Snake::grow(int x, int y)
 {
 	_chunks.emplace_back(Snake::Chunk(x, y));
-	_speed -= _speed * 2 / 100;
+	_speed -= _speed * 2 / 150;
 }
 
 bool							Snake::isChunk(int x, int y) const

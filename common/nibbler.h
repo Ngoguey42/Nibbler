@@ -38,16 +38,16 @@ class	WallSpawnBlock;
 ** Settings
 */
 
-# define INITIAL_X			_gameWidth / 2
-# define INITIAL_Y			_gameHeight / 2 - 4
+# define INITIAL_X			(_gameWidth / 2)
+# define INITIAL_Y			(_gameHeight / 2 - 4)
 # define INITIAL_LENGTH		4
 
 # define INITIAL_SPEED		150
 
-// # define WALL_THROUGH
+# define WALL_THROUGH
 // # define WALL_SPAWNER
 
-# define WALL_COUNT			_gameWidth * _gameHeight / 60
+# define WALL_COUNT			(_gameWidth * _gameHeight / 60)
 
 # define MIN_GAME_WIDTH		10
 # define MAX_GAME_WIDTH		30

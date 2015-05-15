@@ -27,7 +27,7 @@
 #include "WallSpawnBlock.hpp"
 
 Game::Game(int argc, char **argv) throw(std::exception)
-	: _uiLib(NULL), _ui(NULL), _playTime(0),
+	: _uiLib(NULL), _ui(NULL),
 	_paused(false), _fps(0), _snake()
 {
 	if (argc < 2)
@@ -164,6 +164,7 @@ void						Game::reset(void)
 {
 	_destroyGame();
 	_score = 0;
+	_playTime = std::chrono::seconds(0);
 	_snake.reset(INITIAL_X, INITIAL_Y);
 	for (int i = 0; i < WALL_COUNT; ++i)
 		spawn(new WallBlock());
@@ -217,8 +218,8 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	// Try to init UI
 	try
 	{
-		_ui = reinterpret_cast<IUI *(*)(std::pair<int, int>, float)>
-			(init_func)(std::make_pair(_gameWidth, _gameHeight), 35.f);
+		_ui = reinterpret_cast<IUI *(*)(std::pair<int, int>)>
+			(init_func)(std::make_pair(_gameWidth, _gameHeight));
 	}
 	catch (std::exception &e)
 	{
