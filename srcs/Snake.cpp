@@ -41,6 +41,11 @@ std::pair<int, int>				Snake::getDirection(void) const
 	return (_direction);
 }
 
+float							Snake::getSpeed(void) const
+{
+	return (std::chrono::duration<float, std::milli>(_speed).count());
+}
+
 bool							Snake::isDie(void) const
 {
 	return (_die);

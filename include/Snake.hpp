@@ -28,9 +28,10 @@ public:
 
 // Shared
 	virtual std::deque<Chunk> const	&getChunks(void) const;
-	virtual bool					isChunk(int x, int y) const;
-
+	virtual float					getSpeed(void) const;
 	virtual std::pair<int, int>		getDirection(void) const;
+
+	virtual bool					isChunk(int x, int y) const;
 
 	virtual bool					isDie(void) const;
 // -

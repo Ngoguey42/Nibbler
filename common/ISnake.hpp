@@ -27,9 +27,10 @@ public:
 	virtual ~ISnake(void){}
 
 	virtual std::deque<Chunk> const	&getChunks(void) const = 0;
-	virtual bool					isChunk(int x, int y) const = 0;
-
+	virtual float					getSpeed(void) const = 0;
 	virtual std::pair<int, int>		getDirection(void) const = 0;
+
+	virtual bool					isChunk(int x, int y) const = 0;
 
 	virtual bool					isDie(void) const = 0;
 
