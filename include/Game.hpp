@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 14:46:59 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 18:02:18 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ public:
 
 	void								addScore(int add);
 
+	std::list<IBlock*>					&getBlocks(void);
 	Snake								&getSnake(void);
 
 	void								spawn(ABlock *block);
@@ -64,6 +65,7 @@ protected:
 	int									_gameHeight;
 
 	std::chrono::steady_clock::duration	_playTime;
+	std::chrono::steady_clock::duration	_bonusInterval;
 
 	int									_score;
 	bool								_paused;

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 15:41:27 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:45:33 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ class	Snake : public ISnake
 {
 public:
 	Snake(void);
-	Snake(int x, int y);
 	virtual ~Snake(void);
 
 // Shared

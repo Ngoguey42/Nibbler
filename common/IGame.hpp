@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 11:55:27 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 14:47:09 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:39:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 class	IGame
 {
 public:
-	IGame(void){}
 	virtual ~IGame(void){}
 
 	virtual int							getGameWidth(void) const = 0;
@@ -38,8 +37,6 @@ public:
 protected:
 
 private:
-	IGame(IGame const &src);
-	IGame								&operator=(IGame const &rhs);
 };
 
 #endif

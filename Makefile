@@ -44,12 +44,13 @@ CPP_HEADS := -Iinclude -Icommon
 
 O_FILES := o/srcs/Snake.o \
 	o/srcs/ABlock.o \
-	o/srcs/WallBlock.o \
+	o/srcs/BonusBlock.o \
 	o/srcs/WallSpawnBlock.o \
 	o/srcs/main.o \
 	o/srcs/GrowBlock.o \
 	o/srcs/Game.o \
-	o/srcs/Event.o
+	o/srcs/Event.o \
+	o/srcs/WallBlock.o
 
 MSG_0 := printf '\033[0;32m%-23.23s\033[0;0m\r'
 MSG_1 := printf '\033[0;31m%-23.23s\033[0;0m\n'
@@ -71,27 +72,31 @@ o/srcs/ABlock.o: srcs/ABlock.cpp include/Snake.hpp common/nibbler.h common/ISnak
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/WallBlock.o: srcs/WallBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/WallBlock.hpp
+o/srcs/BonusBlock.o: srcs/BonusBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/WallSpawnBlock.o: srcs/WallSpawnBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
+o/srcs/WallSpawnBlock.o: srcs/WallSpawnBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/main.o: srcs/main.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
+o/srcs/main.o: srcs/main.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/GrowBlock.o: srcs/GrowBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp
+o/srcs/GrowBlock.o: srcs/GrowBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Game.o: srcs/Game.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp common/IUI.hpp include/Event.hpp
+o/srcs/Game.o: srcs/Game.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp common/IUI.hpp include/Event.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Event.o: srcs/Event.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp common/IUI.hpp include/Event.hpp
+o/srcs/Event.o: srcs/Event.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp common/IUI.hpp include/Event.hpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/WallBlock.o: srcs/WallBlock.cpp include/Snake.hpp common/nibbler.h common/ISnake.hpp include/Game.hpp common/IGame.hpp include/ABlock.hpp common/IBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/GrowBlock.hpp common/IUI.hpp include/Event.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 

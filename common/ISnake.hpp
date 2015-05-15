@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 11:54:19 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 12:20:49 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:39:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ class	ISnake
 public:
 	typedef std::pair<int, int>		Chunk;
 
-	ISnake(void){}
 	virtual ~ISnake(void){}
 
 	virtual std::deque<Chunk> const	&getChunks(void) const = 0;
@@ -37,8 +36,6 @@ public:
 protected:
 
 private:
-	ISnake(ISnake const &src);
-	ISnake							&operator=(ISnake const &rhs);
 };
 
 #endif

@@ -1,53 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ABlock.hpp                                         :+:      :+:    :+:   */
+/*   BonusBlock.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/04 13:21:35 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 17:56:08 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/05/04 13:25:00 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/05/15 17:51:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ABLOCK_HPP
-# define ABLOCK_HPP
+#ifndef BONUSBLOCK_HPP
+# define BONUSBLOCK_HPP
 
-# include <utility>
-# include <chrono>
 # include "nibbler.h"
-# include "IBlock.hpp"
+# include "ABlock.hpp"
 
-class	ABlock : public IBlock
+class	BonusBlock : public ABlock
 {
 public:
-	ABlock(Type type);
-	virtual ~ABlock(void);
-
-// Shared
-	virtual int				getX(void) const;
-	virtual int				getY(void) const;
-
-	virtual Type			getType(void) const;
-// -
-
-	void					setPos(int x, int y);
+	BonusBlock(void);
+	virtual ~BonusBlock(void);
 
 	virtual void			update(Game &game, std::chrono::steady_clock::duration t);
-
-	virtual void			active(Game &game) = 0;
-	virtual bool			shouldDestroy(void) const = 0;
+	virtual void			active(Game &game);
+	virtual bool			shouldDestroy(void) const;
 
 protected:
 
-	Type					_type;
+	bool					_eaten;
 
-	std::pair<int, int>		_pos;
+	std::chrono::steady_clock::duration	_timeout;
 
 private:
-	ABlock(void);
-	ABlock(ABlock const &src);
-	ABlock					&operator=(ABlock const &rhs);
+	BonusBlock(BonusBlock const &src);
+	BonusBlock				&operator=(BonusBlock const &rhs);
 };
 
 #endif

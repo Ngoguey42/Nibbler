@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 11:55:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/11 17:44:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:42:33 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ public:
 		GROW,
 		WALL,
 		WALL_SPAWN,
+		BONUS,
 		NOPE
 	};
 
-	IBlock(void){}
 	virtual ~IBlock(void){}
 
 	virtual int				getX(void) const = 0;
@@ -35,8 +35,6 @@ public:
 protected:
 
 private:
-	IBlock(IBlock const &src);
-	IBlock					&operator=(IBlock const &rhs);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 11:41:44 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/07 11:49:43 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:50:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ ABlock::ABlock(Type type)
 }
 
 ABlock::~ABlock(void)
+{
+}
+
+void			ABlock::update(Game &, std::chrono::steady_clock::duration)
 {
 }
 

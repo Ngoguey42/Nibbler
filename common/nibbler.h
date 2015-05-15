@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 12:01:39 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 18:01:29 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ class	WallSpawnBlock;
 
 # define WALL_THROUGH
 // # define WALL_SPAWNER
+
+# define BONUS_INTERVAL		15
+# define BONUS_TIMEOUT		10
+# define BONUS_TOWALL
 
 # define WALL_COUNT			(_gameWidth * _gameHeight / 60)
 

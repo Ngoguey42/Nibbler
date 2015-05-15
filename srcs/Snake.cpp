@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 15:42:34 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:45:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@
 
 Snake::Snake(void)
 {
-}
-
-Snake::Snake(int x, int y)
-{
-	reset(x, y);
 }
 
 Snake::~Snake(void)

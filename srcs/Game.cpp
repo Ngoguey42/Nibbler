@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-//   Updated: 2015/05/15 14:53:54 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/05/15 18:02:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "IBlock.hpp"
 #include "ABlock.hpp"
 #include "GrowBlock.hpp"
+#include "BonusBlock.hpp"
 #include "WallBlock.hpp"
 #include "WallSpawnBlock.hpp"
 
@@ -126,6 +127,11 @@ Snake const					&Game::getSnake(void) const
 	return (_snake);
 }
 
+std::list<IBlock*>			&Game::getBlocks(void)
+{
+	return (_blocks);
+}
+
 Snake						&Game::getSnake(void)
 {
 	return (_snake);
@@ -165,6 +171,7 @@ void						Game::reset(void)
 	_destroyGame();
 	_score = 0;
 	_playTime = std::chrono::seconds(0);
+	_bonusInterval = std::chrono::seconds(BONUS_INTERVAL);
 	_snake.reset(INITIAL_X, INITIAL_Y);
 	for (int i = 0; i < WALL_COUNT; ++i)
 		spawn(new WallBlock());
@@ -186,6 +193,12 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	if (_paused)
 		return ;
 	_playTime += t;
+	_bonusInterval -= t;
+	if (_bonusInterval < std::chrono::seconds(0))
+	{
+		spawn(new BonusBlock());
+		_bonusInterval = std::chrono::seconds(BONUS_INTERVAL);		
+	}
 	_snake.update(*this, t);
 	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
 		if (static_cast<ABlock*>(*it)->shouldDestroy())
@@ -193,6 +206,8 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 			delete *it;
 			it = _blocks.erase(it);
 		}
+	for (IBlock *b : _blocks)
+		static_cast<ABlock*>(b)->update(*this, t);
 }
 
 void						Game::changeUI(char const *name) throw(std::exception)
