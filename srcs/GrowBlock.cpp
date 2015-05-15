@@ -26,7 +26,7 @@ GrowBlock::~GrowBlock(void)
 void					GrowBlock::active(Game &game)
 {
 	_eaten = true;
-	game.getSnake().grow(_pos.first, _pos.second);
+	game.getSnake().grow();
 	game.addScore(10);
 	game.spawn(new GrowBlock());
 }

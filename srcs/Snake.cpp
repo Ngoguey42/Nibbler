@@ -17,12 +17,10 @@
 #include "nibbler.h"
 
 Snake::Snake(void)
-	: _lastMove(0)
 {
 }
 
 Snake::Snake(int x, int y)
-	: _lastMove(0)
 {
 	reset(x, y);
 }
@@ -70,9 +68,9 @@ void							Snake::kill(Game &game)
 	_die = true;
 }
 
-void							Snake::grow(int x, int y)
+void							Snake::grow(void)
 {
-	_chunks.emplace_back(Snake::Chunk(x, y));
+	_toGrow++;
 	_speed -= _speed * 2 / 150;
 }
 
@@ -94,6 +92,8 @@ void							Snake::reset(int x, int y)
 {
 	while (_chunks.size() > 0)
 		_chunks.pop_back();
+	_lastMove = std::chrono::seconds(0);
+	_toGrow = 0;
 	_nextDirection = std::make_pair(0, 1);
 	_die = false;
 	_speed = std::chrono::milliseconds(INITIAL_SPEED);
@@ -123,7 +123,10 @@ void							Snake::_move(Game &game)
 {
 	Snake::Chunk	newChunk(*_chunks.begin());
 
-	_chunks.pop_back();
+	if (_toGrow > 0)
+		_toGrow--;
+	else
+		_chunks.pop_back();
 	newChunk.first += _direction.first;
 	newChunk.second += _direction.second;
 #ifdef WALL_THROUGH
