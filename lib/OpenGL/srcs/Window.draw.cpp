@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 09:35:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 14:40:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -85,7 +85,7 @@ void						Window::_putSnakeChunk(
 		
 	float z = 20.f;
 	float x, y = 0.f;
-
+	
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
 	{
 		if ((prevDelta.second > 0 && nextDelta.first > 0) ||
@@ -95,37 +95,67 @@ void						Window::_putSnakeChunk(
 		{
 			auto const	&points = Window::sinPoints[
 				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f))];
-
+#define PUTCOLOR								\
+			if (v.z < 0.5f)						\
+				glColor3f(.7f, 0.f, 0.0f);		\
+			else								\
+				glColor3f(.0f, 0.5f, 0.0f);
+			
+#define PUTCOLOR2								\
+			if (v.z < 0.5f)						\
+				glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));	\
+			else								\
+				glColor3f(.0f, 0.5f, 0.0f);
+			
 			glBegin(GL_TRIANGLE_STRIP);
-			glColor3f(.5f, 0.0f, 0.0f);				
+			// glColor3f(.5f, 0.0f, 0.0f);
+			
 			for (auto const &v : points.leftStrip1)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_FAN);
 			glColor3f(.0f, 0.5f, 0.0f);				
 			for (auto const &v : points.leftFan)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_STRIP);
 			glColor3f(.0f, 0.0f, 0.5f);				
 			for (auto const &v : points.leftStrip2)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 
 			glBegin(GL_TRIANGLE_STRIP);
 			glColor3f(.5f, 0.5f, 0.0f);				
 			for (auto const &v : points.rightStrip1)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR2;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_FAN);
 			glColor3f(.5f, 0.0f, 0.0f);				
 			for (auto const &v : points.rightFan)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR2;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_STRIP);
 			glColor3f(.0f, 5.0f, 0.f);				
 			for (auto const &v : points.rightStrip2)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR2;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 		}
 		else
@@ -134,37 +164,53 @@ void						Window::_putSnakeChunk(
 				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f))];
 
 			glBegin(GL_TRIANGLE_STRIP);
-			glColor3f(.5f, 0.0f, 0.0f);				
+			glColor3f(.5f, 0.0f, 0.0f);
 			for (auto const &v : points.leftStrip1)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_FAN);
-			glColor3f(.0f, 0.5f, 0.0f);				
+			glColor3f(.0f, 0.5f, 0.0f);
 			for (auto const &v : points.leftFan)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_STRIP);
-			glColor3f(.0f, 0.0f, 0.5f);				
+			glColor3f(.0f, 0.0f, 0.5f);
 			for (auto const &v : points.leftStrip2)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
-
 			glBegin(GL_TRIANGLE_STRIP);
-			glColor3f(.5f, 0.5f, 0.0f);				
+			glColor3f(.5f, 0.5f, 0.0f);
 			for (auto const &v : points.rightStrip1)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR2;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_FAN);
-			glColor3f(.5f, 0.0f, 0.0f);				
+			glColor3f(.5f, 0.0f, 0.0f);
 			for (auto const &v : points.rightFan)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR2;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
 			glBegin(GL_TRIANGLE_STRIP);
-			glColor3f(.0f, 5.0f, 0.f);				
+			glColor3f(.0f, 5.0f, 0.f);
 			for (auto const &v : points.rightStrip2)
-				glVertex3f(v.x, v.y, v.z);				
+			{
+				PUTCOLOR2;
+				glVertex3f(v.x, v.y, v.z);
+			}
 			glEnd();
-
 		}
 	}
 	else
