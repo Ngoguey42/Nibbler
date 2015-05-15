@@ -40,7 +40,7 @@ public:
 
 	void							kill(Game &game);
 
-	void							grow(int x, int y);
+	void							grow(void);
 
 	void							setNextDirection(int x, int y);
 
@@ -52,6 +52,8 @@ protected:
 
 	std::pair<int, int>				_direction;
 	std::pair<int, int>				_nextDirection;
+
+	int								_toGrow;
 
 	bool							_die;
 
