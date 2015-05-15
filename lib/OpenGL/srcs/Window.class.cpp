@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 09:15:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 11:23:18 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::dexSize)>, NUM_PRECALC_
 Window::dexPoints;
 
 #undef TEMPLATE_SIZE
+std::queue<EventType>				Window::pendingEvents;
+// std::queue<EventType>				Window::pendingEvents{EventType::EVENT_NOPE};
+
 // * CONSTRUCTORS *********************************************************** //
 static void error_callback(int error, const char* description)
 {
@@ -39,6 +42,14 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+		Window::pendingEvents.push(EventType::EVENT_UP);
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+		Window::pendingEvents.push(EventType::EVENT_LEFT);
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+		Window::pendingEvents.push(EventType::EVENT_RIGHT);
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+		Window::pendingEvents.push(EventType::EVENT_DOWN);
 }
 
 Window::Window(std::pair<int, int> gridSize, float cellSize) :
@@ -82,23 +93,23 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 			-cellSize, cellSize);
 	glEnable(GL_DEPTH_TEST);
 /*
-	for (auto const &v : Window::sinPoints)
-	{
-		std::cout <<
-			v.leftStrip1[0].x << " " <<
-			v.leftStrip1[0].y << " " <<
-			v.leftStrip1[0].z << " "
-				  << std::endl;
+  for (auto const &v : Window::sinPoints)
+  {
+  std::cout <<
+  v.leftStrip1[0].x << " " <<
+  v.leftStrip1[0].y << " " <<
+  v.leftStrip1[0].z << " "
+  << std::endl;
 		
-	}
+  }
 */
 // gluLookAt(3,3,3,0,0,0,0,0,1); // to test	
 	// for (auto &v : sinPoints)
 	// {
-		// v.init(fmodf(i * (1.f / NUM_PRECALC_POINTS), 1.f));
-		// v.describe();
-		// std::cout << std::endl;
-		// i++;
+	// v.init(fmodf(i * (1.f / NUM_PRECALC_POINTS), 1.f));
+	// v.describe();
+	// std::cout << std::endl;
+	// i++;
 	// }
 	std::cout << "[Window](std::pair<int, int>,float) Ctor called" << std::endl;
 	return ;
@@ -120,7 +131,14 @@ Window::~Window()
 
 EventType					Window::getEvent(void)
 {
-	return (EventType::EVENT_NOPE);
+	auto ev = EventType::EVENT_NOPE;
+
+	if (!Window::pendingEvents.empty())
+	{
+		ev = Window::pendingEvents.front();
+		Window::pendingEvents.pop();
+	}
+	return (ev);
 }
 
 void						Window::_put_grid(void) const
@@ -184,67 +202,66 @@ void						Window::draw(IGame const &game)
 	
 	float curPhase = _phase;
 
-	std::deque<std::pair<int, int>>		q;
 
-		
-		// std::deque<Snake::Chunk> const		&q = game.getSnake().getChunks();
-	// auto const		&q = game.getSnake().getChunks();
+	// std::deque<Snake::Chunk> const		&q = game.getSnake().getChunks();
+	auto const		&q = game.getSnake().getChunks();
 
-
-	q.push_front(std::make_pair(3, 0)); //tail
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+/*
+  std::deque<std::pair<int, int>>		q;
+  q.push_front(std::make_pair(3, 0)); //tail
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
 	
 	
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
 
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second - 1));
 
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
 		
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second - 1));
 
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first + 1, q.front().second));
 
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+  q.push_front(std::make_pair(q.front().first, q.front().second + 1));
 
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	// q.push_front(std::make_pair(q.front().first, q.front().second - 1)); //head
-
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+  q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+*/
+		
 	for (auto it = ++q.rbegin(), ite = --q.rend();
 		 it != ite;
-		++it)
+		 ++it)
 	{
 		_putSnakeChunk(
 			*(it), *(it - 1), *(it + 1), curPhase);

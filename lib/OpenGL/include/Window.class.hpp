@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 09:08:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 11:19:26 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <utility>
 # include <iostream>
 # include <stdexcept>
+# include <queue>
 # include <deque>
 
 # include <GL/glew.h>
@@ -29,6 +30,8 @@
 class Window : public IUI
 {
 public:
+	static std::queue<EventType>				pendingEvents;
+
 	Window(std::pair<int, int> gridSize, float cellSize);
 	virtual ~Window();
 
@@ -78,6 +81,7 @@ private:
 								 NUM_PRECALC_POINTS>
 	dexPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};
 
+	
 #undef TEMPLATE_SIZE
 	// std::array<AngledSnakePoints, NUM_PRECALC_POINTS>	sinPoints;
 	
