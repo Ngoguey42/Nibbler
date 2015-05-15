@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 14:40:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 15:10:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,8 +64,8 @@ void						Window::_putSnakeChunk(
 		std::make_pair<int, int>(nextPos.first - selfPos.first,
 								 nextPos.second - selfPos.second);
 	std::pair<float, float> const	topLeft(
-		_topLeftCell.first + _cellSize * selfPos.first,
-		_topLeftCell.second + _cellSize * selfPos.second);
+		_topLeftCell.first + CHUNK_SIZEF * selfPos.first,
+		_topLeftCell.second + CHUNK_SIZEF * selfPos.second);
 	float ratio = fmod(glfwGetTime(), 5.f) / 5.f; //debug
 	(void)ratio;
 	(void)color1;
@@ -250,5 +250,17 @@ void						Window::_putSnakeChunk(
 		}	
 		glEnd();
 	}
+	return ;
+}
+
+void                        Window::_put_block(std::pair<int, int> const &topLeft) const
+{	
+	glLoadIdentity();
+	glTranslatef(topLeft.first * CHUNK_SIZEF, topLeft.second * CHUNK_SIZEF, -0.0f);
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3f(0.5f * CHUNK_SIZEF, 0.f * CHUNK_SIZEF, 0.f);
+	glVertex3f(0.f * CHUNK_SIZEF, 1.f * CHUNK_SIZEF, 0.f);
+	glVertex3f(1.f * CHUNK_SIZEF, 1.f * CHUNK_SIZEF, 0.f);
+	glEnd();
 	return ;
 }

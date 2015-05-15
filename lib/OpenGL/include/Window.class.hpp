@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 11:19:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 14:59:48 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Window : public IUI
 public:
 	static std::queue<EventType>				pendingEvents;
 
-	Window(std::pair<int, int> gridSize, float cellSize);
+	Window(std::pair<int, int> gridSize);
 	virtual ~Window();
 
 	EventType					getEvent(void);
@@ -48,7 +48,7 @@ private:
 
 	void						_put_grid(void) const;
 	void						_put_lol(void) const;
-	void                        _put_block(std::pair<int, int> const &pos)
+	void						_put_block(std::pair<int, int> const &pos)
 		const;
 	void						_putSnakeChunk(
 		std::pair<int, int> selfPos,
@@ -59,26 +59,22 @@ private:
 		std::tuple<float, float, float> color2 = std::make_tuple(0.f, 0.f, 1.f)
 		) const;
 	
-	GLFWwindow					*_win;
-	std::pair<int, int> const	_tmpGridSize;		// Grid size (Ctor)
-	float const					_cellSize;			// Cell size (Ctor)
+	GLFWwindow						*_win;
+	std::pair<int, int> const		_tmpGridSize;		// Grid size (Ctor)
 	
-	std::pair<int, int> const	_winSize;			// Window size
+	std::pair<int, int> const		_winSize;			// Window size
 	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
 
 	float						_phase;
 
+#define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
 	static constexpr ftce::Array<size_t, 6>    sinSize
 		{AngledSnakePoints::calcPointsArraySize(true)};
-#define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
-	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(sinSize)>,
-								 NUM_PRECALC_POINTS>
+	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(sinSize)>, NUM_PRECALC_POINTS>
 	sinPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(sinSize)>(true)};
-
 	static constexpr ftce::Array<size_t, 6>    dexSize
 		{AngledSnakePoints::calcPointsArraySize(false)};
-	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(dexSize)>,
-								 NUM_PRECALC_POINTS>
+	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(dexSize)>, NUM_PRECALC_POINTS>
 	dexPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};
 
 	

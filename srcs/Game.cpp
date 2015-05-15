@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/13 14:46:40 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/05/15 14:53:54 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,8 +217,8 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	// Try to init UI
 	try
 	{
-		_ui = reinterpret_cast<IUI *(*)(std::pair<int, int>, float)>
-			(init_func)(std::make_pair(_gameWidth, _gameHeight), 35.f);
+		_ui = reinterpret_cast<IUI *(*)(std::pair<int, int>)>
+			(init_func)(std::make_pair(_gameWidth, _gameHeight));
 	}
 	catch (std::exception &e)
 	{

@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 14:42:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/15 15:11:38 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,16 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 		Window::pendingEvents.push(EventType::EVENT_DOWN);
 }
 
-Window::Window(std::pair<int, int> gridSize, float cellSize) :
+Window::Window(std::pair<int, int> gridSize) :
 	_tmpGridSize(gridSize),
-	_cellSize(cellSize),
 	_winSize(
 		std::make_pair(
 			static_cast<int>(std::ceilf(
 								 static_cast<float>(gridSize.first) *
-								 cellSize)) + TMP_PADDING * 2,
+								 CHUNK_SIZEF)) + TMP_PADDING * 2,
 			static_cast<int>(std::ceilf(
 								 static_cast<float>(gridSize.second) *
-								 cellSize)) + TMP_PADDING * 2
+								 CHUNK_SIZEF)) + TMP_PADDING * 2
 			)),
 	_topLeftCell(std::make_pair(static_cast<float>(TMP_PADDING),
 								static_cast<float>(TMP_PADDING))),
@@ -74,7 +73,7 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 {
 	// int	i = 0;
 
-	if (cellSize < 3.f || gridSize.first < 1 || gridSize.second < 1)
+	if (CHUNK_SIZEF < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -100,7 +99,7 @@ Window::Window(std::pair<int, int> gridSize, float cellSize) :
 	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
-			-cellSize * 10.f, cellSize * 10.f);
+			-CHUNK_SIZEF * 10.f, CHUNK_SIZEF * 10.f);
 	glRotatef(45.5f, 0.f, 1.f, 0.f);
 
 	
@@ -142,14 +141,14 @@ void						Window::_put_grid(void) const
 	glColor3f(1.f, 0.f, 0.f);
 	i = 0;
 	for (float y = _topLeftCell.second; i <= _tmpGridSize.second;
-		 i++, y += _cellSize)
+		 i++, y += CHUNK_SIZEF)
 	{
 		glVertex3f(_topLeftCell.first, y, 0.f);
 		glVertex3f(_winSize.first - _topLeftCell.first, y, 0.f);
 	}
 	i = 0;
 	for (float x = _topLeftCell.first; i <= _tmpGridSize.first;
-		 i++, x += _cellSize)
+		 i++, x += CHUNK_SIZEF)
 	{
 		glVertex3f(x, _topLeftCell.second, 0.f);
 		glVertex3f(x, _winSize.second - _topLeftCell.second, 0.f);		
@@ -231,23 +230,37 @@ void						Window::draw(IGame const &game)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 
-
 	(void)game;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
-			-_cellSize * 10.f, _cellSize * 10.f);
+			-CHUNK_SIZEF * 10.f, CHUNK_SIZEF * 10.f);
 	// glRotatef(25.f , 0.f, 1.f, 0.f);
 	// glRotatef(
 	// 	getRandRange() * 80.f
 	// 	, 0.f, 1.f, 0.f);
-
-
+	
 	
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
 
+
+	for (auto const *v : game.getBlocks())
+	{
+		if (v->getType() == IBlock::GROW)
+		{
+			glColor3f(.99f, 0.5f, 0.0f);
+			this->_put_block(std::make_pair(v->getX(), v->getY()));
+		}
+		else
+		{
+			glColor3f(.0f, 0.5f, 0.0f);
+			this->_put_block(std::make_pair(v->getX(), v->getY()));
+		}
+	}
+
+	
 	// _phase -= 0.001; //speed
 	// _phase -= 0.01; //speed
 	_phase -= 0.02; //speed
