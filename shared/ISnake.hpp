@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 11:54:19 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 17:39:02 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 16:47:01 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ public:
 
 	virtual std::deque<Chunk> const	&getChunks(void) const = 0;
 	virtual float					getSpeed(void) const = 0;
+	virtual float					getMoveRatio(void) const = 0;
 	virtual std::pair<int, int>		getDirection(void) const = 0;
 
 	virtual bool					isChunk(int x, int y) const = 0;

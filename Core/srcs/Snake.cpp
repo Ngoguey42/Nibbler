@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 17:45:40 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 16:50:54 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ std::pair<int, int>				Snake::getDirection(void) const
 float							Snake::getSpeed(void) const
 {
 	return (std::chrono::duration<float, std::milli>(_speed).count());
+}
+
+float							Snake::getMoveRatio(void) const
+{
+	return (std::chrono::duration<float, std::milli>(_lastMove).count() / getSpeed());
 }
 
 bool							Snake::isDie(void) const
