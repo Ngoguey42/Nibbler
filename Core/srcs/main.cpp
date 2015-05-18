@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/18 17:09:13 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:48:11 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int				main(int argc, char **argv)
 	try
 	{
 		Game	game(argc, argv);
+		game.changeUI(game.getSettings().initialUI);
 		game.start();
 	}
 	catch (std::invalid_argument &e)

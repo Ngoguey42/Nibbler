@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 17:23:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:11:07 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ public:
 
 	void							setNextDirection(int x, int y);
 
-	void							reset(Game const &game, int x, int y);
+	void							reset(Game const &game);
 
 protected:
 
