@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 09:07:00 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 14:15:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 12:38:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -114,7 +114,7 @@ TEMPLATE_ARGS
 constexpr float				DY_CLASS::init(float ratio, bool sinistro)
 {
 	AngledSnakePoints		points;
-	float					z(20.f);
+	float					z(SNAKE_HEIGHT);
 
 	points.init(ratio, sinistro);
 	if (sinistro)

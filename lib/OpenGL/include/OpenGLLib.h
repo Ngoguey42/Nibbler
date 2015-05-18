@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/15 09:18:07 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/18 12:52:16 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@
 # include "ftconstexpr/ConstexprMath.hpp"
 
 //  ==================================  //
-#define CHUNK_SIZE 35                   // Pixels integer
-#define SNAKE_WAVELENGTH 105.f          // Pixels float
+#define CHUNK_SIZE 20                   // Pixels integer
+#define SNAKE_WAVELENGTH 125.f          // Pixels float
+/* #define SNAKE_WAVELENGTH 105.f          // Pixels float */
 #define SNAKE_WIDTH 0.66f               // Percent of CHUNK_SIZE
 #define POINTS_PER_SIDE 9               //
+#define SNAKE_HEIGHT 11.f
 
 /* #define SNAKE_WAVELENGTH 17.5f            // Pixels float */
 /* #define SNAKE_WIDTH 0.8f             // Percent of CHUNK_SIZE */
