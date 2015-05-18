@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/18 14:17:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 16:57:19 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ private:
 	void						_put_head(
 		std::pair<int, int> const &selfPos,
 		std::pair<int, int> const &prevPos,
-		float phase) const;
+		float phase, float ratio) const;
 	void						_putSnakeChunk(
 		std::pair<int, int> selfPos,
 		std::pair<int, int> prevPos,

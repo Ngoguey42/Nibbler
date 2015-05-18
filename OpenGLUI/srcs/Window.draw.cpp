@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/18 16:33:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 18:12:44 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -312,7 +312,7 @@ void                        Window::_put_block(std::pair<int, int> const &topLef
 void                 Window::_put_head(
 	std::pair<int, int> const &selfPos,
 	std::pair<int, int> const &prevPos,
-	float phase) const
+	float phase, float ratio) const
 {
 	std::pair<int, int> prevDelta =
 		std::make_pair<int, int>(selfPos.first - prevPos.first,
@@ -321,81 +321,53 @@ void                 Window::_put_head(
 		_topLeftCell.first + CHUNK_SIZEF * selfPos.first,
 		_topLeftCell.second + CHUNK_SIZEF * selfPos.second);
 
-
+	if (prevDelta.first > 1)
+		prevDelta.first = -1;
+	else if (prevDelta.first < -1)
+		prevDelta.first = 1;
+	if (prevDelta.second > 1)
+		prevDelta.second = -1;
+	else if (prevDelta.second < -1)
+		prevDelta.second = 1;
+	(void)ratio;
 	
 	glLoadIdentity();
 	glTranslatef(topLeft.first, topLeft.second, 0.f);
 	rotateChunk(prevDelta, prevDelta);
 
+	glScalef(CHUNK_SIZEF, CHUNK_SIZEF, SNAKE_HEIGHT);
+	
+	phase += PHASE_PER_CHUNK * (ratio - 0.65f);
+	std::fmod(phase + 1.f, 1.f);
+	
 	float x = (cosf((0.5f + phase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
 
-	std::cout << x << std::endl;
-
-	
-	glScalef(CHUNK_SIZEF, CHUNK_SIZEF, SNAKE_HEIGHT);
 	glTranslatef(x - SNAKE_WIDTH_INV / 2.f, 0.f, 0.f);
-	// glScalef(CHUNK_SIZEF * 2.f, CHUNK_SIZEF * 2.f, SNAKE_HEIGHT * 2.f);
-	// glScalef(CHUNK_SIZEF * 2.f, CHUNK_SIZEF * 2.f, CHUNK_SIZEF);
-#define CURSIZEF (CHUNK_SIZEF * 1.f)
-#define CURHEIGHT (SNAKE_HEIGHT * 1.f)
-	
-/*	
-	glBegin(GL_LINE_STRIP);
-	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glEnd();
-
-*/
-	
-	glColor3f(0.5f, 0.5f, 0.f);
-	
-#define NOSE_HALF_WIDTH 0.1f
-#define NOSE_LEN 0.25f
-#define HEAD_HALF_WIDTH 0.4f
-	
-/*	
-	glVertex3f(.5f - NOSE_HALF_WIDTH, 1.f, 0.5f);
-	glVertex3f(.5f + NOSE_HALF_WIDTH, 1.f, 0.5f);
-	glVertex3f(.5f, 1.f - NOSE_LEN, 0.5f + NOSE_LEN);
-	glColor3f(0.5f, 0.f, 0.f);
-	glVertex3f(.5f + HEAD_HALF_WIDTH, 1.f - NOSE_LEN, 0.5f - 0.1f);
-	glVertex3f(.5f, 1.f - NOSE_LEN * 3.f, 0.5f + NOSE_LEN);
-	
-*/	
-	glBegin(GL_TRIANGLE_FAN);
-	glColor3f(0.5f, 0.25f, 0.f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
+	glTranslatef(0.f, ratio - 0.65f, 0.f);	
 #define HEIGHT1 0.60f
 #define FRONT_INSETS_1 0.15f
-	glColor3f(0.5f, 0.5f, 0.f);
+	/*
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3f(0.95f, 0.05f, 0.f);
+	glVertex3f(0.5f, 0.5f, 0.0f);
+	glColor3f(1.f, 0.0f, 0.f);
 	glVertex3f(0.f, 0.f, 0.f);	
 	glVertex3f(1.f, 0.f, 0.f);
 	glVertex3f(1.f - FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
 	glVertex3f(0.f + FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
 	glVertex3f(0.f, 0.f, HEIGHT1);
 	glEnd();
-
+	*/
 	glBegin(GL_TRIANGLE_FAN);
 	// glColor3f(0.5f, 0.25f, 0.f);
 	COL3;
-	glVertex3f(0.5f, 0.25f, 1.f);
+	glVertex3f(0.5f, 0.25f, 1.25f);
 #define HEIGHT2 0.60f
 #define FRONT_INSETS_2 0.15f
 	glColor3f(0.5f, 0.5f, 0.f);
 	COL2;
 	glVertex3f(0.f, 0.f, HEIGHT2);	
-	glVertex3f(0.5f, -0.33f, 1.f);	
-	// glVertex3f(.67f, -0.33f, HEIGHT2 + 0.2f);	
+	glVertex3f(0.5f, -0.5f, 1.f);	
 	glVertex3f(1.f, 0.f, HEIGHT2);
 	COL1;
 	glVertex3f(1.f - FRONT_INSETS_2, 1.f - FRONT_INSETS_2, HEIGHT2);
@@ -404,11 +376,26 @@ void                 Window::_put_head(
 	glVertex3f(0.f, 0.f, HEIGHT2);
 	glEnd();
 	
-	// glVertex3f(0.f, 1.f, 1.f);
-	// glVertex3f(1.f,q 1.f, 1.f);
 	
+#define SCALE_FACTOR 4.f	
+	glScalef(1 / SCALE_FACTOR, 1 / SCALE_FACTOR, 1 / SCALE_FACTOR);
+	glTranslatef(0.15f * SCALE_FACTOR, 0.25f * SCALE_FACTOR, SCALE_FACTOR);
+	// glColor3f(148.f / 256.f, 67.f / 256.f, 157.f / 256.f);
+	glColor3f(0.95f, 0.05f, 0.f);
+	
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 1.f, 0.f);
+	glVertex3f(1.f, 1.f, 1.f);	
+	glEnd();
 
 
+	glTranslatef(0.4f * SCALE_FACTOR, .0f, .0f);
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3f(1.f, 0.f, 0.f);
+	glVertex3f(1.f, 1.f, 0.f);
+	glVertex3f(0.f, 1.f, 1.f);	
+	glEnd();
 
 	(void)phase;
 	(void)prevDelta;

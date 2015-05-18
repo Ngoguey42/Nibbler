@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/18 16:29:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 18:29:45 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ Window::Window(std::pair<int, int> gridSize) :
 	if (!glfwInit())
 		throw std::runtime_error("Could not init glfw");
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 	_win = glfwCreateWindow(_winSize.first, _winSize.second, "Nibbler",
 							NULL, NULL);
 	if (!_win)
@@ -98,7 +99,7 @@ Window::Window(std::pair<int, int> gridSize) :
 
 	glEnable(GL_DEPTH_TEST);
 
-
+	glEnable( GL_MULTISAMPLE );
 	
 	glMatrixMode(GL_MODELVIEW);
 	return ;
@@ -240,9 +241,9 @@ void						Window::draw(IGame const &game)
 			static_cast<float>(_winSize.second), .0f,
 			-CHUNK_SIZEF * 1000.f, CHUNK_SIZEF * 1000.f);
 	// glRotatef(25.f , 0.f, 1.f, 0.f);
-	glRotatef(getPhaseLoop(3.f) * 75.f + .35f
-		, 1.f, 0.f, 0.f);
-	// glRotatef(50.f, 1.f, 0.f, 0.f);
+	// glRotatef(getPhaseLoop(3.f) * 75.f + .35f
+		// , 1.f, 0.f, 0.f);
+	glRotatef(25.f, 1.f, 0.f, 0.f);
 	// glRotatef(-3.f, 0.f, 0.f, 1.f);
 	// glTranslatef(-25.f
 				 // , 130.f
@@ -274,8 +275,18 @@ void						Window::draw(IGame const &game)
 
 	float elapsed = glfwGetTime() - this->_lastTime;
 
-	_phase += elapsed / (game.getSnake().getSpeed() / 1000.f) * PHASE_PER_CHUNK;
-	_phase = std::fmod(_phase + 1.f, 1.f);
+	// _phase += 0.0001f;
+	std::cout <<
+		"elapsed(SEC):" << elapsed <<
+		"   sec per chunk:" << (game.getSnake().getSpeed() / 1000.f) <<
+		"   fraction of chunk:" << elapsed / (game.getSnake().getSpeed() / 1000.f) <<
+
+		"   PHASE_PER_CHUNK:" << PHASE_PER_CHUNK 
+
+			  << std::endl;
+	
+	_phase -= elapsed / (game.getSnake().getSpeed() / 1000.f) * PHASE_PER_CHUNK;
+ 	_phase = std::fmod(_phase + 1.f, 1.f);
 
 	auto const &q = game.getSnake().getChunks();
 	// auto const &q = customSnake();
@@ -288,9 +299,10 @@ void						Window::draw(IGame const &game)
 	{
 		_putSnakeChunk(
 			*(it), *(it - 1), *(it + 1), curPhase);
-		curPhase = std::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
+		curPhase = std::fmod(curPhase + PHASE_PER_CHUNK + 1.f, 1.f);
 	}
-	this->_put_head(*q.begin(), *++q.begin(), curPhase);
+	this->_put_head(*q.begin(), *++q.begin(), curPhase,
+					game.getSnake().getMoveRatio());
 
 	
 	glFlush(); //remove ?
