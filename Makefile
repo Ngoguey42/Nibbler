@@ -6,7 +6,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/18 12:45:11 by jaguillo          #+#    #+#              #
-#    Updated: 2015/05/18 12:58:16 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/05/18 13:40:24 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,22 +23,22 @@ opengl:
 	@make -C OpenGLUI
 
 sfml:
-	# @make -C SfmlUI
+	@make -C SfmlUI
 
 clean:
 	@make -C Core clean
 	@make -C NcursesUI clean
 	@make -C OpenGLUI clean
-	# @make -C SfmlUI clean
+	@make -C SfmlUI clean
 
 fclean:
 	@make -C Core fclean
 	@make -C NcursesUI fclean
 	@make -C OpenGLUI fclean
-	# @make -C SfmlUI fclean
+	@make -C SfmlUI fclean
 
 re:
 	@make -C Core re
 	@make -C NcursesUI re
 	@make -C OpenGLUI re
-	# @make -C SfmlUI re
+	@make -C SfmlUI re

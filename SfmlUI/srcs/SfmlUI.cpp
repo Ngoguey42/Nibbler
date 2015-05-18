@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 18:12:22 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 13:41:14 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void				SfmlUI::_drawGrowBlock(int x, int y)
 void				SfmlUI::_drawBonusBlock(int x, int y)
 {
 	_drawSnakeChunk(x, y);
-	_drawGrowChunk(x, y);
+	_drawGrowBlock(x, y);
 }
 
 void				SfmlUI::_drawSnakeChunk(int x, int y)
