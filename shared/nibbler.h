@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 13:50:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:34:41 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,21 @@ class	WallSpawnBlock;
 ** Settings
 */
 
-# define INITIAL_LENGTH		8
+# define DEF_LENGTH			4
+# define MIN_LENGTH			3
+# define MAX_LENGTH			(_gameHeight / 2)
+
+# define DEF_WALL_COUNT		(_gameWidth * _gameHeight / 60)
+
 # define INITIAL_X			(_gameWidth / 2)
-# define INITIAL_Y			(_gameHeight / 2 - INITIAL_LENGTH)
+# define INITIAL_Y			(_gameHeight / 2 - _initialLength)
 
 # define INITIAL_SPEED		150
 
-# define WALL_THROUGH
 // # define WALL_SPAWNER
 
 # define BONUS_INTERVAL		15
 # define BONUS_TIMEOUT		std::sqrt(_gameWidth * _gameWidth + _gameHeight * _gameHeight) / 7.f + 2.f
-# define BONUS_TOWALL
-
-# define WALL_COUNT			(_gameWidth * _gameHeight / 60)
 
 # define MIN_GAME_WIDTH		10
 # define MAX_GAME_WIDTH		30

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:36:29 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 13:55:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:22:21 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ void					BonusBlock::update(Game &game, std::chrono::steady_clock::duration t)
 	if (_timeout <= std::chrono::seconds(0))
 	{
 		_eaten = true;
-#ifdef BONUS_TOWALL
-		WallBlock *b = new WallBlock();
-		b->setPos(_pos.first, _pos.second);
-		game.getBlocks().push_back(b);
-#endif
+		if (game.isBonusToWall())
+		{
+			WallBlock *b = new WallBlock();
+			b->setPos(_pos.first, _pos.second);
+			game.getBlocks().push_back(b);
+		}
 	}
 }
 

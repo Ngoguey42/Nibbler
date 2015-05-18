@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 18:02:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:23:38 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ public:
 	std::list<IBlock*>					&getBlocks(void);
 	Snake								&getSnake(void);
 
+	int									getInitialLength(void) const;
+	bool								isWallThrough(void) const;
+	bool								isBonusToWall(void) const;
+
 	void								spawn(ABlock *block);
 
 	void								reset(void);
@@ -61,8 +65,15 @@ protected:
 	void								*_uiLib;
 	IUI									*_ui;
 
+// Settings
 	int									_gameWidth;
 	int									_gameHeight;
+
+	int									_initialLength;
+	bool								_wallThrough;
+	int									_initialWalls;
+	bool								_bonusToWall;
+// -
 
 	std::chrono::steady_clock::duration	_playTime;
 	std::chrono::steady_clock::duration	_bonusInterval;

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 13:55:30 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:38:23 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <cmath>
 #include <cstdlib>
 #include "nibbler.h"
+#include "ft_argv.h"
 #include "Game.hpp"
 #include "IUI.hpp"
 #include "Event.hpp"
@@ -30,16 +31,67 @@
 
 Game::Game(int argc, char **argv) throw(std::exception)
 	: _uiLib(NULL), _ui(NULL),
+	_initialLength(DEF_LENGTH), _initialWalls(-1),
 	_paused(false), _fps(0), _snake()
 {
-	if (argc < 2)
-		throw std::invalid_argument("Not enougth arguments");
-	_gameWidth = atoi(argv[1]);
+	// Arguments
+	t_args		args = ARGS(argc, argv);
+	char const	*ui = INITIAL_UI;
+	char		*tmp;
+
+	while ((tmp = ft_argvopt(&args)) != NULL)
+		if (strcmp(tmp, "ui") == 0)
+		{
+			if (!ARGS_DATA(args))
+				throw std::invalid_argument("--ui option need data");
+			ui = ft_argvarg(&args);
+		}
+		else if (strcmp(tmp, "wall-through") == 0)
+		{
+			if (!ARGS_DATA(args))
+				throw std::invalid_argument("--wall-through option need data");
+			_wallThrough = (ft_argvarg(&args)[0] == 'y') ? true : false;
+		}
+		else if (strcmp(tmp, "t") == 0)
+			_wallThrough = true;
+		else if (strcmp(tmp, "length") == 0 || strcmp(tmp, "l") == 0)
+		{
+			if (strcmp(tmp, "length") == 0 && !ARGS_DATA(args))
+				throw std::invalid_argument("--length option need data");
+			_initialLength = atoi(ft_argvarg(&args));
+		}
+		else if (strcmp(tmp, "wall") == 0 || strcmp(tmp, "w") == 0)
+		{
+			if (strcmp(tmp, "wall") == 0 && !ARGS_DATA(args))
+				throw std::invalid_argument("--wall option need data");
+			_initialWalls = atoi(ft_argvarg(&args));
+		}
+		else if (strcmp(tmp, "bonus-to-wall") == 0)
+		{
+			if (!ARGS_DATA(args))
+				throw std::invalid_argument("--bonus-to-wall option need data");
+			_bonusToWall = (ft_argvarg(&args)[0] == 'y') ? true : false;
+		}
+		else if (strcmp(tmp, "b") == 0)
+			_bonusToWall = false;
+		else
+			throw std::invalid_argument(std::string("Invalid option: ") += tmp);
+	if ((tmp = ft_argvarg(&args)) == NULL)
+		throw std::invalid_argument("Argument 'game_width' required");
+	_gameWidth = atoi(tmp);
 	if (_gameWidth < MIN_GAME_WIDTH || _gameWidth > MAX_GAME_WIDTH)
-		throw std::invalid_argument("Invalid game_width");
-	_gameHeight = atoi(argv[2]);
+		throw std::invalid_argument("Invalid 'game_width' argument");
+	if ((tmp = ft_argvarg(&args)) == NULL)
+		throw std::invalid_argument("Argument 'game_height' required");
+	_gameHeight = atoi(tmp);
 	if (_gameHeight < MIN_GAME_HEIGHT || _gameHeight > MAX_GAME_HEIGHT)
-		throw std::invalid_argument("Invalid game_height");
+		throw std::invalid_argument("Invalid 'game_width' argument");
+	if (_initialWalls < 0)
+		_initialWalls = DEF_WALL_COUNT;
+	if (_initialLength < MIN_LENGTH || _initialLength > MAX_LENGTH)
+		throw std::invalid_argument("Invalid 'length' argument");
+	changeUI(ui);
+	// Init
 	srand(time(NULL));
 	reset();
 }
@@ -138,6 +190,21 @@ Snake						&Game::getSnake(void)
 	return (_snake);
 }
 
+int							Game::getInitialLength(void) const
+{
+	return (_initialLength);
+}
+
+bool						Game::isWallThrough(void) const
+{
+	return (_wallThrough);
+}
+
+bool						Game::isBonusToWall(void) const
+{
+	return (_wallThrough);
+}
+
 void						Game::setPaused(bool paused)
 {
 	_paused = paused;
@@ -173,8 +240,8 @@ void						Game::reset(void)
 	_score = 0;
 	_playTime = std::chrono::seconds(0);
 	_bonusInterval = std::chrono::seconds(BONUS_INTERVAL);
-	_snake.reset(INITIAL_X, INITIAL_Y);
-	for (int i = 0; i < WALL_COUNT; ++i)
+	_snake.reset(*this, INITIAL_X, INITIAL_Y);
+	for (int i = 0; i < _initialWalls; ++i)
 		spawn(new WallBlock());
 #ifdef WALL_SPAWNER
 	spawn(new WallSpawnBlock());
