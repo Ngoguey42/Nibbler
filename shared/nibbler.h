@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 18:07:05 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 12:49:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ enum	EventType
 
 # define INIT_FUNCTION		init
 
-# define UI_1				"lib/OpenGLUI.so"
-# define UI_2				"lib/NcursesUI.so"
-# define UI_3				"lib/SfmlUI.so"
+# define UI_1				"OpenGLUI/OpenGLUI.so"
+# define UI_2				"NcursesUI/NcursesUI.so"
+# define UI_3				"SfmlUI/SfmlUI.so"
 
 # define INITIAL_UI			UI_2
 
