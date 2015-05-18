@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/18 14:03:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 16:29:42 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ void						Window::draw(IGame const &game)
 			static_cast<float>(_winSize.second), .0f,
 			-CHUNK_SIZEF * 1000.f, CHUNK_SIZEF * 1000.f);
 	// glRotatef(25.f , 0.f, 1.f, 0.f);
-	glRotatef(getPhase(10.f) * 35.f
+	glRotatef(getPhaseLoop(3.f) * 75.f + .35f
 		, 1.f, 0.f, 0.f);
 	// glRotatef(50.f, 1.f, 0.f, 0.f);
 	// glRotatef(-3.f, 0.f, 0.f, 1.f);
@@ -290,7 +290,9 @@ void						Window::draw(IGame const &game)
 			*(it), *(it - 1), *(it + 1), curPhase);
 		curPhase = std::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
 	}
+	this->_put_head(*q.begin(), *++q.begin(), curPhase);
 
+	
 	glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();

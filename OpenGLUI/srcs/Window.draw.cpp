@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/18 12:41:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 16:33:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -105,6 +105,8 @@ void						Window::_putSnakeChunk(
 	
 	float z = SNAKE_HEIGHT;
 	float x, y = 0.f;
+
+	
 	
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
 	{
@@ -247,7 +249,7 @@ void						Window::_putSnakeChunk(
 		for (int i = 0; i <= POINTS_PER_SIDE; i++)
 		{
 			x = (cosf((0.5f + curphase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
-				
+			
 			// LOL
 			// glColor3f(fmod(r, 1.f), fmod(g, 1.f), fmod(b, 1.f));
 			
@@ -303,5 +305,116 @@ void                        Window::_put_block(std::pair<int, int> const &topLef
 	glColor3f(std::get<0>(c) * 1.f, std::get<1>(c) * 1.f, std::get<2>(c) * 1.f);
 	glVertex3f(0.5f * CHUNK_SIZEF, 0.f * CHUNK_SIZEF, 0.f);
 	glEnd();
+	return ;
+}
+
+
+void                 Window::_put_head(
+	std::pair<int, int> const &selfPos,
+	std::pair<int, int> const &prevPos,
+	float phase) const
+{
+	std::pair<int, int> prevDelta =
+		std::make_pair<int, int>(selfPos.first - prevPos.first,
+								 selfPos.second - prevPos.second);
+	std::pair<float, float> const	topLeft(
+		_topLeftCell.first + CHUNK_SIZEF * selfPos.first,
+		_topLeftCell.second + CHUNK_SIZEF * selfPos.second);
+
+
+	
+	glLoadIdentity();
+	glTranslatef(topLeft.first, topLeft.second, 0.f);
+	rotateChunk(prevDelta, prevDelta);
+
+	float x = (cosf((0.5f + phase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
+
+	std::cout << x << std::endl;
+
+	
+	glScalef(CHUNK_SIZEF, CHUNK_SIZEF, SNAKE_HEIGHT);
+	glTranslatef(x - SNAKE_WIDTH_INV / 2.f, 0.f, 0.f);
+	// glScalef(CHUNK_SIZEF * 2.f, CHUNK_SIZEF * 2.f, SNAKE_HEIGHT * 2.f);
+	// glScalef(CHUNK_SIZEF * 2.f, CHUNK_SIZEF * 2.f, CHUNK_SIZEF);
+#define CURSIZEF (CHUNK_SIZEF * 1.f)
+#define CURHEIGHT (SNAKE_HEIGHT * 1.f)
+	
+/*	
+	glBegin(GL_LINE_STRIP);
+	glColor3f(1.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 1.f, 1.f);
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(1.f, 0.f, 1.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glColor3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 1.f, 1.f);
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(1.f, 0.f, 1.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glEnd();
+
+*/
+	
+	glColor3f(0.5f, 0.5f, 0.f);
+	
+#define NOSE_HALF_WIDTH 0.1f
+#define NOSE_LEN 0.25f
+#define HEAD_HALF_WIDTH 0.4f
+	
+/*	
+	glVertex3f(.5f - NOSE_HALF_WIDTH, 1.f, 0.5f);
+	glVertex3f(.5f + NOSE_HALF_WIDTH, 1.f, 0.5f);
+	glVertex3f(.5f, 1.f - NOSE_LEN, 0.5f + NOSE_LEN);
+	glColor3f(0.5f, 0.f, 0.f);
+	glVertex3f(.5f + HEAD_HALF_WIDTH, 1.f - NOSE_LEN, 0.5f - 0.1f);
+	glVertex3f(.5f, 1.f - NOSE_LEN * 3.f, 0.5f + NOSE_LEN);
+	
+*/	
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3f(0.5f, 0.25f, 0.f);
+	glVertex3f(0.5f, 0.5f, 0.0f);
+#define HEIGHT1 0.60f
+#define FRONT_INSETS_1 0.15f
+	glColor3f(0.5f, 0.5f, 0.f);
+	glVertex3f(0.f, 0.f, 0.f);	
+	glVertex3f(1.f, 0.f, 0.f);
+	glVertex3f(1.f - FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
+	glVertex3f(0.f + FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
+	glVertex3f(0.f, 0.f, HEIGHT1);
+	glEnd();
+
+	glBegin(GL_TRIANGLE_FAN);
+	// glColor3f(0.5f, 0.25f, 0.f);
+	COL3;
+	glVertex3f(0.5f, 0.25f, 1.f);
+#define HEIGHT2 0.60f
+#define FRONT_INSETS_2 0.15f
+	glColor3f(0.5f, 0.5f, 0.f);
+	COL2;
+	glVertex3f(0.f, 0.f, HEIGHT2);	
+	glVertex3f(0.5f, -0.33f, 1.f);	
+	// glVertex3f(.67f, -0.33f, HEIGHT2 + 0.2f);	
+	glVertex3f(1.f, 0.f, HEIGHT2);
+	COL1;
+	glVertex3f(1.f - FRONT_INSETS_2, 1.f - FRONT_INSETS_2, HEIGHT2);
+	glVertex3f(0.f + FRONT_INSETS_2, 1.f - FRONT_INSETS_2, HEIGHT2);
+	COL2;
+	glVertex3f(0.f, 0.f, HEIGHT2);
+	glEnd();
+	
+	// glVertex3f(0.f, 1.f, 1.f);
+	// glVertex3f(1.f,q 1.f, 1.f);
+	
+
+
+
+	(void)phase;
+	(void)prevDelta;
+
+	
+	
+	
 	return ;
 }
