@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 16:21:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 12:01:52 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 class Window : public IUI
 {
+	Window() = delete;
+	Window(Window const &src) = delete;
+	Window						&operator=(Window const &rhs) = delete;
 public:
 	static std::queue<EventType>				pendingEvents;
 
@@ -42,9 +45,6 @@ public:
 	
 protected:
 private:
-	Window();
-	Window(Window const &src);
-	Window						&operator=(Window const &rhs);
 
 	void						_put_grid(void) const;
 	void						_put_lol(void) const;
@@ -65,7 +65,8 @@ private:
 	std::pair<int, int> const		_winSize;			// Window size
 	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
 
-	float						_phase;
+	float							_lastTime;
+	float							_phase;
 
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
 	static constexpr ftce::Array<size_t, 6>    sinSize

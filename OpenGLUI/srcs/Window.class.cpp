@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/15 16:32:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 12:54:49 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ Window::Window(std::pair<int, int> gridSize) :
 			)),
 	_topLeftCell(std::make_pair(static_cast<float>(TMP_PADDING),
 								static_cast<float>(TMP_PADDING))),
+	_lastTime(glfwGetTime()),
 	_phase(0.f)
 {
 	// int	i = 0;
@@ -237,17 +238,24 @@ void						Window::draw(IGame const &game)
 	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
-			-CHUNK_SIZEF * 100.f, CHUNK_SIZEF * 100.f);
+			-CHUNK_SIZEF * 1000.f, CHUNK_SIZEF * 1000.f);
 	// glRotatef(25.f , 0.f, 1.f, 0.f);
 	// glRotatef(getPhase(10.f) * 90.f
 		// , 1.f, 0.f, 0.f);
 	glRotatef(50.f, 1.f, 0.f, 0.f);
 	glRotatef(-3.f, 0.f, 0.f, 1.f);
-	glTranslatef(-25.f, 130.f, -80.f);
+	glTranslatef(-25.f
+				 // + 300.f
+				 , 130.f
+				 // - 4400.f
+				 , -80.f
+				 // -4000.f
+		);
+	// glTranslatef(75.f, -1100.f, -1000.f);
 	
 	glMatrixMode(GL_MODELVIEW); //useless?
 	glLoadIdentity();
-	this->_put_grid();
+	// this->_put_grid();
 	glLoadIdentity();
 	
 
@@ -263,9 +271,31 @@ void						Window::draw(IGame const &game)
 		}
 	}
 
+	float elapsed = glfwGetTime() - this->_lastTime;
+	
 	// _phase -= 0.001; //speed
 	// _phase -= 0.01; //speed
-	_phase -= 0.02; //speed
+	
+	// _phase += 0.02; //speed
+	// _phase -= 0.02; //speed
+	// std::cout
+	// 				  << game.getSnake().getSpeed() << " "
+	// 				  << 1000.f / game.getSnake().getSpeed() << " "
+	// 				  << game.getSnake().getSpeed() / 1000.f<< " "
+
+	// 		  << std::endl;
+	
+// PHASE_PER_CHUNK; // phase pour un chunk
+// game.getSnake().getSpeed() / 1000.f; // temps(sec) pour un chunk
+// elapsed / (game.getSnake().getSpeed() / 1000.f); // fraction du chunk que je viens de faire sur ce render
+
+	std::cout <<
+		(elapsed * PHASE_PER_CHUNK) / (game.getSnake().getSpeed() / 1000.f)
+			  << std::endl;
+	
+	_phase += elapsed / (game.getSnake().getSpeed() / 1000.f) * PHASE_PER_CHUNK;
+	
+
 	_phase = std::fmod(_phase + 1.f, 1.f);
 
 	auto const &q = game.getSnake().getChunks();
@@ -285,6 +315,7 @@ void						Window::draw(IGame const &game)
 	glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
+	this->_lastTime += elapsed;
 	return ;
 }
 bool						Window::windowShouldClose(void) const

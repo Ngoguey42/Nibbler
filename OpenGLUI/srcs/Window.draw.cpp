@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 16:22:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/18 12:41:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -99,8 +99,11 @@ void						Window::_putSnakeChunk(
 
 	// float r, g, b;
 	float r = 0.f, g = 0.33f, b = .66f;
-		
-	float z = 20.f;
+	(void)r;
+	(void)g;
+	(void)b;
+	
+	float z = SNAKE_HEIGHT;
 	float x, y = 0.f;
 	
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
@@ -112,17 +115,25 @@ void						Window::_putSnakeChunk(
 		{
 			auto const	&points = Window::sinPoints[
 				static_cast<int>(std::round(phase * NUM_PRECALC_POINTSF - 0.5f))];
+
+			
+#define COL1 glColor3f(244.f / 256.f ,164.f / 256.f ,96.f / 256.f )
+#define COL2 glColor3f(139.f / 256.f,69.f / 256.f,19.f / 256.f)
+#define COL3 glColor3f(165.f / 256.f,42.f / 256.f,42.f / 256.f)
+
 #define PUTCOLOR								\
 			if (v.z < 0.5f)						\
-				glColor3f(.7f, 0.f, 0.0f);		\
+				COL3;							\
 			else								\
-				glColor3f(.0f, 0.5f, 0.0f);
+				COL2;
 			
-#define PUTCOLOR2								\
-			if (v.z < 0.5f)						\
-				glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));	\
-			else								\
-				glColor3f(.0f, 0.5f, 0.0f);
+#define PUTCOLOR2														\
+			if (v.z < 0.5f)												\
+				COL1;													\
+			else														\
+				COL2;							\
+			
+//glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));	
 			
 			glBegin(GL_TRIANGLE_STRIP);
 			// glColor3f(.5f, 0.0f, 0.0f);
@@ -239,10 +250,13 @@ void						Window::_putSnakeChunk(
 				
 			// LOL
 			// glColor3f(fmod(r, 1.f), fmod(g, 1.f), fmod(b, 1.f));
-			glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));
+			
+			
+			// glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));
+			COL1;
 			
 			glVertex3f(x * CHUNK_SIZE, y, 0.f);
-			glColor3f(.0f, 0.5f, 0.0f);
+			COL2;
 			glVertex3f((x + SNAKE_WIDTH_HALF) * CHUNK_SIZE, y, z);
 
 			y += TRIANGLES_DISTANCE;
@@ -257,9 +271,9 @@ void						Window::_putSnakeChunk(
 		{
 			x = (cosf((0.5f + curphase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
 		
-			glColor3f(.7f, 0.f, 0.0f);
+			COL3;
 			glVertex3f((x + SNAKE_WIDTH) * CHUNK_SIZE, y, 0.f);
-			glColor3f(.0f, 0.5f, 0.0f);
+			COL2;
 			glVertex3f((x + SNAKE_WIDTH_HALF) * CHUNK_SIZE, y, z);
 				
 			y += TRIANGLES_DISTANCE;

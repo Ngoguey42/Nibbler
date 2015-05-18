@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 12:49:06 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 12:54:00 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ class	WallSpawnBlock;
 ** Settings
 */
 
+# define INITIAL_LENGTH		8
 # define INITIAL_X			(_gameWidth / 2)
-# define INITIAL_Y			(_gameHeight / 2 - 4)
-# define INITIAL_LENGTH		4
+# define INITIAL_Y			(_gameHeight / 2 - INITIAL_LENGTH)
 
 # define INITIAL_SPEED		150
 
