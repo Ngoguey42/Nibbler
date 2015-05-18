@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 18:16:16 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:35:42 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	_bonusInterval -= t;
 	if (_bonusInterval < std::chrono::seconds(0))
 	{
-		spawn(new BonusBlock(_settings.bonusTimeout.count()));
+		spawn(new BonusBlock(_settings.bonusTimeout));
 		_bonusInterval = _settings.bonusInterval;		
 	}
 	_snake.update(*this, t);

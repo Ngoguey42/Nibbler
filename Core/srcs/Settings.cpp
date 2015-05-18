@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/18 17:46:50 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 18:21:56 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:27:17 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,29 @@ Settings::Settings(int argc, char **argv)
 		}
 		else if (std::strcmp(tmp, "t") == 0)
 			wallThrough = true;
-		else if (std::strcmp(tmp, "length") == 0 || std::strcmp(tmp, "l") == 0)
+		else if (std::strcmp(tmp, "length") == 0)
 		{
-			if (std::strcmp(tmp, "length") == 0 && !ARGS_DATA(args))
+			if (!ARGS_DATA(args))
 				throw std::invalid_argument("--length option need data");
 			initialLength = atoi(ft_argvarg(&args));
 		}
-		else if (std::strcmp(tmp, "wall") == 0 || std::strcmp(tmp, "w") == 0)
+		else if (std::strcmp(tmp, "l") == 0)
 		{
-			if (std::strcmp(tmp, "wall") == 0 && !ARGS_DATA(args))
+			if ((tmp = ft_argvarg(&args)) == NULL)
+				throw std::invalid_argument("-l option need a numeric value");
+			initialLength = atoi(tmp);
+		}
+		else if (std::strcmp(tmp, "wall") == 0)
+		{
+			if (!ARGS_DATA(args))
 				throw std::invalid_argument("--wall option need data");
 			initialWalls = atoi(ft_argvarg(&args));
+		}
+		else if (std::strcmp(tmp, "w") == 0)
+		{
+			if ((tmp = ft_argvarg(&args)) == NULL)
+				throw std::invalid_argument("-w option need a numeric value");
+			initialWalls = atoi(tmp);
 		}
 		else if (std::strcmp(tmp, "bonus-to-wall") == 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:25:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 13:55:55 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:35:33 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 class	BonusBlock : public ABlock
 {
 public:
-	BonusBlock(int timeout);
+	BonusBlock(std::chrono::steady_clock::duration timeout);
 	virtual ~BonusBlock(void);
 
 	virtual void			update(Game &game, std::chrono::steady_clock::duration t);

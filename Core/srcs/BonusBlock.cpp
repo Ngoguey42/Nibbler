@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 13:36:29 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 17:56:30 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:35:21 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "Game.hpp"
 #include "Snake.hpp"
 
-BonusBlock::BonusBlock(int timeout)
+BonusBlock::BonusBlock(std::chrono::steady_clock::duration timeout)
 	: ABlock(ABlock::BONUS), _eaten(false),
-	_timeout(std::chrono::seconds(timeout))
+	_timeout(timeout)
 {
 }
 
