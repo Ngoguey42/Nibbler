@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 12:54:00 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/18 13:50:18 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class	WallSpawnBlock;
 // # define WALL_SPAWNER
 
 # define BONUS_INTERVAL		15
-# define BONUS_TIMEOUT		4
+# define BONUS_TIMEOUT		std::sqrt(_gameWidth * _gameWidth + _gameHeight * _gameHeight) / 7.f + 2.f
 # define BONUS_TOWALL
 
 # define WALL_COUNT			(_gameWidth * _gameHeight / 60)
@@ -90,9 +90,9 @@ enum	EventType
 
 # define INIT_FUNCTION		init
 
-# define UI_1				"lib/OpenGLUI.so"
-# define UI_2				"lib/NcursesUI.so"
-# define UI_3				"lib/SfmlUI.so"
+# define UI_1				"OpenGLUI/OpenGLUI.so"
+# define UI_2				"NcursesUI/NcursesUI.so"
+# define UI_3				"SfmlUI/SfmlUI.so"
 
 # define INITIAL_UI			UI_2
 

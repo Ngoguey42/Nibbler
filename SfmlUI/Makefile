@@ -1,5 +1,5 @@
 #
-# ../NcursesUI.so
+# ../SfmlUI.so
 #
 # Makefile
 #
@@ -9,10 +9,10 @@
 #
 
 # Project name
-NAME := ../NcursesUI.so
+NAME := SfmlUI.so
 
 # Project directories
-DIRS := srcs include ../../common
+DIRS := srcs include ../shared
 
 # Obj directory
 O_DIR := o
@@ -30,20 +30,20 @@ LD_CC := clang++
 CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
 # Linking flags
-LD_FLAGS := -fPIC -shared -lncurses
+LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 # Clang++ include flags
-CPP_HEADS := -Iinclude -I../../common
+CPP_HEADS := -Iinclude -I../shared -I ~/.brew/include
 
 #
 # Internal
 #
 
-O_FILES := o/srcs/NcursesUI.o \
+O_FILES := o/srcs/SfmlUI.o \
 	o/srcs/init.o
 
-MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'
-MSG_1 := printf '\033[0;31m%-18.18s\033[0;0m\n'
+MSG_0 := printf '\033[0;32m%-15.15s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-15.15s\033[0;0m\n'
 
 .SILENT:
 
@@ -54,11 +54,11 @@ all: $(LIBS)
 $(NAME): $(O_FILES)
 	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
 
-o/srcs/NcursesUI.o: srcs/NcursesUI.cpp include/NcursesUI.hpp ../../common/nibbler.h ../../common/IUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
+o/srcs/SfmlUI.o: srcs/SfmlUI.cpp include/SfmlUI.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/init.o: srcs/init.cpp include/NcursesUI.hpp ../../common/nibbler.h ../../common/IUI.hpp ../../common/IGame.hpp ../../common/ISnake.hpp ../../common/IBlock.hpp
+o/srcs/init.o: srcs/init.cpp include/SfmlUI.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 

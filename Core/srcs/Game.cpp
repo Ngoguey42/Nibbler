@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 18:02:30 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 13:55:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <utility>
 #include <iostream>
 #include <chrono>
+#include <cmath>
 #include <cstdlib>
 #include "nibbler.h"
 #include "Game.hpp"
@@ -196,7 +197,7 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	_bonusInterval -= t;
 	if (_bonusInterval < std::chrono::seconds(0))
 	{
-		spawn(new BonusBlock());
+		spawn(new BonusBlock(BONUS_TIMEOUT));
 		_bonusInterval = std::chrono::seconds(BONUS_INTERVAL);		
 	}
 	_snake.update(*this, t);
