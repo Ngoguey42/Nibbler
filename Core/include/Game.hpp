@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/15 18:02:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:55:54 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "nibbler.h"
 # include "IGame.hpp"
 # include "Snake.hpp"
+# include "Settings.hpp"
 
 class	Game : public IGame
 {
@@ -49,6 +50,8 @@ public:
 	std::list<IBlock*>					&getBlocks(void);
 	Snake								&getSnake(void);
 
+	Settings const						&getSettings(void) const;
+
 	void								spawn(ABlock *block);
 
 	void								reset(void);
@@ -61,8 +64,7 @@ protected:
 	void								*_uiLib;
 	IUI									*_ui;
 
-	int									_gameWidth;
-	int									_gameHeight;
+	Settings							_settings;
 
 	std::chrono::steady_clock::duration	_playTime;
 	std::chrono::steady_clock::duration	_bonusInterval;

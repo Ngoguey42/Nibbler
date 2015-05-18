@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 16:50:54 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:11:24 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void							Snake::setNextDirection(int x, int y)
 	_nextDirection.second = y;
 }
 
-void							Snake::reset(int x, int y)
+void							Snake::reset(Game const &game)
 {
 	while (_chunks.size() > 0)
 		_chunks.pop_back();
@@ -97,8 +97,9 @@ void							Snake::reset(int x, int y)
 	_nextDirection = std::make_pair(0, 1);
 	_die = false;
 	_speed = std::chrono::milliseconds(INITIAL_SPEED);
-	for (int i = 0; i < INITIAL_LENGTH; ++i)
-		_chunks.emplace_front(Snake::Chunk(x, y++));
+	int y = game.getSettings().initialY;
+	for (int i = 0; i < game.getSettings().initialLength; ++i)
+		_chunks.emplace_front(Snake::Chunk(game.getSettings().initialX, y++));
 }
 
 void							Snake::_collide(Game &game)
@@ -129,16 +130,17 @@ void							Snake::_move(Game &game)
 		_chunks.pop_back();
 	newChunk.first += _direction.first;
 	newChunk.second += _direction.second;
-#ifdef WALL_THROUGH
-	if (newChunk.first < 0)
-		newChunk.first = game.getGameWidth() - 1;
-	if (newChunk.first >= game.getGameWidth())
-		newChunk.first = 0;
-	if (newChunk.second < 0)
-		newChunk.second = game.getGameHeight() - 1;
-	if (newChunk.second >= game.getGameHeight())
-		newChunk.second = 0;
-#endif
+	if (game.getSettings().wallThrough)
+	{
+		if (newChunk.first < 0)
+			newChunk.first = game.getGameWidth() - 1;
+		if (newChunk.first >= game.getGameWidth())
+			newChunk.first = 0;
+		if (newChunk.second < 0)
+			newChunk.second = game.getGameHeight() - 1;
+		if (newChunk.second >= game.getGameHeight())
+			newChunk.second = 0;
+	}
 	_chunks.emplace_front(newChunk);
 	_collide(game);
 }

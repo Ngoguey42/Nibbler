@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 13:55:30 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/18 18:16:16 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,10 @@
 #include "WallSpawnBlock.hpp"
 
 Game::Game(int argc, char **argv) throw(std::exception)
-	: _uiLib(NULL), _ui(NULL),
+	: _uiLib(NULL), _ui(NULL), _settings(argc, argv),
 	_paused(false), _fps(0), _snake()
 {
-	if (argc < 2)
-		throw std::invalid_argument("Not enougth arguments");
-	_gameWidth = atoi(argv[1]);
-	if (_gameWidth < MIN_GAME_WIDTH || _gameWidth > MAX_GAME_WIDTH)
-		throw std::invalid_argument("Invalid game_width");
-	_gameHeight = atoi(argv[2]);
-	if (_gameHeight < MIN_GAME_HEIGHT || _gameHeight > MAX_GAME_HEIGHT)
-		throw std::invalid_argument("Invalid game_height");
+	// Init
 	srand(time(NULL));
 	reset();
 }
@@ -82,12 +75,12 @@ void						Game::start(void)
 
 int							Game::getGameWidth(void) const
 {
-	return (_gameWidth);
+	return (_settings.gameWidth);
 }
 
 int							Game::getGameHeight(void) const
 {
-	return (_gameHeight);
+	return (_settings.gameHeight);
 }
 
 int							Game::getScore(void) const
@@ -138,6 +131,11 @@ Snake						&Game::getSnake(void)
 	return (_snake);
 }
 
+Settings const				&Game::getSettings(void) const
+{
+	return (_settings);
+}
+
 void						Game::setPaused(bool paused)
 {
 	_paused = paused;
@@ -150,7 +148,7 @@ void						Game::addScore(int add)
 
 void						Game::spawn(ABlock *b)
 {
-	int			pos = _gameWidth * _gameHeight;
+	int			pos = _settings.gameWidth * _settings.gameHeight;
 
 	pos -= _snake.getChunks().size();
 	pos -= _blocks.size();
@@ -158,8 +156,8 @@ void						Game::spawn(ABlock *b)
 		return ;
 	pos = rand() % pos;
 	_blocks.push_back(b);
-	for (int y = 0; y < _gameHeight; ++y)
-		for (int x = 0; x < _gameWidth; ++x)
+	for (int y = 0; y < _settings.gameHeight; ++y)
+		for (int x = 0; x < _settings.gameWidth; ++x)
 			if (!_snake.isChunk(x, y) && !isBlock(x, y) && --pos < 0)
 			{
 				b->setPos(x, y);
@@ -172,9 +170,9 @@ void						Game::reset(void)
 	_destroyGame();
 	_score = 0;
 	_playTime = std::chrono::seconds(0);
-	_bonusInterval = std::chrono::seconds(BONUS_INTERVAL);
-	_snake.reset(INITIAL_X, INITIAL_Y);
-	for (int i = 0; i < WALL_COUNT; ++i)
+	_bonusInterval = _settings.bonusInterval;
+	_snake.reset(*this);
+	for (int i = 0; i < _settings.initialWalls; ++i)
 		spawn(new WallBlock());
 #ifdef WALL_SPAWNER
 	spawn(new WallSpawnBlock());
@@ -197,8 +195,8 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	_bonusInterval -= t;
 	if (_bonusInterval < std::chrono::seconds(0))
 	{
-		spawn(new BonusBlock(BONUS_TIMEOUT));
-		_bonusInterval = std::chrono::seconds(BONUS_INTERVAL);		
+		spawn(new BonusBlock(_settings.bonusTimeout.count()));
+		_bonusInterval = _settings.bonusInterval;		
 	}
 	_snake.update(*this, t);
 	for (auto it = _blocks.begin(); it != _blocks.end(); ++it)
@@ -235,7 +233,7 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	try
 	{
 		_ui = reinterpret_cast<IUI *(*)(std::pair<int, int>)>
-			(init_func)(std::make_pair(_gameWidth, _gameHeight));
+			(init_func)(std::make_pair(_settings.gameWidth, _settings.gameHeight));
 	}
 	catch (std::exception &e)
 	{
