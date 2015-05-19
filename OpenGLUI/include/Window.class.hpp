@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/18 16:57:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 12:48:22 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ private:
 		std::pair<int, int> selfPos,
 		std::pair<int, int> prevPos,
 		std::pair<int, int> nextPos,
-		float phase,
-		std::tuple<float, float, float> color1 = std::make_tuple(0.f, 1.f, 0.f),
-		std::tuple<float, float, float> color2 = std::make_tuple(0.f, 0.f, 1.f)
+		float phase, bool narrowFront = false
 		) const;
 	
 	GLFWwindow						*_win;
@@ -71,6 +69,7 @@ private:
 
 	float							_lastTime;
 	float							_phase;
+	float							_deathTime;
 
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
 	static constexpr ftce::Array<size_t, 6>    sinSize

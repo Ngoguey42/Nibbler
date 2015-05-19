@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/18 18:12:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 12:42:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,9 +53,8 @@ void						Window::_putSnakeChunk(
 	std::pair<int, int> selfPos,
 	std::pair<int, int> prevPos,
 	std::pair<int, int> nextPos,
-	float phase,
-	std::tuple<float, float, float> color1,
-	std::tuple<float, float, float> color2) const
+	float phase, bool narrowFront
+	) const
 {
 	std::pair<int, int> prevDelta =
 		std::make_pair<int, int>(selfPos.first - prevPos.first,
@@ -85,8 +84,6 @@ void						Window::_putSnakeChunk(
 		_topLeftCell.second + CHUNK_SIZEF * selfPos.second);
 	float ratio = fmod(glfwGetTime(), 5.f) / 5.f; //debug
 	(void)ratio;
-	(void)color1;
-	(void)color2;
 	
 	glLoadIdentity();
 	glTranslatef(topLeft.first, topLeft.second, -0.0f);
@@ -97,16 +94,16 @@ void						Window::_putSnakeChunk(
 
 	float curphase = phase;
 
-	// float r, g, b;
+	float z = SNAKE_HEIGHT;
 	float r = 0.f, g = 0.33f, b = .66f;
 	(void)r;
 	(void)g;
 	(void)b;
 	
-	float z = SNAKE_HEIGHT;
+	// float z = SNAKE_HEIGHT;
 	float x, y = 0.f;
 
-	
+	float narrow(0.0f);
 	
 	if ((prevDelta.first != 0) != (nextDelta.first != 0))
 	{
@@ -129,10 +126,10 @@ void						Window::_putSnakeChunk(
 			else								\
 				COL2;
 			
-#define PUTCOLOR2														\
-			if (v.z < 0.5f)												\
-				COL1;													\
-			else														\
+#define PUTCOLOR2								\
+			if (v.z < 0.5f)						\
+				COL1;							\
+			else								\
 				COL2;							\
 			
 //glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));	
@@ -246,40 +243,58 @@ void						Window::_putSnakeChunk(
 	else
 	{
 		glBegin(GL_TRIANGLE_STRIP);
+		narrow = 0.f;
+		narrow = 1.f;
 		for (int i = 0; i <= POINTS_PER_SIDE; i++)
 		{
 			x = (cosf((0.5f + curphase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
-			
-			// LOL
-			// glColor3f(fmod(r, 1.f), fmod(g, 1.f), fmod(b, 1.f));
-			
-			
-			// glColor3f(fmod(r += 0.33f, 1.f), fmod(g += 0.33f, 1.f), fmod(b += 0.33f, 1.f));
+
+			x += SNAKE_WIDTH / 2.f * (1.f - narrow);
 			COL1;
-			
 			glVertex3f(x * CHUNK_SIZE, y, 0.f);
 			COL2;
-			glVertex3f((x + SNAKE_WIDTH_HALF) * CHUNK_SIZE, y, z);
+			glVertex3f((x + SNAKE_WIDTH_HALF
+						* narrow
+						   ) * CHUNK_SIZE, y, z
+					   * narrow
+				);
 
 			y += TRIANGLES_DISTANCE;
+			// y += TRIANGLES_DISTANCE;
 			curphase += PHASE_PER_TRIANGLE;
+				(void)narrowFront;
+			if (narrowFront)
+				narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
 		}
 		glEnd();
-	
 		glBegin(GL_TRIANGLE_STRIP);
 		curphase = phase;	
 		y = 0.f;
+		narrow = 1.f;
 		for (int i = 0; i <= POINTS_PER_SIDE; i++)
 		{
 			x = (cosf((0.5f + curphase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
-		
+
+			
+			x += SNAKE_WIDTH / 2.f * (1.f - narrow);
 			COL3;
-			glVertex3f((x + SNAKE_WIDTH) * CHUNK_SIZE, y, 0.f);
+			glVertex3f((x + SNAKE_WIDTH
+						* narrow
+						
+						   ) * CHUNK_SIZE, y, 0.f);
 			COL2;
-			glVertex3f((x + SNAKE_WIDTH_HALF) * CHUNK_SIZE, y, z);
+			glVertex3f((x + SNAKE_WIDTH_HALF
+						* narrow
+						// * (1.f - narrow)
+						
+						   ) * CHUNK_SIZE, y, z
+					   * narrow
+				);
 				
 			y += TRIANGLES_DISTANCE;
 			curphase += PHASE_PER_TRIANGLE;
+			if (narrowFront)
+			narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
 		}	
 		glEnd();
 	}
@@ -336,27 +351,31 @@ void                 Window::_put_head(
 	rotateChunk(prevDelta, prevDelta);
 
 	glScalef(CHUNK_SIZEF, CHUNK_SIZEF, SNAKE_HEIGHT);
-	
-	phase += PHASE_PER_CHUNK * (ratio - 0.65f);
+
+
+#define TRUC (ratio - 0.65f)
+	// phase += PHASE_PER_CHUNK * (ratio - 0.65f);
+	phase += PHASE_PER_CHUNK * TRUC;
 	std::fmod(phase + 1.f, 1.f);
 	
 	float x = (cosf((0.5f + phase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV;
 
 	glTranslatef(x - SNAKE_WIDTH_INV / 2.f, 0.f, 0.f);
-	glTranslatef(0.f, ratio - 0.65f, 0.f);	
+	glTranslatef(0.f, TRUC, 0.f);
+	glTranslatef(0.f, 0.f, -0.5f);	
 #define HEIGHT1 0.60f
 #define FRONT_INSETS_1 0.15f
 	/*
-	glBegin(GL_TRIANGLE_FAN);
-	glColor3f(0.95f, 0.05f, 0.f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
-	glColor3f(1.f, 0.0f, 0.f);
-	glVertex3f(0.f, 0.f, 0.f);	
-	glVertex3f(1.f, 0.f, 0.f);
-	glVertex3f(1.f - FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
-	glVertex3f(0.f + FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
-	glVertex3f(0.f, 0.f, HEIGHT1);
-	glEnd();
+	  glBegin(GL_TRIANGLE_FAN);
+	  glColor3f(0.95f, 0.05f, 0.f);
+	  glVertex3f(0.5f, 0.5f, 0.0f);
+	  glColor3f(1.f, 0.0f, 0.f);
+	  glVertex3f(0.f, 0.f, 0.f);	
+	  glVertex3f(1.f, 0.f, 0.f);
+ 	  glVertex3f(1.f - FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
+	  glVertex3f(0.f + FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
+	  glVertex3f(0.f, 0.f, HEIGHT1);
+	  glEnd();
 	*/
 	glBegin(GL_TRIANGLE_FAN);
 	// glColor3f(0.5f, 0.25f, 0.f);
@@ -367,15 +386,14 @@ void                 Window::_put_head(
 	glColor3f(0.5f, 0.5f, 0.f);
 	COL2;
 	glVertex3f(0.f, 0.f, HEIGHT2);	
-	glVertex3f(0.5f, -0.5f, 1.f);	
+	glVertex3f(0.5f, -0.5f, 1.35f);	
 	glVertex3f(1.f, 0.f, HEIGHT2);
 	COL1;
 	glVertex3f(1.f - FRONT_INSETS_2, 1.f - FRONT_INSETS_2, HEIGHT2);
-	glVertex3f(0.f + FRONT_INSETS_2, 1.f - FRONT_INSETS_2, HEIGHT2);
+ 	glVertex3f(0.f + FRONT_INSETS_2, 1.f - FRONT_INSETS_2, HEIGHT2);
 	COL2;
 	glVertex3f(0.f, 0.f, HEIGHT2);
 	glEnd();
-	
 	
 #define SCALE_FACTOR 4.f	
 	glScalef(1 / SCALE_FACTOR, 1 / SCALE_FACTOR, 1 / SCALE_FACTOR);
