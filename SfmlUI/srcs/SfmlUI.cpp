@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/19 18:42:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/19 20:02:55 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,35 @@ SfmlUI::SfmlUI(std::pair<int, int> gameSize)
 	_snakeBodySprite(_sprites, sf::IntRect(128, 0, SPRITES_SIZE, SPRITES_SIZE)),
 	_snakeCornerSprite(_sprites, sf::IntRect(64, 0, SPRITES_SIZE, SPRITES_SIZE)),
 	_snakeTailSprite(_sprites, sf::IntRect(0, 0, SPRITES_SIZE, SPRITES_SIZE)),
-	_line(sf::LinesStrip, 2)
+	_backgroundSprite(_sprites, sf::IntRect(0, 64, SPRITES_SIZE, SPRITES_SIZE)),
+	_blockSprites{
+		sf::Sprite(_sprites, sf::IntRect(128, 64, SPRITES_SIZE, SPRITES_SIZE)),
+		sf::Sprite(_sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
+		sf::Sprite(_sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
+		sf::Sprite(_sprites, sf::IntRect(192, 64, SPRITES_SIZE, SPRITES_SIZE))
+	}
 {
+	// Load external files
 	if (!_font.loadFromFile(FONT_LOCATION))
 		throw std::runtime_error("Cannot load font");
 	if (!_sprites.loadFromFile(SPRITES_LOCATION))
 		throw std::runtime_error("Cannot load sprites");
+	// Scale sprites
+	float scale = static_cast<float>(_chunkSize) / SPRITES_SIZE;
+	_snakeHeadSprite.setScale(scale, scale);
+	_snakeBodySprite.setScale(scale, scale);
+	_snakeCornerSprite.setScale(scale, scale);
+	_snakeTailSprite.setScale(scale, scale);
+	_backgroundSprite.setScale(scale, scale);
+	for (int i = 0; i < IBlock::NOPE; ++i)
+		_blockSprites[i].setScale(scale, scale);
+	// Setup sprites
 	float center = SPRITES_SIZE / 2;
 	_snakeHeadSprite.setOrigin(center, center);
 	_snakeBodySprite.setOrigin(center, center);
 	_snakeCornerSprite.setOrigin(center, center);
 	_snakeTailSprite.setOrigin(center, center);
-	if (SPRITES_SIZE != _chunkSize)
-	{
-		float scale = static_cast<float>(_chunkSize) / SPRITES_SIZE;
-		_snakeHeadSprite.setScale(scale, scale);
-		_snakeBodySprite.setScale(scale, scale);
-		_snakeCornerSprite.setScale(scale, scale);
-		_snakeTailSprite.setScale(scale, scale);
-	}
+	// Init event map
 	_events[sf::Keyboard::Up] = EVENT_UP;
 	_events[sf::Keyboard::Right] = EVENT_RIGHT;
 	_events[sf::Keyboard::Down] = EVENT_DOWN;
@@ -53,8 +63,6 @@ SfmlUI::SfmlUI(std::pair<int, int> gameSize)
 	_events[sf::Keyboard::Num5] = EVENT_5;
 	_events[sf::Keyboard::Num6] = EVENT_6;
 	_events[sf::Keyboard::Num7] = EVENT_7;
-	_line[0].color = sf::Color(GRID_COLOR);
-	_line[1].color = sf::Color(GRID_COLOR);
 }
 
 SfmlUI::~SfmlUI(void)
@@ -81,17 +89,11 @@ EventType			SfmlUI::getEvent(void)
 void				SfmlUI::draw(IGame const &game)
 {
 	clear();
-	_drawGrid();
+	// Draw background
+	_drawBackground();
 	// Draw blocks
 	for (auto *b : game.getBlocks())
-	{
-		if (b->getType() == IBlock::GROW)
-			_drawGrowBlock(b->getX(), b->getY());
-		else if (b->getType() == IBlock::BONUS)
-			_drawBonusBlock(b->getX(), b->getY());
-		else
-			_drawWallBlock(b->getX(), b->getY());
-	}
+		_drawBlock(*b);
 	// Draw snake
 	_drawSnake(game.getSnake());
 	// Draw UI
@@ -113,44 +115,27 @@ bool				SfmlUI::windowShouldClose(void) const
 	return (!isOpen());
 }
 
-void				SfmlUI::_drawGrid(void)
+void				SfmlUI::_drawBackground(void)
 {
-	static sf::RectangleShape	rect = sf::RectangleShape(sf::Vector2f(
-		_gameSize.first * _chunkSize, _gameSize.second * _chunkSize));
-
-	rect.setPosition(_chunkSize, _chunkSize);
-	rect.setFillColor(sf::Color(GRID_COLOR, 30));
-	sf::RenderWindow::draw(rect);
-	// for (int y = 0; y <= _gameSize.second; ++y)
-	// 	_drawLine(0, y * _chunkSize, _gameSize.first * _chunkSize, 0);
-	// for (int x = 0; x <= _gameSize.first; ++x)
-	// 	_drawLine(x * _chunkSize, 0, 0, _gameSize.second * _chunkSize);
+	for (int x = (_gameSize.first - 1) * _chunkSize; x >= 0; x -= _chunkSize)
+		for (int y = (_gameSize.second - 1) * _chunkSize; y >= 0; y -= _chunkSize)
+		{
+			_backgroundSprite.setPosition(x + _chunkSize, y + _chunkSize);
+			sf::RenderWindow::draw(_backgroundSprite);
+		}
 }
 
-void				SfmlUI::_drawWallBlock(int x, int y)
+void				SfmlUI::_drawBlock(IBlock const &block)
 {
-	x *= _chunkSize;
-	y *= _chunkSize;
-	_drawLine(x, y, _chunkSize, _chunkSize);
-	_drawLine(x + _chunkSize, y, -_chunkSize, _chunkSize);
+	if (block.getType() < 0 || block.getType() >= IBlock::NOPE)
+		return ;
+	sf::Sprite &sprite = _blockSprites[block.getType()];
+	sprite.setPosition(block.getX() * _chunkSize + _chunkSize,
+		block.getY() * _chunkSize + _chunkSize);
+	sf::RenderWindow::draw(sprite);
 }
 
-void				SfmlUI::_drawGrowBlock(int x, int y)
-{
-	static int			d = _chunkSize / 4;
-
-	x *= _chunkSize;
-	y *= _chunkSize;
-	for (int w = 0; w <= _chunkSize; w += d)
-		_drawLine(x + w, y, 0, _chunkSize);
-}
-
-void				SfmlUI::_drawBonusBlock(int x, int y)
-{
-	_drawGrowBlock(x, y);
-}
-
-int					getRotation(ISnake::Chunk const &c, ISnake::Chunk const &next)
+inline int			getRotation(ISnake::Chunk const &c, ISnake::Chunk const &next)
 {
 	if (c.second == next.second)
 		return ((c.first - next.first) * 90 - 90);
@@ -225,15 +210,6 @@ void				SfmlUI::_drawOverlay(std::string const &text)
 	textDraw.setPosition(((_chunkSize * _gameSize.first + _chunkSize) - bounds.width) / 2,
 		((_chunkSize * _gameSize.second) - bounds.height + _chunkSize) / 2);
 	sf::RenderWindow::draw(textDraw);
-}
-
-void				SfmlUI::_drawLine(int x, int y, int w, int h)
-{
-	x += _chunkSize;
-	y += _chunkSize;
-	_line[0].position = sf::Vector2f(x, y);
-	_line[1].position = sf::Vector2f(x + w, y + h);
-	sf::RenderWindow::draw(_line);
 }
 
 void				SfmlUI::_drawText(float x, float y, std::string const &text, unsigned int size)

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/19 15:51:40 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/19 19:57:47 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,19 @@ protected:
 	sf::Sprite					_snakeBodySprite;
 	sf::Sprite					_snakeCornerSprite;
 	sf::Sprite					_snakeTailSprite;
+	sf::Sprite					_backgroundSprite;
+	sf::Sprite					_blockSprites[IBlock::NOPE];
 
 	sf::Font					_font;
 
 	std::map<sf::Keyboard::Key, EventType>	_events;
 
-	sf::VertexArray				_line;
-
-	void						_drawGrid(void);
-
-	void						_drawWallBlock(int x, int y);
-	void						_drawGrowBlock(int x, int y);
-	void						_drawBonusBlock(int x, int y);
-
+	void						_drawBackground(void);
+	void						_drawBlock(IBlock const &block);
 	void						_drawSnake(ISnake const &snake);
 
 	void						_drawOverlay(std::string const &text);
 	void						_drawText(float x, float y, std::string const &text, unsigned int size);
-	void						_drawLine(int x, int y, int w, int h);
 
 	static sf::VideoMode		_getWindowSize(std::pair<int, int> gameSize, int &chunkSize);
 
