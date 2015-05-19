@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/19 11:23:02 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/19 16:03:02 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,10 @@
 //  ==================================  //
 #define CHUNK_SIZE 30                   // Pixels integer
 #define SNAKE_WAVELENGTH 125.f          // Pixels float
-/* #define SNAKE_WAVELENGTH 105.f          // Pixels float */
 #define SNAKE_WIDTH 0.55f               // Percent of CHUNK_SIZE
 #define POINTS_PER_SIDE 9               //
 #define SNAKE_HEIGHT 25.f
-
-/* #define SNAKE_WAVELENGTH 17.5f            // Pixels float */
-/* #define SNAKE_WIDTH 0.8f             // Percent of CHUNK_SIZE */
-/* #define POINTS_PER_SIDE 18               // */
-
-#define PRECALC_POINTS_DELTA 0.15f        // Density of pre-calculated points
+#define PRECALC_POINTS_DELTA 0.15f      // Density of pre-calculated points
 //  ==================================  //
 
 //are all those macro evaluated preprocessor?
@@ -62,6 +56,7 @@
 
 #define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
+//todo
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)
 
 #define MAX_POINTS_PER_GROUP 40
@@ -73,7 +68,7 @@ template <size_t S1 = MAX_POINTS_PER_GROUP,
 	size_t S4 = MAX_POINTS_PER_GROUP,
 	size_t S5 = MAX_POINTS_PER_GROUP,
 	size_t S6 = MAX_POINTS_PER_GROUP>
-class CornerPoints;
+	class CornerPoints;
 class Window;
 	
 #endif

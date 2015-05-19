@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/19 14:34:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 16:00:09 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,23 @@
 
 // * STATICS **************************************************************** //
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
-
-constexpr ftce::Array<size_t, 6>    Window::sinSize;
+constexpr ftce::Array<size_t, 6>		Window::sinSize;
 constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::sinSize)>, NUM_PRECALC_POINTS>
 Window::sinPoints;
-constexpr ftce::Array<size_t, 6>    Window::dexSize;
+constexpr ftce::Array<size_t, 6>		Window::dexSize;
 constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::dexSize)>, NUM_PRECALC_POINTS>
 Window::dexPoints;
-
 #undef TEMPLATE_SIZE
-std::queue<EventType>				Window::pendingEvents;
-// std::queue<EventType>				Window::pendingEvents{EventType::EVENT_NOPE};
 
+std::queue<EventType>					Window::pendingEvents;
+std::map<t_glfwevent, EventType> const	Window::eventsMap{
+	{GLFW_KEY_UP, EventType::EVENT_UP},
+	{GLFW_KEY_LEFT, EventType::EVENT_LEFT},
+	{GLFW_KEY_RIGHT, EventType::EVENT_RIGHT},
+	{GLFW_KEY_DOWN, EventType::EVENT_DOWN},
+	{GLFW_KEY_R, EventType::EVENT_R},
+	{GLFW_KEY_SPACE, EventType::EVENT_SPACE},
+		};
 // * CONSTRUCTORS *********************************************************** //
 static void error_callback(int error, const char* description)
 {
@@ -40,22 +45,18 @@ static void error_callback(int error, const char* description)
 
 static void key_callback(GLFWwindow* window, int key, int, int action, int)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-		Window::pendingEvents.push(EventType::EVENT_UP);
-	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-		Window::pendingEvents.push(EventType::EVENT_LEFT);
-	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-		Window::pendingEvents.push(EventType::EVENT_RIGHT);
-	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-		Window::pendingEvents.push(EventType::EVENT_DOWN);
-	if (key == GLFW_KEY_R && action == GLFW_PRESS)
-		Window::pendingEvents.push(EventType::EVENT_R);
-	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		Window::pendingEvents.push(EventType::EVENT_SPACE);
+	if (action == GLFW_PRESS)
+	{
+		if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
+			glfwSetWindowShouldClose(window, GL_TRUE);
+		else
+		{
+			auto it = Window::eventsMap.find(key);
+
+			if (it != Window::eventsMap.end())
+				Window::pendingEvents.push(it->second);
+		}
+	}
 }
 
 Window::Window(std::pair<int, int> gridSize) :
@@ -75,8 +76,6 @@ Window::Window(std::pair<int, int> gridSize) :
 	_phase(0.f),
 	_deathTime(-1.f)
 {
-	// int	i = 0;
-
 	if (CHUNK_SIZEF < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
 	glfwSetErrorCallback(error_callback);
@@ -91,18 +90,11 @@ Window::Window(std::pair<int, int> gridSize) :
 		glfwTerminate();
 		throw std::runtime_error("Could not create glfw window");
 	}
-	// glfwMakeContextCurrent(_win); //useless?
-	// glfwSwapInterval(1); //useless?
-
-	// gluLookAt(3,3,3,0,0,0,0,0,1); // to test
+	glfwMakeContextCurrent(_win); //useless?
+	glfwSwapInterval(1); //useless?
 	glfwSetKeyCallback(_win, key_callback);
-
-
 	glEnable(GL_DEPTH_TEST);
-
-	glEnable( GL_MULTISAMPLE );
-	
-	glMatrixMode(GL_MODELVIEW);
+	glEnable(GL_MULTISAMPLE);
 	return ;
 }
 
@@ -171,7 +163,6 @@ float				getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f)
 	return (fmod(glfwGetTime() + selfDelta, fullTime) / fullTime);
 }
 
-
 std::deque<std::pair<int, int>>	customSnake(void)
 {
 	
@@ -235,7 +226,9 @@ void						Window::draw(IGame const &game)
 {
 	ISnake const		&snake = game.getSnake();
 	float const			elapsed = glfwGetTime() - this->_lastTime;
-
+	auto const			&q = snake.getChunks();
+	// auto const			&q = customSnake();
+	float				curPhase;
 
 	if (!snake.isDie())
 	{
@@ -264,24 +257,17 @@ void						Window::draw(IGame const &game)
 			rateTranslation * static_cast<float>(_winSize.first),
 			rateTranslation * static_cast<float>(_winSize.second), 0.f);
 		glScalef(rateScale, rateScale, rateScale);
-	}
-	// glRotatef(25.f , 0.f, 1.f, 0.f);
+	}	
 	// glRotatef(getPhaseLoop(3.f) * 75.f + .35f
 	// , 1.f, 0.f, 0.f);
 	glRotatef(25.f, 1.f, 0.f, 0.f);
-	// glRotatef(-3.f, 0.f, 0.f, 1.f);
 
-	// glTranslatef(-25.f
-	// , 130.f
-	// , -80.f
-	// );
-	
-	glMatrixMode(GL_MODELVIEW); //useless?
+
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	this->_put_grid();
-	glLoadIdentity();
 	
-
+	glLoadIdentity();
 	for (auto const *v : game.getBlocks())
 	{
 		if (v->getType() == IBlock::GROW)
@@ -295,22 +281,7 @@ void						Window::draw(IGame const &game)
 							 std::make_tuple(0.f, 0.5f, 0.f));
 	}
 
-/*
-	std::cout <<
-		"elapsed(SEC):" << elapsed <<
-		"   sec per chunk:" << (snake.getSpeed() / 1000.f) <<
-		"   fraction of chunk:" << elapsed / (snake.getSpeed() / 1000.f) <<
-
-		"   PHASE_PER_CHUNK:" << PHASE_PER_CHUNK 
-
-						<< std::endl;
-*/	
-	auto const &q = snake.getChunks();
-	// auto const &q = customSnake();
-
-	float curPhase = _phase;
-
-	
+	curPhase = this->_phase;
 	for (auto it = ++q.rbegin(), ite = --(--q.rend());
 		 it != ite;
 		 ++it)
@@ -324,9 +295,7 @@ void						Window::draw(IGame const &game)
 	curPhase = std::fmod(curPhase + PHASE_PER_CHUNK + 1.f, 1.f);
 	this->_put_head(*q.begin(), *++q.begin(), curPhase,
 					snake.getMoveRatio());
-
-	
-	glFlush(); //remove ?
+	// glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
 	this->_lastTime += elapsed;

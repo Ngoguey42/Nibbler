@@ -6,17 +6,15 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/19 15:28:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 15:33:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-//#include <iostream>
 #include "Window.class.hpp"
 #include <cmath>
 #include <cfenv>
 
-// * MEMBER FUNCTIONS / METHODS ********************************************* //
-
+// * C-STYLE FUNCTIONS ****************************************************** //
 static void					rotateChunk(std::pair<int, int> const &prevDelta)
 {
 	if (prevDelta.first != 0)
@@ -70,7 +68,7 @@ static std::pair<int, int>	buildDelta(std::pair<int, int> const &a,
 #define COL3 glColor3f(165.f / 256.f,42.f / 256.f,42.f / 256.f)
 #define COLOR3 std::make_tuple(165.f / 256.f, 42.f / 256.f, 42.f / 256.f)
 
-void						_straighSnake(float const phase,
+inline void					_straighSnake(float const phase,
 										  float const narrowFront)
 {
 	float		x;
@@ -122,7 +120,7 @@ void						_straighSnake(float const phase,
 template<typename T>
 void				putVertices(T const &array,
 								decltype(GL_TRIANGLE_STRIP) type,
-								std::tuple<float, float, float> const &color)
+								t_color const &color)
 {
 	glBegin(type);			
 	for (auto const &v : array)
@@ -139,6 +137,7 @@ void				putVertices(T const &array,
 	return ;
 }
 
+// * MEMBER FUNCTIONS / METHODS ********************************************* //
 void						Window::_putSnakeChunk(
 	std::pair<int, int> const &selfPos,
 	std::pair<int, int> const &prevPos,
@@ -190,7 +189,7 @@ void						Window::_putSnakeChunk(
 }
 
 void                        Window::_put_block(std::pair<int, int> const &topLeft,
-											   std::tuple<float, float, float> c) const
+											   t_color c) const
 {
 	glLoadIdentity();
 	glTranslatef(topLeft.first * CHUNK_SIZEF + 10
