@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/19 16:03:02 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/19 18:21:42 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 
 //  ==================================  //
 #define CHUNK_SIZE 30                   // Pixels integer
-#define SNAKE_WAVELENGTH 125.f          // Pixels float
-#define SNAKE_WIDTH 0.55f               // Percent of CHUNK_SIZE
+#define SNAKE_WAVELENGTH 115.f          // Pixels float
+#define SNAKE_WIDTH 0.60f               // Percent of CHUNK_SIZE
 #define POINTS_PER_SIDE 9               //
 #define SNAKE_HEIGHT 25.f
 #define PRECALC_POINTS_DELTA 0.15f      // Density of pre-calculated points
@@ -41,7 +41,7 @@
 #define SNAKE_WIDTH_ABSOLUTE (SNAKE_WIDTH * CHUNK_SIZEF)
 #define SNAKE_WIDTH_INV (1.f - SNAKE_WIDTH)
 #define SNAKE_WIDTH_HALF (SNAKE_WIDTH / 2.f)
-#define PHASE_PER_CHUNK (-CHUNK_SIZEF / SNAKE_WAVELENGTH)
+#define PHASE_PER_CHUNK (CHUNK_SIZEF / SNAKE_WAVELENGTH)
 #define PHASE_PER_TRIANGLE (PHASE_PER_CHUNK / POINTS_PER_SIDEF)
 #define TRIANGLES_DISTANCE (CHUNK_SIZEF / POINTS_PER_SIDEF)
 
@@ -51,7 +51,8 @@
 //      Number of points float          //
 #define NUM_PRECALC_POINTSF ftce::ceil(PHASE_MAX_DELTA / PRECALC_POINTS_DELTA)
 //      Number of points integer        //
-#define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF)
+#define NUM_PRECALC_POINTS static_cast<int>(110.f)
+/* #define NUM_PRECALC_POINTS static_cast<int>(NUM_PRECALC_POINTSF) */
 //  ==================================  //
 
 #define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f)

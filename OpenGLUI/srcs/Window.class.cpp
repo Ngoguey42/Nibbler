@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/19 16:00:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 18:12:29 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,9 +232,18 @@ void						Window::draw(IGame const &game)
 
 	if (!snake.isDie())
 	{
-		_phase -= elapsed / (snake.getSpeed() / 1000.f) * PHASE_PER_CHUNK;
-		_phase = std::fmod(_phase + 1.f, 1.f);
+		// countering the bad 'bump' effect
+		this->_phase -= (snake.getMoveRatio() - _lastMoveRatio) * PHASE_PER_CHUNK;
+
+		// countering snake current speed's normal undulation
+		_phase += elapsed / (snake.getSpeed() / 1000.f) * PHASE_PER_CHUNK ;
+
+		// speed increase according to speed
+		_phase -= (snake.getSpeed() - 150.f) / 150.f * 0.01f * 10.f;
+		
+		_phase = ftce::fmod(_phase + 1.f, 1.f);
 		this->_deathTime = -1.f;
+		this->_lastMoveRatio = snake.getMoveRatio();
 	}
 	else
 	{
@@ -262,7 +271,6 @@ void						Window::draw(IGame const &game)
 	// , 1.f, 0.f, 0.f);
 	glRotatef(25.f, 1.f, 0.f, 0.f);
 
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	this->_put_grid();
@@ -280,7 +288,6 @@ void						Window::draw(IGame const &game)
 			this->_put_block(std::make_pair(v->getX(), v->getY()),
 							 std::make_tuple(0.f, 0.5f, 0.f));
 	}
-
 	curPhase = this->_phase;
 	for (auto it = ++q.rbegin(), ite = --(--q.rend());
 		 it != ite;
@@ -288,11 +295,11 @@ void						Window::draw(IGame const &game)
 	{
 		_putSnakeChunk(
 			*(it), *(it - 1), *(it + 1), curPhase);
-		curPhase = std::fmod(curPhase + PHASE_PER_CHUNK + 1.f, 1.f);
+		curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
 	}
 	_putSnakeChunk(
 		*(++(q.begin())), *(++(++q.begin())), *(q.begin()), curPhase, true);
-	curPhase = std::fmod(curPhase + PHASE_PER_CHUNK + 1.f, 1.f);
+	curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
 	this->_put_head(*q.begin(), *++q.begin(), curPhase,
 					snake.getMoveRatio());
 	// glFlush(); //remove ?

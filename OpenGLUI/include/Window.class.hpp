@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/19 16:02:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 18:16:56 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,17 @@ private:
 	float							_lastTime;
 	float							_phase;
 	float							_deathTime;
+	float							_lastMoveRatio;
 
+/*
+Todo:
+Fix holes near angles
+Fix bad undulation at pause
+Change snake's width according to position
+Bug when changing size
+Tail
+*/
+	
 	// * STATICS ******************** //
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
 	static constexpr ftce::Array<size_t, 6>							sinSize

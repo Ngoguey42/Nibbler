@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/19 15:33:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 18:23:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -88,7 +88,7 @@ inline void					_straighSnake(float const phase,
 				   SNAKE_HEIGHT * narrow);
 
 		y += TRIANGLES_DISTANCE;
-		curphase += PHASE_PER_TRIANGLE;
+		curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
 		if (narrowFront)
 			narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
 	}
@@ -109,7 +109,7 @@ inline void					_straighSnake(float const phase,
 				   SNAKE_HEIGHT * narrow);
 		
 		y += TRIANGLES_DISTANCE;
-		curphase += PHASE_PER_TRIANGLE;
+		curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
 		if (narrowFront)
 			narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
 	}	
@@ -122,7 +122,7 @@ void				putVertices(T const &array,
 								decltype(GL_TRIANGLE_STRIP) type,
 								t_color const &color)
 {
-	glBegin(type);			
+	glBegin(type);
 	for (auto const &v : array)
 	{
 		if (v.z < .5f)
@@ -161,8 +161,17 @@ void						Window::_putSnakeChunk(
 			(prevDelta.first < 0 && nextDelta.second > 0))
 		{	// Sinistro
 			auto const	&points = Window::sinPoints[
-				std::lrint(phase * NUM_PRECALC_POINTSF - 0.5f)];
-
+				std::lrint(
+					ftce::fmod(phase, 1.f) * NUM_PRECALC_POINTSF - 0.5f)];
+/*
+			std::cout << "Accessing: "  <<
+				std::lrint(phase * NUM_PRECALC_POINTSF - 0.5f) <<
+				"   LastIndex: " << Window::sinPoints.getLastIndex() <<
+				"   Size: " << Window::sinPoints.size() <<
+				"   phase: " << phase 
+					  << std::endl;
+*/
+			
 			putVertices(points.leftStrip1, GL_TRIANGLE_STRIP, COLOR3);
 			putVertices(points.leftFan, GL_TRIANGLE_FAN, COLOR3);
 			putVertices(points.leftStrip2, GL_TRIANGLE_STRIP, COLOR3);
@@ -173,7 +182,8 @@ void						Window::_putSnakeChunk(
 		else
 		{	// Dextro
 			auto const	&points = Window::dexPoints[
-				std::lrint(phase * NUM_PRECALC_POINTSF - 0.5f)];
+				std::lrint(
+					ftce::fmod(phase, 1.f) * NUM_PRECALC_POINTSF - 0.5f)];
 
 			putVertices(points.leftStrip1, GL_TRIANGLE_STRIP, COLOR3);
 			putVertices(points.leftFan, GL_TRIANGLE_FAN, COLOR3);
@@ -228,25 +238,12 @@ void                 Window::_put_head(
 	glScalef(CHUNK_SIZEF, CHUNK_SIZEF, SNAKE_HEIGHT);
 
 	ratio -= 0.65f;
-	std::fmod(std::abs(PHASE_PER_CHUNK * ratio), 1.f);	
+	phase = ftce::fmod(phase + PHASE_PER_CHUNK * ratio, 1.f);	
+	(void)ratio;
 	glTranslatef(
 		(cosf((0.5f + phase) * M_PI * 2.f) + 1.f) / 2.f * SNAKE_WIDTH_INV -
 		SNAKE_WIDTH_INV / 2.f,
 		ratio, -0.5f);
-	/*
-#define HEIGHT1 0.60f
-#define FRONT_INSETS_1 0.15f
-	  glBegin(GL_TRIANGLE_FAN);
-	  glColor3f(0.95f, 0.05f, 0.f);
-	  glVertex3f(0.5f, 0.5f, 0.0f);
-	  glColor3f(1.f, 0.0f, 0.f);
-	  glVertex3f(0.f, 0.f, 0.f);	
-	  glVertex3f(1.f, 0.f, 0.f);
- 	  glVertex3f(1.f - FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
-	  glVertex3f(0.f + FRONT_INSETS_1, 1.f - FRONT_INSETS_1, HEIGHT1);
-	  glVertex3f(0.f, 0.f, HEIGHT1);
-	  glEnd();
-	*/
 	// Head Top
 	glBegin(GL_TRIANGLE_FAN);
 	COL3;
