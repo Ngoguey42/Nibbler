@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/18 16:57:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 18:16:56 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <queue>
 # include <tuple>
 # include <deque>
+# include <map>
 
 # include <GLFW/glfw3.h>
 
@@ -27,65 +28,80 @@
 # include "IUI.hpp"
 # include "AngledSnakePoints.class.hpp"
 
+typedef std::tuple<float, float, float>	t_color;
+typedef decltype(GLFW_KEY_DOWN)			t_glfwevent;
+
 class Window : public IUI
 {
 	Window() = delete;
 	Window(Window const &src) = delete;
 	Window						&operator=(Window const &rhs) = delete;
 public:
-	static std::queue<EventType>				pendingEvents;
-
+	// * STATICS ******************** //
+	static std::queue<EventType>					pendingEvents;
+	static std::map<t_glfwevent, EventType> const	eventsMap;
+	
+	// * CTORS / DTORS ************** //
 	Window(std::pair<int, int> gridSize);
 	virtual ~Window();
 
+	// * MEMBER FUNCTIONS / METHODS * //
 	EventType					getEvent(void);
-
 	void						draw(IGame const &game);
 	bool						windowShouldClose(void) const;
 	
 protected:
 private:
-
+	// * MEMBER FUNCTIONS / METHODS * //
 	void						_put_grid(void) const;
 	void						_put_lol(void) const;
 	void						_put_block(std::pair<int, int> const &pos,
-										   std::tuple<float, float, float> c) const;
+										   t_color c) const;
 	void						_put_head(
 		std::pair<int, int> const &selfPos,
 		std::pair<int, int> const &prevPos,
 		float phase, float ratio) const;
 	void						_putSnakeChunk(
-		std::pair<int, int> selfPos,
-		std::pair<int, int> prevPos,
-		std::pair<int, int> nextPos,
-		float phase,
-		std::tuple<float, float, float> color1 = std::make_tuple(0.f, 1.f, 0.f),
-		std::tuple<float, float, float> color2 = std::make_tuple(0.f, 0.f, 1.f)
+		std::pair<int, int> const &selfPos,
+		std::pair<int, int> const &prevPos,
+		std::pair<int, int> const &nextPos,
+		float phase, bool narrowFront = false
 		) const;
-	
+
+	// * ATTRIBUTES ***************** //
 	GLFWwindow						*_win;
-	std::pair<int, int> const		_tmpGridSize;		// Grid size (Ctor)
+	std::pair<int, int> const		_tmpGridSize;	// Grid size (Ctor)
 	
-	std::pair<int, int> const		_winSize;			// Window size
+	std::pair<int, int> const		_winSize;		// Window size
 	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
 
 	float							_lastTime;
 	float							_phase;
+	float							_deathTime;
+	float							_lastMoveRatio;
 
+/*
+Todo:
+Fix holes near angles
+Fix bad undulation at pause
+Change snake's width according to position
+Bug when changing size
+Tail
+*/
+	
+	// * STATICS ******************** //
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
-	static constexpr ftce::Array<size_t, 6>    sinSize
+	static constexpr ftce::Array<size_t, 6>							sinSize
 		{AngledSnakePoints::calcPointsArraySize(true)};
-	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(sinSize)>, NUM_PRECALC_POINTS>
-	sinPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(sinSize)>(true)};
-	static constexpr ftce::Array<size_t, 6>    dexSize
+	static constexpr ftce::Array<
+		CornerPoints<TEMPLATE_SIZE(sinSize)>, NUM_PRECALC_POINTS>	sinPoints
+		{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(sinSize)>(true)};
+	static constexpr ftce::Array<size_t, 6>							dexSize
 		{AngledSnakePoints::calcPointsArraySize(false)};
-	static constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(dexSize)>, NUM_PRECALC_POINTS>
-	dexPoints{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};
-
-	
+	static constexpr ftce::Array<
+		CornerPoints<TEMPLATE_SIZE(dexSize)>, NUM_PRECALC_POINTS>	dexPoints
+		{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};	
 #undef TEMPLATE_SIZE
-	// std::array<AngledSnakePoints, NUM_PRECALC_POINTS>	sinPoints;
-	
 };
 //std::ostream					&operator<<(std::ostream &o, Window const &rhs);
 

@@ -50,7 +50,8 @@ typename Array<T, S>::iterator	Array<T, S>::begin(void) const
 {
 	typename Array<T, S>::iterator	it;
 
-	it.setPtr(&this->_data[0]);
+	it.setPtr(this->_data);
+	// it.setPtr(&this->_data[0]);
 	return (it);
 }
 template<typename T, size_t S>
@@ -58,8 +59,9 @@ typename Array<T, S>::iterator	Array<T, S>::end(void) const
 {
 	typename Array<T, S>::iterator	it;
 
-	it.setPtr(&this->_data[this->_lastIndex + 1]);
-	return (it);	
+	it.setPtr(this->_data + (this->_lastIndex + 1));
+	// it.setPtr(&this->_data[this->_lastIndex + 1]);
+	return (it);
 }
 
 template<typename T, size_t S>
