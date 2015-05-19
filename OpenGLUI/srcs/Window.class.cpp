@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/19 13:09:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/19 14:34:37 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,11 +254,9 @@ void						Window::draw(IGame const &game)
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
 			-CHUNK_SIZEF * 1000.f, CHUNK_SIZEF * 1000.f);
-
-
 	if (snake.isDie())
 	{
-		float const		rateScale = 1.f / 
+		float const		rateScale = 1.f /
 			std::pow(glfwGetTime() - this->_deathTime + 1.f, 3.f);
 		float const		rateTranslation = ((1.f - rateScale) / 2.f);
 
