@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 14:03:29 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/19 15:51:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@
 # include "IBlock.hpp"
 # include "IUI.hpp"
 
-# define FONT_LOCATION		"lib/Sfml/misc/font.ttf"
+# define FONT_LOCATION		"SfmlUI/misc/font.ttf"
+# define SPRITES_LOCATION	"SfmlUI/misc/sprites.png"
+
+# define SPRITES_SIZE		64
 
 # define MAX_CHUNK_SIZE		64
 
@@ -42,17 +45,26 @@ protected:
 	std::pair<int, int>			_gameSize;
 	int							_chunkSize;
 
+	sf::Texture					_sprites;
+	sf::Sprite					_snakeHeadSprite;
+	sf::Sprite					_snakeBodySprite;
+	sf::Sprite					_snakeCornerSprite;
+	sf::Sprite					_snakeTailSprite;
+
 	sf::Font					_font;
 
-	std::map<int, EventType>	_events;
+	std::map<sf::Keyboard::Key, EventType>	_events;
 
 	sf::VertexArray				_line;
 
 	void						_drawGrid(void);
+
 	void						_drawWallBlock(int x, int y);
 	void						_drawGrowBlock(int x, int y);
 	void						_drawBonusBlock(int x, int y);
-	void						_drawSnakeChunk(int x, int y);
+
+	void						_drawSnake(ISnake const &snake);
+
 	void						_drawOverlay(std::string const &text);
 	void						_drawText(float x, float y, std::string const &text, unsigned int size);
 	void						_drawLine(int x, int y, int w, int h);
