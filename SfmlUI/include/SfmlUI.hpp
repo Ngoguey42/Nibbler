@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/20 16:51:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/20 18:06:29 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ protected:
 	sf::Sprite					_backgroundSprite;
 	sf::Sprite					_blockSprites[IBlock::NOPE];
 
-	sf::Font					&_font;
-
 	std::map<sf::Keyboard::Key, EventType>	_events;
+
+	sf::Font					&_font;
 
 	void						_drawBackground(void);
 	void						_drawBlock(IBlock const &block);

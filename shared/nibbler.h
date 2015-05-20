@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 18:03:03 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/20 18:35:35 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ enum	EventType
 
 # define PRINT(msg)			std::cout << msg << std::endl;
 
-# define DEBUG(msg)			PRINT("Debug: " << msg)
+# define DEBUG(msg)
+// # define DEBUG(msg)			PRINT("Debug: " << msg)
 
 #endif
