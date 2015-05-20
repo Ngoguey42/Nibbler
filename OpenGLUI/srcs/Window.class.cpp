@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/20 11:47:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/20 12:40:33 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ std::map<t_glfwevent, EventType> const	Window::eventsMap{
 	{GLFW_KEY_DOWN, EventType::EVENT_DOWN},
 	{GLFW_KEY_R, EventType::EVENT_R},
 	{GLFW_KEY_SPACE, EventType::EVENT_SPACE},
+	{GLFW_KEY_1, EventType::EVENT_1},
+	{GLFW_KEY_2, EventType::EVENT_2},
+	{GLFW_KEY_3, EventType::EVENT_3},
+	{GLFW_KEY_4, EventType::EVENT_4},
 		};
 
 // * OPENGL CALLBACKS ******************************************************* //
@@ -73,7 +77,7 @@ Window::Window(std::pair<int, int> gridSize) :
 	_winSize(std::make_pair(gridSize.first * CHUNK_SIZE + SCREEN_PADDING2,
 							gridSize.second * CHUNK_SIZE + SCREEN_PADDING2)),
 	_topLeftCell(std::make_pair(SCREEN_PADDINGF, SCREEN_PADDINGF)),
-	_lastTime(glfwGetTime()),
+	_lastTime(0.0f),
 	_phase(0.f),
 	_deathTime(-1.f),
 	_lastMoveRatio(0.f)
@@ -136,7 +140,8 @@ void						Window::draw(IGame const &game)
 		this->_phase -= (snake.getMoveRatio() - _lastMoveRatio) * PHASE_PER_CHUNK;
 
 		// countering snake current speed's normal undulation
-		_phase += elapsed / (snake.getSpeed() / 1000.f) * PHASE_PER_CHUNK ;
+		if (!game.isPaused())
+			_phase += elapsed / (snake.getSpeed() / 1000.f) * PHASE_PER_CHUNK ;
 
 		// speed increase according to speed
 		_phase -= (snake.getSpeed() - 150.f) / 150.f * 0.01f * 10.f;
