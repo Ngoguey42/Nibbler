@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/19 18:23:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/20 12:45:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -202,8 +202,8 @@ void                        Window::_put_block(std::pair<int, int> const &topLef
 											   t_color c) const
 {
 	glLoadIdentity();
-	glTranslatef(topLeft.first * CHUNK_SIZEF + 10
-				 , topLeft.second * CHUNK_SIZEF + 10
+	glTranslatef(topLeft.first * CHUNK_SIZEF + SCREEN_PADDINGF
+				 , topLeft.second * CHUNK_SIZEF + SCREEN_PADDINGF
 				 , -0.0f);
 	glBegin(GL_TRIANGLE_STRIP);
 	glColor3f(std::get<0>(c) * 1.f, std::get<1>(c) * 1.f, std::get<2>(c) * 1.f);
