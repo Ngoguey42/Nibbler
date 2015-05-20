@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/19 18:16:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/20 19:28:44 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ private:
 		std::pair<int, int> const &selfPos,
 		std::pair<int, int> const &prevPos,
 		std::pair<int, int> const &nextPos,
-		float phase, bool narrowFront = false
+		float phase, float frontThickness = 1.f, float rearThickness = 1.f
 		) const;
 
 	// * ATTRIBUTES ***************** //
@@ -79,14 +79,12 @@ private:
 	float							_phase;
 	float							_deathTime;
 	float							_lastMoveRatio;
-
+	
+	
 /*
 Todo:
 Fix holes near angles
-Fix bad undulation at pause
-Change snake's width according to position
 Bug when changing size
-Tail
 */
 	
 	// * STATICS ******************** //
