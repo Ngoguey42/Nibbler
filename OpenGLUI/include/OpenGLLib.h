@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/20 12:41:57 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/20 18:54:45 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #define POINTS_PER_SIDE 9               // Integer
 #define SNAKE_HEIGHT 25.f				// Float, z-axis
 #define PRECALC_POINTS_DELTA 0.15f      // Density of pre-calculated points
-#define SCREEN_PADDING CHUNK_SIZE				// Pixels integer
+#define SCREEN_PADDING CHUNK_SIZE		// Pixels integer
 #define NUM_PRECALC_POINTS 110			// Integer, array size
 
 // =========== CONVERSIONS ========== //
@@ -68,5 +68,8 @@ template <size_t S1 = MAX_POINTS_PER_GROUP,
 	size_t S6 = MAX_POINTS_PER_GROUP>
 	class CornerPoints;
 class Window;
-	
+
+std::pair<int, int>  buildDelta(std::pair<int, int> const &a,
+								std::pair<int, int> const &b);
+
 #endif

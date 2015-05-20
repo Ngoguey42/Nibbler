@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/20 12:45:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/20 19:31:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,8 +44,8 @@ static void					rotateChunk(std::pair<int, int> const &prevDelta)
 	return ;
 }
 
-static std::pair<int, int>	buildDelta(std::pair<int, int> const &a,
-									   std::pair<int, int> const &b)
+std::pair<int, int>	buildDelta(std::pair<int, int> const &a,
+							   std::pair<int, int> const &b)
 {
 	std::pair<int, int>	delta(b.first - a.first,
 							  b.second - a.second);
@@ -68,12 +68,14 @@ static std::pair<int, int>	buildDelta(std::pair<int, int> const &a,
 #define COL3 glColor3f(165.f / 256.f,42.f / 256.f,42.f / 256.f)
 #define COLOR3 std::make_tuple(165.f / 256.f, 42.f / 256.f, 42.f / 256.f)
 
-inline void					_straighSnake(float const phase,
-										  float const narrowFront)
+inline void					_straightSnake(float const phase,
+										  float const frontThickness,
+										  float const rearThickness)
 {
 	float		x;
 	float		y = 0.f;
-	float		narrow = 1.f;
+	float		narrow = rearThickness;
+	float const	deltaNarrow = (frontThickness - rearThickness) / POINTS_PER_SIDEF;
 	float		curphase = phase;
 
 	glBegin(GL_TRIANGLE_STRIP);
@@ -89,14 +91,15 @@ inline void					_straighSnake(float const phase,
 
 		y += TRIANGLES_DISTANCE;
 		curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
-		if (narrowFront)
-			narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
+		// if (frontThickness)
+		narrow += deltaNarrow;
+		// narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
 	}
 	glEnd();
 
 	curphase = phase;
 	y = 0.f;
-	narrow = 1.f;
+	narrow = rearThickness;
 	glBegin(GL_TRIANGLE_STRIP);
 	for (int i = 0; i <= POINTS_PER_SIDE; i++)
 	{
@@ -110,17 +113,21 @@ inline void					_straighSnake(float const phase,
 		
 		y += TRIANGLES_DISTANCE;
 		curphase = ftce::fmod(curphase + PHASE_PER_TRIANGLE, 1.f);
-		if (narrowFront)
-			narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
+		// if (frontThickness)
+		narrow += deltaNarrow;
+		// narrow -= 1.f / POINTS_PER_SIDEF * 0.55f;
 	}	
 	glEnd();	
 	return ;
+	(void)deltaNarrow;
+	(void)narrow;
+	(void)frontThickness;
+	(void)rearThickness;
 }
 
 template<typename T>
-void				putVertices(T const &array,
-								decltype(GL_TRIANGLE_STRIP) type,
-								t_color const &color)
+void				putVertices(
+	T const &array, decltype(GL_TRIANGLE_STRIP) type, t_color const &color)
 {
 	glBegin(type);
 	for (auto const &v : array)
@@ -142,7 +149,7 @@ void						Window::_putSnakeChunk(
 	std::pair<int, int> const &selfPos,
 	std::pair<int, int> const &prevPos,
 	std::pair<int, int> const &nextPos,
-	float phase, bool narrowFront
+	float phase, float frontThickness /*= 1.f*/, float rearThickness /*= 1.f*/
 	) const
 {
 	std::pair<int, int> prevDelta(buildDelta(prevPos, selfPos));
@@ -163,15 +170,7 @@ void						Window::_putSnakeChunk(
 			auto const	&points = Window::sinPoints[
 				std::lrint(
 					ftce::fmod(phase, 1.f) * NUM_PRECALC_POINTSF - 0.5f)];
-/*
-			std::cout << "Accessing: "  <<
-				std::lrint(phase * NUM_PRECALC_POINTSF - 0.5f) <<
-				"   LastIndex: " << Window::sinPoints.getLastIndex() <<
-				"   Size: " << Window::sinPoints.size() <<
-				"   phase: " << phase 
-					  << std::endl;
-*/
-			
+
 			putVertices(points.leftStrip1, GL_TRIANGLE_STRIP, COLOR3);
 			putVertices(points.leftFan, GL_TRIANGLE_FAN, COLOR3);
 			putVertices(points.leftStrip2, GL_TRIANGLE_STRIP, COLOR3);
@@ -184,7 +183,7 @@ void						Window::_putSnakeChunk(
 			auto const	&points = Window::dexPoints[
 				std::lrint(
 					ftce::fmod(phase, 1.f) * NUM_PRECALC_POINTSF - 0.5f)];
-
+	
 			putVertices(points.leftStrip1, GL_TRIANGLE_STRIP, COLOR3);
 			putVertices(points.leftFan, GL_TRIANGLE_FAN, COLOR3);
 			putVertices(points.leftStrip2, GL_TRIANGLE_STRIP, COLOR3);
@@ -194,7 +193,7 @@ void						Window::_putSnakeChunk(
 		}
 	}
 	else
-		_straighSnake(phase, narrowFront);
+		_straightSnake(phase, frontThickness, rearThickness);
 	return ;
 }
 

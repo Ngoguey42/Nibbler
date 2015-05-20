@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/20 12:40:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/20 19:27:20 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,13 @@ Window::~Window()
 {
 	glfwDestroyWindow(_win);
 	glfwTerminate();
+	while (!Window::pendingEvents.empty())
+		Window::pendingEvents.pop();
 	std::cout << "[Window]() Dtor called" << std::endl;
 	return ;
 }
 
-// * UI-CALLBACK MEMBER FUNCTIONS ******************************************* //
+// * UI MEMBER FUNCTIONS **************************************************** //
 EventType					Window::getEvent(void)
 {
 	auto ev = EventType::EVENT_NOPE;
@@ -131,14 +133,15 @@ void						Window::draw(IGame const &game)
 	ISnake const		&snake = game.getSnake();
 	float const			elapsed = glfwGetTime() - this->_lastTime;
 	auto const			&q = snake.getChunks();
+	auto				it = q.rbegin();
 	// auto const			&q = customSnake();
 	float				curPhase;
-
+	
 	if (!snake.isDie())
 	{
 		// countering the bad 'bump' effect
 		this->_phase -= (snake.getMoveRatio() - _lastMoveRatio) * PHASE_PER_CHUNK;
-
+		
 		// countering snake current speed's normal undulation
 		if (!game.isPaused())
 			_phase += elapsed / (snake.getSpeed() / 1000.f) * PHASE_PER_CHUNK ;
@@ -146,9 +149,10 @@ void						Window::draw(IGame const &game)
 		// speed increase according to speed
 		_phase -= (snake.getSpeed() - 150.f) / 150.f * 0.01f * 10.f;
 		
-		_phase = ftce::fmod(_phase + 1.f, 1.f);
+		_phase = ftce::fmod(_phase, 1.f);
 		this->_deathTime = -1.f;
 		this->_lastMoveRatio = snake.getMoveRatio();
+		
 	}
 	else
 	{
@@ -194,20 +198,46 @@ void						Window::draw(IGame const &game)
 							 std::make_tuple(0.f, 0.5f, 0.f));
 	}
 	curPhase = this->_phase;
-	for (auto it = ++q.rbegin(), ite = --(--q.rend());
-		 it != ite;
-		 ++it)
+	// Outputing tail
+	if ((buildDelta(*it, *(it + 1)).first != 0) !=
+		(buildDelta(*(it + 1), *(it + 2)).first != 0))
+	{ // last 3 chunks forms an angle
+		std::cout << "angle" << std::endl;
+		
+		_putSnakeChunk(*(it),
+					   std::make_pair(it->first * 2 - (it + 1)->first,
+									  it->second * 2 - (it + 1)->second)
+					   , *(it + 1), curPhase, 1.f, 0.00f);
+		curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
+		++it;
+	}
+	else
+	{ // they don't
+		std::cout << "not angle" << std::endl;
+		_putSnakeChunk(*(it),
+					   std::make_pair(it->first * 2 - (it + 1)->first,
+									  it->second * 2 - (it + 1)->second)
+					   , *(it + 1), curPhase, 0.5f, 0.00f);
+		curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
+		++it;
+		_putSnakeChunk(*(it), *(it - 1), *(it + 1), curPhase, 1.f, 0.5f);
+		curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
+		++it;
+	}
+	// Outputing body
+	for (auto const &ite = q.rend() - 2; it != ite; ++it)
 	{
 		_putSnakeChunk(
 			*(it), *(it - 1), *(it + 1), curPhase);
 		curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
 	}
+	// Outputing neck
 	_putSnakeChunk(
-		*(++(q.begin())), *(++(++q.begin())), *(q.begin()), curPhase, true);
+		*(++(q.begin())), *(++(++q.begin())), *(q.begin()), curPhase, 0.56);	
 	curPhase = ftce::fmod(curPhase + PHASE_PER_CHUNK, 1.f);
+	// Outputing head
 	this->_put_head(*q.begin(), *++q.begin(), curPhase,
 					snake.getMoveRatio());
-	// glFlush(); //remove ?
 	glfwSwapBuffers(_win);
 	glfwPollEvents();
 	this->_lastTime += elapsed;
