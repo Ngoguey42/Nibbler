@@ -1,5 +1,5 @@
 #
-# ../NcursesUI.so
+# NcursesUI.so
 #
 # Makefile
 #
@@ -79,5 +79,5 @@ re: fclean all
 .PHONY: re
 
 make: fclean
-	@python makemake.py
+	@(curl -f https://raw.githubusercontent.com/Julow/makemake/master/makemake.py | python) && echo Done || echo Fail
 .PHONY: make

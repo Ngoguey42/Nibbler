@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/19 20:02:55 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/20 18:06:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,22 @@
 #include "IGame.hpp"
 #include "ISnake.hpp"
 
-SfmlUI::SfmlUI(std::pair<int, int> gameSize)
+SfmlUI::SfmlUI(std::pair<int, int> gameSize, sf::Texture &sprites, sf::Font &font)
 	: sf::RenderWindow(_getWindowSize(gameSize, _chunkSize), WINDOW_TITLE, sf::Style::Close),
 	_gameSize(gameSize),
-	_snakeHeadSprite(_sprites, sf::IntRect(192, 0, SPRITES_SIZE, SPRITES_SIZE)),
-	_snakeBodySprite(_sprites, sf::IntRect(128, 0, SPRITES_SIZE, SPRITES_SIZE)),
-	_snakeCornerSprite(_sprites, sf::IntRect(64, 0, SPRITES_SIZE, SPRITES_SIZE)),
-	_snakeTailSprite(_sprites, sf::IntRect(0, 0, SPRITES_SIZE, SPRITES_SIZE)),
-	_backgroundSprite(_sprites, sf::IntRect(0, 64, SPRITES_SIZE, SPRITES_SIZE)),
+	_snakeHeadSprite(sprites, sf::IntRect(192, 0, SPRITES_SIZE, SPRITES_SIZE)),
+	_snakeBodySprite(sprites, sf::IntRect(128, 0, SPRITES_SIZE, SPRITES_SIZE)),
+	_snakeCornerSprite(sprites, sf::IntRect(64, 0, SPRITES_SIZE, SPRITES_SIZE)),
+	_snakeTailSprite(sprites, sf::IntRect(0, 0, SPRITES_SIZE, SPRITES_SIZE)),
+	_backgroundSprite(sprites, sf::IntRect(0, 64, SPRITES_SIZE, SPRITES_SIZE)),
 	_blockSprites{
-		sf::Sprite(_sprites, sf::IntRect(128, 64, SPRITES_SIZE, SPRITES_SIZE)),
-		sf::Sprite(_sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
-		sf::Sprite(_sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
-		sf::Sprite(_sprites, sf::IntRect(192, 64, SPRITES_SIZE, SPRITES_SIZE))
-	}
+		sf::Sprite(sprites, sf::IntRect(128, 64, SPRITES_SIZE, SPRITES_SIZE)),
+		sf::Sprite(sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
+		sf::Sprite(sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
+		sf::Sprite(sprites, sf::IntRect(192, 64, SPRITES_SIZE, SPRITES_SIZE))
+	},
+	_font(font)
 {
-	// Load external files
-	if (!_font.loadFromFile(FONT_LOCATION))
-		throw std::runtime_error("Cannot load font");
-	if (!_sprites.loadFromFile(SPRITES_LOCATION))
-		throw std::runtime_error("Cannot load sprites");
 	// Scale sprites
 	float scale = static_cast<float>(_chunkSize) / SPRITES_SIZE;
 	_snakeHeadSprite.setScale(scale, scale);
