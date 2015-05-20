@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/19 18:12:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/20 11:47:18 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,22 @@
 #include "ISnake.hpp"
 #include "IBlock.hpp"
 
-#define TMP_PADDING ((int)10)
+// #define TMP_PADDING ((int)10)
+
+float				getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f);
+float				getPhase(float fullTime = 3.f, float selfDelta = 0.f);
+std::deque<std::pair<int, int>>		customSnake(void);
 
 // * STATICS **************************************************************** //
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
 constexpr ftce::Array<size_t, 6>		Window::sinSize;
-constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::sinSize)>, NUM_PRECALC_POINTS>
-Window::sinPoints;
+constexpr ftce::Array<
+	CornerPoints<TEMPLATE_SIZE(Window::sinSize)>, NUM_PRECALC_POINTS
+	>									Window::sinPoints;
 constexpr ftce::Array<size_t, 6>		Window::dexSize;
-constexpr ftce::Array<CornerPoints<TEMPLATE_SIZE(Window::dexSize)>, NUM_PRECALC_POINTS>
-Window::dexPoints;
+constexpr ftce::Array<
+	CornerPoints<TEMPLATE_SIZE(Window::dexSize)>, NUM_PRECALC_POINTS
+	>									Window::dexPoints;
 #undef TEMPLATE_SIZE
 
 std::queue<EventType>					Window::pendingEvents;
@@ -37,7 +43,8 @@ std::map<t_glfwevent, EventType> const	Window::eventsMap{
 	{GLFW_KEY_R, EventType::EVENT_R},
 	{GLFW_KEY_SPACE, EventType::EVENT_SPACE},
 		};
-// * CONSTRUCTORS *********************************************************** //
+
+// * OPENGL CALLBACKS ******************************************************* //
 static void error_callback(int error, const char* description)
 {
 	std::cout << description << "(" << error << ")" << std::endl;
@@ -59,22 +66,17 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 	}
 }
 
+// * CONSTRUCTORS *********************************************************** //
 Window::Window(std::pair<int, int> gridSize) :
+	_win(nullptr),
 	_tmpGridSize(gridSize),
-	_winSize(
-		std::make_pair(
-			static_cast<int>(std::ceilf(
-								 static_cast<float>(gridSize.first) *
-								 CHUNK_SIZEF)) + TMP_PADDING * 2,
-			static_cast<int>(std::ceilf(
-								 static_cast<float>(gridSize.second) *
-								 CHUNK_SIZEF)) + TMP_PADDING * 2
-			)),
-	_topLeftCell(std::make_pair(static_cast<float>(TMP_PADDING),
-								static_cast<float>(TMP_PADDING))),
+	_winSize(std::make_pair(gridSize.first * CHUNK_SIZE + SCREEN_PADDING2,
+							gridSize.second * CHUNK_SIZE + SCREEN_PADDING2)),
+	_topLeftCell(std::make_pair(SCREEN_PADDINGF, SCREEN_PADDINGF)),
 	_lastTime(glfwGetTime()),
 	_phase(0.f),
-	_deathTime(-1.f)
+	_deathTime(-1.f),
+	_lastMoveRatio(0.f)
 {
 	if (CHUNK_SIZEF < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -107,11 +109,7 @@ Window::~Window()
 	return ;
 }
 
-// * OPERATORS ************************************************************** //
-// * GETTERS **************************************************************** //
-// * SETTERS **************************************************************** //
-// * MEMBER FUNCTIONS / METHODS ********************************************* //
-
+// * UI-CALLBACK MEMBER FUNCTIONS ******************************************* //
 EventType					Window::getEvent(void)
 {
 	auto ev = EventType::EVENT_NOPE;
@@ -122,104 +120,6 @@ EventType					Window::getEvent(void)
 		Window::pendingEvents.pop();
 	}
 	return (ev);
-}
-
-void						Window::_put_grid(void) const
-{
-	int		i;
-
-	glBegin(GL_LINES);
-	glColor3f(0.f, .3f, 0.f);
-	i = 0;
-	for (float y = _topLeftCell.second; i <= _tmpGridSize.second;
-		 i++, y += CHUNK_SIZEF)
-	{
-		glVertex3f(_topLeftCell.first, y, 0.f);
-		glVertex3f(_winSize.first - _topLeftCell.first, y, 0.f);
-	}
-	i = 0;
-	for (float x = _topLeftCell.first; i <= _tmpGridSize.first;
-		 i++, x += CHUNK_SIZEF)
-	{
-		glVertex3f(x, _topLeftCell.second, 0.f);
-		glVertex3f(x, _winSize.second - _topLeftCell.second, 0.f);		
-	}	
-	glEnd();
-	return ;
-}
-
-float				getPhase(float fullTime = 3.f, float selfDelta = 0.f)
-{
-	float randRange = fmod(glfwGetTime() + selfDelta, fullTime) /
-		(fullTime / 2.f);
-
-	if (randRange < 1.f)
-		return (randRange - 0.5f);
-	return (1.f - randRange + 0.5f);
-}
-
-float				getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f)
-{
-	return (fmod(glfwGetTime() + selfDelta, fullTime) / fullTime);
-}
-
-std::deque<std::pair<int, int>>	customSnake(void)
-{
-	
-	std::deque<std::pair<int, int>>		q;
-
-	q.push_front(std::make_pair(3, 0)); //tail
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	
-	
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-		
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
-
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
-
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
-
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
-
-	
-	return (q);
 }
 
 void						Window::draw(IGame const &game)
@@ -313,4 +213,101 @@ bool						Window::windowShouldClose(void) const
 	return (glfwWindowShouldClose(_win));
 }
 
-// * NESTED_CLASSES ********************************************************* //
+// * DEBUG FUNCTIONS ******************************************************** //
+void				Window::_put_grid(void) const
+{
+	int		i;
+
+	glBegin(GL_LINES);
+	glColor3f(0.f, .3f, 0.f);
+	i = 0;
+	for (float y = _topLeftCell.second; i <= _tmpGridSize.second;
+		 i++, y += CHUNK_SIZEF)
+	{
+		glVertex3f(_topLeftCell.first, y, 0.f);
+		glVertex3f(_winSize.first - _topLeftCell.first, y, 0.f);
+	}
+	i = 0;
+	for (float x = _topLeftCell.first; i <= _tmpGridSize.first;
+		 i++, x += CHUNK_SIZEF)
+	{
+		glVertex3f(x, _topLeftCell.second, 0.f);
+		glVertex3f(x, _winSize.second - _topLeftCell.second, 0.f);		
+	}	
+	glEnd();
+	return ;
+}
+
+float				getPhase(
+	float fullTime /*= 3.f*/, float selfDelta /*= 0.f*/)
+{
+	float randRange = fmod(glfwGetTime() + selfDelta, fullTime) /
+		(fullTime / 2.f);
+
+	if (randRange < 1.f)
+		return (randRange - 0.5f);
+	return (1.f - randRange + 0.5f);
+}
+
+float				getPhaseLoop(
+	float fullTime /*= 10.f*/, float selfDelta /*= 0.f*/)
+{
+	return (fmod(glfwGetTime() + selfDelta, fullTime) / fullTime);
+}
+
+std::deque<std::pair<int, int>>	customSnake(void)
+{
+	
+	std::deque<std::pair<int, int>>		q;
+
+	q.push_front(std::make_pair(3, 0)); //tail
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	
+	
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+		
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second - 1));
+
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first + 1, q.front().second));
+
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+	q.push_front(std::make_pair(q.front().first, q.front().second + 1));
+
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));
+	q.push_front(std::make_pair(q.front().first - 1, q.front().second));	
+	return (q);
+}
