@@ -6,7 +6,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/18 12:45:11 by jaguillo          #+#    #+#              #
-#    Updated: 2015/05/18 16:58:06 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/05/21 16:10:27 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,13 @@ _all:
 	@make -C NcursesUI
 	@make -C OpenGLUI
 	@make -C SfmlUI
+	@make -C SDLUI
 
 $(RULES):
 	@make -C Core $@
 	@make -C NcursesUI $@
 	@make -C OpenGLUI $@
 	@make -C SfmlUI $@
+	@make -C SDLUI $@
 
 .PHONY: all _all $(RULES)

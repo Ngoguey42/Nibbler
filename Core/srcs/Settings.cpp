@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/18 17:46:50 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 18:27:17 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/21 16:08:36 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,54 +29,17 @@ Settings::Settings(int argc, char **argv)
 
 	// Options
 	while ((tmp = ft_argvopt(&args)) != NULL)
-		if (std::strcmp(tmp, "ui") == 0)
-		{
-			if (!ARGS_DATA(args))
-				throw std::invalid_argument("--ui option need data");
-			initialUI = ft_argvarg(&args);
-		}
-		else if (std::strcmp(tmp, "wall-through") == 0)
-		{
-			if (!ARGS_DATA(args))
-				throw std::invalid_argument("--wall-through option need data");
-			wallThrough = (ft_argvarg(&args)[0] == 'y') ? true : false;
-		}
-		else if (std::strcmp(tmp, "t") == 0)
-			wallThrough = true;
-		else if (std::strcmp(tmp, "length") == 0)
-		{
-			if (!ARGS_DATA(args))
-				throw std::invalid_argument("--length option need data");
-			initialLength = atoi(ft_argvarg(&args));
-		}
-		else if (std::strcmp(tmp, "l") == 0)
-		{
-			if ((tmp = ft_argvarg(&args)) == NULL)
-				throw std::invalid_argument("-l option need a numeric value");
-			initialLength = atoi(tmp);
-		}
-		else if (std::strcmp(tmp, "wall") == 0)
-		{
-			if (!ARGS_DATA(args))
-				throw std::invalid_argument("--wall option need data");
-			initialWalls = atoi(ft_argvarg(&args));
-		}
-		else if (std::strcmp(tmp, "w") == 0)
-		{
-			if ((tmp = ft_argvarg(&args)) == NULL)
-				throw std::invalid_argument("-w option need a numeric value");
-			initialWalls = atoi(tmp);
-		}
-		else if (std::strcmp(tmp, "bonus-to-wall") == 0)
-		{
-			if (!ARGS_DATA(args))
-				throw std::invalid_argument("--bonus-to-wall option need data");
-			bonusToWall = (ft_argvarg(&args)[0] == 'y') ? true : false;
-		}
-		else if (std::strcmp(tmp, "b") == 0)
-			bonusToWall = false;
-		else
-			throw std::invalid_argument(std::string("Invalid option: ") += tmp);
+	{
+		int i = -1;
+		while (Settings::_opts[++i].opt != NULL)
+			if (strcmp(tmp, Settings::_opts[i].opt) == 0)
+			{
+				(this->*(Settings::_opts[i].f))(&args, tmp);
+				break ;
+			}
+		if (Settings::_opts[i].opt == NULL)
+			throw std::invalid_argument(std::string("Invalid option -- ") += tmp);
+	}
 	// Arguments
 	if ((tmp = ft_argvarg(&args)) == NULL)
 		throw std::invalid_argument("Argument 'game_width' required");
@@ -89,8 +52,6 @@ Settings::Settings(int argc, char **argv)
 		throw std::invalid_argument("Invalid 'game_width' argument");
 	if (gameHeight < MIN_GAME_HEIGHT || gameHeight > MAX_GAME_HEIGHT)
 		throw std::invalid_argument("Invalid 'game_width' argument");
-	if (initialLength < MIN_LENGTH || initialLength > MAX_LENGTH)
-		throw std::invalid_argument("Invalid 'length' argument");
 	// Default
 	if (initialWalls < 0)
 		initialWalls = INITIAL_WALLS;
@@ -104,3 +65,83 @@ Settings::Settings(int argc, char **argv)
 Settings::~Settings(void)
 {
 }
+
+void			Settings::_optUI(t_args *args, char *)
+{
+	static char const	*uis[] = {UI_1, UI_2, UI_3, UI_4};
+
+	if (!ARGS_DATA(*args))
+		throw std::invalid_argument("--ui option need a value");
+	char *tmp = ft_argvarg(args);
+	if (tmp == NULL)
+		throw std::invalid_argument("--ui option need a value");
+	if (strlen(tmp) == 1 && *tmp >= '0' && *tmp <= '4')
+		initialUI = uis[*tmp - '0'];
+	else
+		initialUI = ft_argvarg(args);
+}
+
+void			Settings::_optWallThrough(t_args *args, char *opt)
+{
+	if (strcmp(opt, "t") == 0)
+	{
+		wallThrough = true;
+		return ;
+	}
+	if (!ARGS_DATA(*args))
+		throw std::invalid_argument("--wall-through option need a value");
+	char *tmp = ft_argvarg(args);
+	if (tmp == NULL)
+		throw std::invalid_argument("-wall-through option need a value");
+	wallThrough = (tmp[0] == 'y') ? true : false;
+}
+
+void			Settings::_optLength(t_args *args, char *opt)
+{
+	if (strcmp(opt, "length") == 0 && !ARGS_DATA(*args))
+		throw std::invalid_argument("--length option need a value");
+	char *tmp = ft_argvarg(args);
+	if (tmp == NULL)
+		throw std::invalid_argument("-l option need a value");
+	initialLength = atoi(tmp);
+	if (initialLength < MIN_LENGTH || initialLength > MAX_LENGTH)
+		throw std::invalid_argument("Invalid 'length' argument");
+}
+
+void			Settings::_optWalls(t_args *args, char *opt)
+{
+	if (strcmp(opt, "wall") == 0 && !ARGS_DATA(*args))
+		throw std::invalid_argument("--wall option need a value");
+	char *tmp = ft_argvarg(args);
+	if (tmp == NULL)
+		throw std::invalid_argument("-w option need a value");
+	initialWalls = atoi(tmp);
+}
+
+void			Settings::_optBonusToWall(t_args *args, char *opt)
+{
+	if (strcmp(opt, "b") == 0)
+	{
+		bonusToWall = false;
+		return ;
+	}
+	if (!ARGS_DATA(*args))
+		throw std::invalid_argument("--bonus-to-wall option need a value");
+	char *tmp = ft_argvarg(args);
+	if (tmp == NULL)
+		throw std::invalid_argument("-bonus-to-wall option need a value");
+	bonusToWall = (tmp[0] == 'y') ? true : false;
+}
+
+Settings::Opt	Settings::_opts[] = {
+	{"ui", &Settings::_optUI},
+	{"t", &Settings::_optWallThrough},
+	{"wall-through", &Settings::_optWallThrough},
+	{"l", &Settings::_optLength},
+	{"length", &Settings::_optLength},
+	{"w", &Settings::_optWalls},
+	{"wall", &Settings::_optWalls},
+	{"b", &Settings::_optBonusToWall},
+	{"bonus-to-wall", &Settings::_optBonusToWall},
+	{NULL, NULL}
+};

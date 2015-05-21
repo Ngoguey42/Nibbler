@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/20 18:35:35 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/21 16:08:51 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ enum	EventType
 # define UI_1				"OpenGLUI/OpenGLUI.so"
 # define UI_2				"NcursesUI/NcursesUI.so"
 # define UI_3				"SfmlUI/SfmlUI.so"
+# define UI_4				"SDLUI/SDLUI.so"
 
 # define INITIAL_UI			UI_2
 
@@ -77,6 +78,8 @@ enum	EventType
 */
 
 // # define EACH(it,c)			auto it = (c).begin(); it != (c).end(); ++it
+
+# define CAT(a, b)			a##b
 
 # define STR_VALUE(s)		#s
 # define STR(s)				STR_VALUE(s)
