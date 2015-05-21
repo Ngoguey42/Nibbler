@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/18 17:46:50 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 16:08:36 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/21 19:35:31 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ Settings::Settings(int argc, char **argv)
 		throw std::invalid_argument("Invalid 'game_width' argument");
 	if (gameHeight < MIN_GAME_HEIGHT || gameHeight > MAX_GAME_HEIGHT)
 		throw std::invalid_argument("Invalid 'game_width' argument");
+	if (initialLength < MIN_LENGTH || initialLength > MAX_LENGTH)
+		throw std::invalid_argument("Invalid 'length' argument");
 	// Default
 	if (initialWalls < 0)
 		initialWalls = INITIAL_WALLS;
@@ -75,8 +77,8 @@ void			Settings::_optUI(t_args *args, char *)
 	char *tmp = ft_argvarg(args);
 	if (tmp == NULL)
 		throw std::invalid_argument("--ui option need a value");
-	if (strlen(tmp) == 1 && *tmp >= '0' && *tmp <= '4')
-		initialUI = uis[*tmp - '0'];
+	if (strlen(tmp) == 1 && *tmp >= '1' && *tmp <= '4')
+		initialUI = uis[*tmp - '1'];
 	else
 		initialUI = ft_argvarg(args);
 }
@@ -104,8 +106,6 @@ void			Settings::_optLength(t_args *args, char *opt)
 	if (tmp == NULL)
 		throw std::invalid_argument("-l option need a value");
 	initialLength = atoi(tmp);
-	if (initialLength < MIN_LENGTH || initialLength > MAX_LENGTH)
-		throw std::invalid_argument("Invalid 'length' argument");
 }
 
 void			Settings::_optWalls(t_args *args, char *opt)
