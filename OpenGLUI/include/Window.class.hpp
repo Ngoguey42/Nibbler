@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/20 19:28:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/21 19:22:40 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <GLFW/glfw3.h>
 
 # include "nibbler.h"
+# include "IBlock.hpp"
 # include "OpenGLLib.h"
 # include "IUI.hpp"
 # include "AngledSnakePoints.class.hpp"
@@ -56,7 +57,7 @@ private:
 	void						_put_grid(void) const;
 	void						_put_lol(void) const;
 	void						_put_block(std::pair<int, int> const &pos,
-										   t_color c) const;
+										   IBlock::Type type) const;
 	void						_put_head(
 		std::pair<int, int> const &selfPos,
 		std::pair<int, int> const &prevPos,
@@ -83,8 +84,8 @@ private:
 	
 /*
 Todo:
-Fix holes near angles
-Bug when changing size
+Narrow Z in neck's angle
+
 */
 	
 	// * STATICS ******************** //
