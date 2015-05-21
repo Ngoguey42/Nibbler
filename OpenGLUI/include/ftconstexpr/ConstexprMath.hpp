@@ -1,4 +1,14 @@
-
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   ConstexprMath.hpp                                  :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/05/21 16:19:29 by ngoguey           #+#    #+#             //
+//   Updated: 2015/05/21 16:21:49 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef CONSTEXPRMATH_HPP
 # define CONSTEXPRMATH_HPP
@@ -97,6 +107,24 @@ constexpr T			cos(T x)
 		+ (ftce::pow<T>(x, 12) / static_cast<T>(479001600))	// MaxError: +0.0001009(-0.0100911%)
 		// - (ftce::pow(x, 14) / ftce::factorial(14))	// MaxError: +0.0070322(-0.7032156%)
 		// + (ftce::pow(x, 16) / ftce::factorial(16))	// MaxError: +0.0378902(-3.7890196%)
+		);
+}
+
+template<typename T>
+constexpr T			sin(T x) // untested
+{
+	static_assert(std::is_floating_point<T>::value, "ftce::sin only takes floating points types");
+	while (x > M_PI)
+		x -= static_cast<T>(2. * M_PI);
+	while (x < -M_PI)
+		x += static_cast<T>(2. * M_PI);
+	return (x
+		- (ftce::pow<T>(x, 3) / static_cast<T>(6))
+		+ (ftce::pow<T>(x, 5) / static_cast<T>(120))
+		- (ftce::pow<T>(x, 7) / static_cast<T>(5040))
+		+ (ftce::pow<T>(x, 9) / static_cast<T>(362880))
+		- (ftce::pow<T>(x, 11) / static_cast<T>(39916800))
+		+ (ftce::pow<T>(x, 13) / static_cast<T>(6227020800LL))
 		);
 }
 

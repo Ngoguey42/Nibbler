@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/20 19:27:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/21 19:21:23 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ EventType					Window::getEvent(void)
 {
 	auto ev = EventType::EVENT_NOPE;
 
+	glfwPollEvents();
 	if (!Window::pendingEvents.empty())
 	{
 		ev = Window::pendingEvents.front();
@@ -175,9 +176,9 @@ void						Window::draw(IGame const &game)
 			rateTranslation * static_cast<float>(_winSize.first),
 			rateTranslation * static_cast<float>(_winSize.second), 0.f);
 		glScalef(rateScale, rateScale, rateScale);
-	}	
-	// glRotatef(getPhaseLoop(3.f) * 75.f + .35f
-	// , 1.f, 0.f, 0.f);
+	}
+	glRotatef(getPhaseLoop(3.f) * 50.f + .35f
+	, 1.f, 0.f, 0.f);
 	glRotatef(25.f, 1.f, 0.f, 0.f);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -187,22 +188,22 @@ void						Window::draw(IGame const &game)
 	glLoadIdentity();
 	for (auto const *v : game.getBlocks())
 	{
-		if (v->getType() == IBlock::GROW)
-			this->_put_block(std::make_pair(v->getX(), v->getY()),
-							 std::make_tuple(1.f, 0.5f, 0.f));
-		else if (v->getType() == IBlock::BONUS)
-			this->_put_block(std::make_pair(v->getX(), v->getY()),
-							 std::make_tuple(0.5f, 0.5f, 0.99f));
-		else
-			this->_put_block(std::make_pair(v->getX(), v->getY()),
-							 std::make_tuple(0.f, 0.5f, 0.f));
+		// if (v->getType() == IBlock::GROW)
+		this->_put_block(std::make_pair(v->getX(), v->getY()), v->getType());
+		// 					 std::make_tuple(1.f, 0.5f, 0.f));
+		// else if (v->getType() == IBlock::BONUS)
+		// 	this->_put_block(std::make_pair(v->getX(), v->getY()),
+		// 					 std::make_tuple(0.5f, 0.5f, 0.99f));
+		// else
+		// 	this->_put_block(std::make_pair(v->getX(), v->getY()),
+		// 					 std::make_tuple(0.f, 0.5f, 0.f));
 	}
-	curPhase = this->_phase;
+	curPhase = this->_phase - PHASE_PER_CHUNK * static_cast<float>(q.size());
 	// Outputing tail
-	if ((buildDelta(*it, *(it + 1)).first != 0) !=
+	if (q.size() < 4 || (buildDelta(*it, *(it + 1)).first != 0) !=
 		(buildDelta(*(it + 1), *(it + 2)).first != 0))
 	{ // last 3 chunks forms an angle
-		std::cout << "angle" << std::endl;
+		// std::cout << "angle" << std::endl;
 		
 		_putSnakeChunk(*(it),
 					   std::make_pair(it->first * 2 - (it + 1)->first,
@@ -213,7 +214,7 @@ void						Window::draw(IGame const &game)
 	}
 	else
 	{ // they don't
-		std::cout << "not angle" << std::endl;
+		// std::cout << "not angle" << std::endl;
 		_putSnakeChunk(*(it),
 					   std::make_pair(it->first * 2 - (it + 1)->first,
 									  it->second * 2 - (it + 1)->second)
@@ -239,7 +240,6 @@ void						Window::draw(IGame const &game)
 	this->_put_head(*q.begin(), *++q.begin(), curPhase,
 					snake.getMoveRatio());
 	glfwSwapBuffers(_win);
-	glfwPollEvents();
 	this->_lastTime += elapsed;
 	return ;
 }
