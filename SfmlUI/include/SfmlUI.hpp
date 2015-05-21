@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/20 18:06:29 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/21 13:41:57 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 class	SfmlUI : public sf::RenderWindow, public IUI
 {
 public:
-	SfmlUI(std::pair<int, int> gameSize, sf::Texture &sprites, sf::Font &font);
+	SfmlUI(std::pair<int, int> gameSize);
 	virtual ~SfmlUI(void);
 
 	virtual EventType			getEvent(void);
@@ -54,7 +54,8 @@ protected:
 
 	std::map<sf::Keyboard::Key, EventType>	_events;
 
-	sf::Font					&_font;
+	sf::Texture					_sprites;
+	sf::Font					_font;
 
 	void						_drawBackground(void);
 	void						_drawBlock(IBlock const &block);
