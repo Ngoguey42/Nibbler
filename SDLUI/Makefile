@@ -30,7 +30,7 @@ LD_CC := clang++
 CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
 # Linking flags
-LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lsdl
+LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lsdl2
 
 # Clang++ include flags
 CPP_HEADS := -I../shared -Iinclude -I ~/.brew/include
@@ -55,11 +55,11 @@ all: $(LIBS) $(NAME)
 $(NAME): $(O_FILES)
 	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
 
-o/srcs/SDLUI.o: srcs/SDLUI.cpp include/SDLUI.hpp ../shared/nibbler.h ../shared/IUI.hpp
+o/srcs/SDLUI.o: srcs/SDLUI.cpp include/SDLUI.hpp ../shared/nibbler.h ../shared/IUI.hpp ../shared/IBlock.hpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/init.o: srcs/init.cpp include/SDLUI.hpp ../shared/nibbler.h ../shared/IUI.hpp
+o/srcs/init.o: srcs/init.cpp include/SDLUI.hpp ../shared/nibbler.h ../shared/IUI.hpp ../shared/IBlock.hpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
