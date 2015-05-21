@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/18 17:46:50 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 15:14:13 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/21 16:08:36 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,17 @@ Settings::~Settings(void)
 
 void			Settings::_optUI(t_args *args, char *)
 {
+	static char const	*uis[] = {UI_1, UI_2, UI_3, UI_4};
+
 	if (!ARGS_DATA(*args))
 		throw std::invalid_argument("--ui option need a value");
-	initialUI = ft_argvarg(args);
+	char *tmp = ft_argvarg(args);
+	if (tmp == NULL)
+		throw std::invalid_argument("--ui option need a value");
+	if (strlen(tmp) == 1 && *tmp >= '0' && *tmp <= '4')
+		initialUI = uis[*tmp - '0'];
+	else
+		initialUI = ft_argvarg(args);
 }
 
 void			Settings::_optWallThrough(t_args *args, char *opt)
