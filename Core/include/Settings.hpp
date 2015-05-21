@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/18 17:46:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 18:22:29 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/21 15:07:55 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define SETTINGS_HPP
 
 # include <chrono>
+# include "ft_argv.h"
 
 # define DEF_LENGTH			4
-# define MIN_LENGTH			3
+# define MIN_LENGTH			4
 # define MAX_LENGTH			(gameHeight / 2)
 
 # define INITIAL_WALLS		(gameWidth * gameHeight / 60)
@@ -37,6 +38,12 @@
 class	Settings
 {
 public:
+	struct Opt
+	{
+		char const			*opt;
+		void				(Settings::*f)(t_args *args, char *opt);
+	};
+
 	Settings(int argc, char **argv);
 	virtual ~Settings(void);
 
@@ -60,6 +67,14 @@ public:
 	bool				bonusToWall;
 
 protected:
+
+	void				_optUI(t_args *args, char *opt);
+	void				_optWallThrough(t_args *args, char *opt);
+	void				_optLength(t_args *args, char *opt);
+	void				_optWalls(t_args *args, char *opt);
+	void				_optBonusToWall(t_args *args, char *opt);
+
+	static Opt			_opts[];
 
 private:
 	Settings(void);
