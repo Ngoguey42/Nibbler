@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 14:51:39 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/22 15:44:33 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 18:02:27 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 SfmlAudio::SfmlAudio(void)
 	: _soundsLocations{
+		"SfmlAudio/misc/eat.wav",
 		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL
+		"SfmlAudio/misc/bonus_eat.wav",
+		"SfmlAudio/misc/bonus_die.wav",
+		"SfmlAudio/misc/die.wav"
 	}
 {
 	for (int i = 0; i < IAudio::NOPE; ++i)
