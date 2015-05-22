@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/18 17:46:50 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 19:35:31 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 14:18:14 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void			Settings::_optUI(t_args *args, char *)
 	if (strlen(tmp) == 1 && *tmp >= '1' && *tmp <= '4')
 		initialUI = uis[*tmp - '1'];
 	else
-		initialUI = ft_argvarg(args);
+		initialUI = tmp;
 }
 
 void			Settings::_optWallThrough(t_args *args, char *opt)

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/20 18:33:22 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 13:55:32 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,12 +222,12 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	}
 	// Try to load library
 	if ((_uiLib = dlopen(name, RTLD_LAZY | RTLD_NOW | RTLD_LOCAL)) == NULL)
-		throw std::runtime_error(std::string(name) + ": Cannot load library");
+		throw std::runtime_error((std::string(name) += ": ") += dlerror());
 	// Search init function
 	if ((init_func = dlsym(_uiLib, STR(INIT_FUNCTION))) == NULL)
 	{
 		dlclose(_uiLib);
-		throw std::runtime_error("Incomplete library");
+		throw std::runtime_error(std::string(name) += "Incomplete library");
 	}
 	// Try to init UI
 	try
