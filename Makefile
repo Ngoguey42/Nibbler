@@ -6,7 +6,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/18 12:45:11 by jaguillo          #+#    #+#              #
-#    Updated: 2015/05/21 16:10:27 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/05/22 15:53:26 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ _all:
 	@make -C OpenGLUI
 	@make -C SfmlUI
 	@make -C SDLUI
+	@make -C SfmlAudio
 
 $(RULES):
 	@make -C Core $@
@@ -32,5 +33,6 @@ $(RULES):
 	@make -C OpenGLUI $@
 	@make -C SfmlUI $@
 	@make -C SDLUI $@
+	@make -C SfmlAudio $@
 
 .PHONY: all _all $(RULES)

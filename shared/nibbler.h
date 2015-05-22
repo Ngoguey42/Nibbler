@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 19:08:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 16:08:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 17:44:47 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class	IGame;
 class	ISnake;
 class	IBlock;
 class	IUI;
+class	IAudio;
 // -
 
 class	Game;
@@ -58,7 +59,7 @@ enum	EventType
 
 /*
 ** ========================================================================== **
-** UIs
+** Libs
 */
 
 # define WINDOW_TITLE		":: Nibbler ::"
@@ -71,6 +72,8 @@ enum	EventType
 # define UI_4				"SDLUI/SDLUI.so"
 
 # define INITIAL_UI			UI_2
+
+# define AUDIO_1			"SfmlAudio/SfmlAudio.so"
 
 /*
 ** ========================================================================== **
