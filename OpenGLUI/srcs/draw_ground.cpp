@@ -6,38 +6,40 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:51:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/22 16:09:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/22 18:19:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "OpenGLUI.class.hpp"
 #include <cmath>
+#include <utility>
+#include <initializer_list>
 
 // * C-STYLE FUNCTIONS ****************************************************** //
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 OpenGLUI::t_groundDatas			OpenGLUI::_buildGroundDatas(void) const
-{
-	OpenGLUI::t_groundDatas	ret(_winSize.second + 2);
+{ // Best optimisation I could pull out.
+	OpenGLUI::t_groundDatas	ret;
 
+	ret.reserve(_winSize.second + 1);
 	for (int i = 0; i <= _winSize.second + 1; i++)
 	{
-		OpenGLUI::t_groundDatas::value_type	tmp(_winSize.first + 2);
+		OpenGLUI::t_groundDatas::value_type	tmp;
 
+		tmp.reserve(_winSize.first + 1);
 		for (int j = 0; j <= _winSize.first + 1; j++)
-			// tmp[j] = {
-			// 	randf() * 0.2f,
-			// 	{0.0f, randf() * 0.66f + 0.33f, 0.f},
-			// 	{randf() * 0.1f, randf() * 0.1f,
-			// 	 randf() * 0.1f, randf() * 0.1f}
-			// };
-			tmp[j] = std::make_tuple(
-				randf() * 0.3f - 0.1f,
-				randf() * 0.3f - 0.1f,
-				std::make_tuple(0.0f, randf() * 0.16f + 0.34f, 0.f),
-				std::make_tuple(randf() * 0.18f, randf() * 0.18f,
-								randf() * 0.18f, randf() * 0.18f)
+		{
+			tmp.push_back( // Could not properly use emplace_back :(
+				std::make_tuple<float, float, t_color, t_colorDeltas>(
+					randf() * 0.3f - 0.1f,
+					randf() * 0.3f - 0.1f,
+					{0.0f, randf() * 0.16f + 0.34f, 0.f},
+					{randf() * 0.18f, randf() * 0.18f,
+							randf() * 0.18f, randf() * 0.18f}
+					)
 				);
-		ret[i] = std::move(tmp);
+		}
+		ret.push_back(std::move(tmp));
 	}
 	return (ret);
 };
@@ -60,7 +62,7 @@ void						OpenGLUI::_putGround(void) const
 			auto const &homeLink = this->_groundDatas[i][j];
 			auto const &c = std::get<2>(homeLink);
 			auto const &d = std::get<3>(homeLink);
-			(void)d;
+
 			glBegin(GL_TRIANGLE_FAN);
 			glColor3f(std::get<0>(c), std::get<1>(c), std::get<2>(c));
 			glVertex3f(0.f, 0.f, std::get<1>(homeLink));

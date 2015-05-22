@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:51:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/22 15:52:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/22 18:15:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -92,7 +92,14 @@ private:
 /*
 Todo:
 Narrow Z in neck's angle
-
+Tongue
+Obstacles
+plane lean
+apple's color
+plane thickness
+texts
+overlays pause/death
+background
 */
 	
 	// * STATICS ******************** //
