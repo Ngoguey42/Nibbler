@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/22 13:55:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 17:42:13 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 #include "BonusBlock.hpp"
 #include "WallBlock.hpp"
 #include "WallSpawnBlock.hpp"
+#include "IAudio.hpp"
 
 Game::Game(int argc, char **argv) throw(std::exception)
-	: _uiLib(NULL), _ui(NULL), _settings(argc, argv),
+	: _uiLib(NULL), _ui(NULL), _audioLib(NULL), _audio(NULL),
+	_settings(argc, argv),
 	_paused(false), _fps(0), _snake()
 {
 	// Init
@@ -131,6 +133,11 @@ Snake						&Game::getSnake(void)
 	return (_snake);
 }
 
+IAudio						*Game::getAudio(void) const
+{
+	return (_audio);
+}
+
 Settings const				&Game::getSettings(void) const
 {
 	return (_settings);
@@ -196,6 +203,8 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 	if (_bonusInterval < std::chrono::seconds(0))
 	{
 		spawn(new BonusBlock(_settings.bonusTimeout));
+		if (_audio != NULL)
+			_audio->play(IAudio::BONUS_APPEAR);
 		_bonusInterval = _settings.bonusInterval;		
 	}
 	_snake.update(*this, t);
@@ -209,13 +218,41 @@ void						Game::_update(std::chrono::steady_clock::duration t)
 		static_cast<ABlock*>(b)->update(*this, t);
 }
 
+void						Game::changeAudio(char const *name) throw(std::exception)
+{
+	void		*init_func;
+
+	if (_audio != NULL)
+	{
+		delete _audio;
+		_audio = NULL;
+		dlclose(_audioLib);
+	}
+	if ((_audioLib = dlopen(name, RTLD_LAZY | RTLD_NOW | RTLD_LOCAL)) == NULL)
+		throw std::runtime_error((std::string(name) += ": ") += dlerror());
+	if ((init_func = dlsym(_audioLib, STR(INIT_FUNCTION))) == NULL)
+	{
+		dlclose(_audioLib);
+		throw std::runtime_error(std::string(name) += "Incompatible library");
+	}
+	try
+	{
+		_audio = reinterpret_cast<IAudio *(*)(void)>(init_func)();
+	}
+	catch (std::exception &e)
+	{
+		dlclose(_audioLib);
+		_audio = NULL;
+		throw ;
+	}
+}
+
 void						Game::changeUI(char const *name) throw(std::exception)
 {
 	void		*init_func;
 
 	if (_ui != NULL) // Delete old UI if any
 	{
-		DEBUG("Close old UI");
 		delete _ui;
 		_ui = NULL;
 		dlclose(_uiLib);
@@ -227,7 +264,7 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	if ((init_func = dlsym(_uiLib, STR(INIT_FUNCTION))) == NULL)
 	{
 		dlclose(_uiLib);
-		throw std::runtime_error(std::string(name) += "Incomplete library");
+		throw std::runtime_error(std::string(name) += "Incompatible library");
 	}
 	// Try to init UI
 	try
@@ -239,7 +276,6 @@ void						Game::changeUI(char const *name) throw(std::exception)
 	{
 		dlclose(_uiLib);
 		_ui = NULL;
-		throw;
+		throw ;
 	}
-	DEBUG("New UI loaded: " << name);
 }

@@ -35,6 +35,8 @@ LD_FLAGS := -fPIC -shared -lncurses
 # Clang++ include flags
 CPP_HEADS := -Iinclude -I../shared
 
+MAKEMAKE_TMP := tmp_makemake.py
+
 #
 # Internal
 #
@@ -44,6 +46,7 @@ O_FILES := o/srcs/NcursesUI.o \
 
 MSG_0 := printf '\033[0;32m%-18.18s\033[0;0m\r'
 MSG_1 := printf '\033[0;31m%-18.18s\033[0;0m\n'
+MSG_END := printf '\n'
 
 .SILENT:
 
@@ -52,7 +55,7 @@ all: $(LIBS)
 .PHONY: all
 
 $(NAME): $(O_FILES)
-	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
+	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && $(MSG_END) || $(MSG_1) $@
 
 o/srcs/NcursesUI.o: srcs/NcursesUI.cpp include/NcursesUI.hpp ../shared/nibbler.h ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp ../shared/IBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
@@ -79,5 +82,7 @@ re: fclean all
 .PHONY: re
 
 make: fclean
-	@(curl -f https://raw.githubusercontent.com/Julow/makemake/master/makemake.py | python) && echo Done || echo Fail
+	@curl -f https://raw.githubusercontent.com/Julow/makemake/master/makemake.py > $(MAKEMAKE_TMP)
+	@python $(MAKEMAKE_TMP)
+	@rm -f $(MAKEMAKE_TMP)
 .PHONY: make

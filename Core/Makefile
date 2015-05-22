@@ -38,6 +38,8 @@ LD_FLAGS :=
 # Clang++ include flags
 CPP_HEADS := -Iinclude -I../shared
 
+MAKEMAKE_TMP := tmp_makemake.py
+
 #
 # Internal
 #
@@ -56,6 +58,7 @@ O_FILES := o/srcs/Snake.o \
 
 MSG_0 := printf '\033[0;32m%-23.23s\033[0;0m\r'
 MSG_1 := printf '\033[0;31m%-23.23s\033[0;0m\n'
+MSG_END := printf '\n'
 
 .SILENT:
 
@@ -64,49 +67,49 @@ all: $(LIBS)
 .PHONY: all
 
 $(NAME): $(O_FILES)
-	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
+	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && $(MSG_END) || $(MSG_1) $@
 
-o/srcs/Snake.o: srcs/Snake.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp
+o/srcs/Snake.o: srcs/Snake.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/ABlock.o: srcs/ABlock.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp
+o/srcs/ABlock.o: srcs/ABlock.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Game.o: srcs/Game.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
+o/srcs/Game.o: srcs/Game.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/WallSpawnBlock.o: srcs/WallSpawnBlock.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
+o/srcs/WallSpawnBlock.o: srcs/WallSpawnBlock.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/main.o: srcs/main.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
+o/srcs/main.o: srcs/main.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/GrowBlock.o: srcs/GrowBlock.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
+o/srcs/GrowBlock.o: srcs/GrowBlock.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Settings.o: srcs/Settings.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/ft_argv.h
+o/srcs/Settings.o: srcs/Settings.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/BonusBlock.o: srcs/BonusBlock.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/ft_argv.h
+o/srcs/BonusBlock.o: srcs/BonusBlock.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/ft_argv.o: srcs/ft_argv.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/ft_argv.h
+o/srcs/ft_argv.o: srcs/ft_argv.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/Event.o: srcs/Event.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/ft_argv.h
+o/srcs/Event.o: srcs/Event.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/WallBlock.o: srcs/WallBlock.cpp include/Snake.hpp ../shared/nibbler.h ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ABlock.hpp ../shared/IBlock.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp include/ft_argv.h
+o/srcs/WallBlock.o: srcs/WallBlock.cpp ../shared/nibbler.h include/Snake.hpp ../shared/ISnake.hpp include/Game.hpp ../shared/IGame.hpp include/Settings.hpp include/ft_argv.h include/ABlock.hpp ../shared/IBlock.hpp ../shared/IAudio.hpp ../shared/IUI.hpp include/Event.hpp include/GrowBlock.hpp include/BonusBlock.hpp include/WallBlock.hpp include/WallSpawnBlock.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
@@ -127,5 +130,7 @@ re: fclean all
 .PHONY: re
 
 make: fclean
-	@(curl -f https://raw.githubusercontent.com/Julow/makemake/master/makemake.py | python) && echo Done || echo Fail
+	@curl -f https://raw.githubusercontent.com/Julow/makemake/master/makemake.py > $(MAKEMAKE_TMP)
+	@python $(MAKEMAKE_TMP)
+	@rm -f $(MAKEMAKE_TMP)
 .PHONY: make

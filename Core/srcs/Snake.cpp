@@ -6,15 +6,16 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 18:11:24 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 17:40:32 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include "nibbler.h"
 #include "Snake.hpp"
 #include "Game.hpp"
 #include "ABlock.hpp"
-#include "nibbler.h"
+#include "IAudio.hpp"
 
 Snake::Snake(void)
 {
@@ -65,6 +66,8 @@ void							Snake::update(Game &game, std::chrono::steady_clock::duration t)
 void							Snake::kill(Game &game)
 {
 	game.setPaused(true);
+	if (game.getAudio() != NULL)
+		game.getAudio()->play(IAudio::DIE);
 	_die = true;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:18 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/18 17:55:54 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/22 17:41:46 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ public:
 	std::list<IBlock*>					&getBlocks(void);
 	Snake								&getSnake(void);
 
+	IAudio								*getAudio(void) const;
+
 	Settings const						&getSettings(void) const;
 
 	void								spawn(ABlock *block);
@@ -57,12 +59,16 @@ public:
 	void								reset(void);
 	void								_destroyGame(void);
 
+	void								changeAudio(char const *name) throw(std::exception);
 	void								changeUI(char const *lib) throw(std::exception);
 
 protected:
 
 	void								*_uiLib;
 	IUI									*_ui;
+
+	void								*_audioLib;
+	IAudio								*_audio;
 
 	Settings							_settings;
 

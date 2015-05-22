@@ -46,6 +46,7 @@ O_FILES := o/srcs/SDLUI.o \
 
 MSG_0 := printf '\033[0;32m%-14.14s\033[0;0m\r'
 MSG_1 := printf '\033[0;31m%-14.14s\033[0;0m\n'
+MSG_END := printf '\n'
 
 .SILENT:
 
@@ -53,7 +54,7 @@ all: $(LIBS) $(NAME)
 .PHONY: all
 
 $(NAME): $(O_FILES)
-	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && echo || $(MSG_1) $@
+	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && $(MSG_END) || $(MSG_1) $@
 
 o/srcs/SDLUI.o: srcs/SDLUI.cpp include/SDLUI.hpp ../shared/nibbler.h ../shared/IUI.hpp ../shared/IBlock.hpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
