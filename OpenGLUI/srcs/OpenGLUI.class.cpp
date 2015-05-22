@@ -1,3 +1,14 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   OpenGLUI.class.cpp                                 :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
+//   Updated: 2015/05/22 15:40:31 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include <cmath>
 #include "OpenGLUI.class.hpp"
@@ -7,8 +18,6 @@
 
 // #define TMP_PADDING ((int)10)
 
-float				getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f);
-float				getPhase(float fullTime = 3.f, float selfDelta = 0.f);
 std::deque<std::pair<int, int>>		customSnake(void);
 
 // * STATICS **************************************************************** //
@@ -75,7 +84,8 @@ OpenGLUI::OpenGLUI(std::pair<int, int> gridSize) :
 	_lastTime(0.0f),
 	_phase(0.f),
 	_deathTime(-1.f),
-	_lastMoveRatio(0.f)
+	_lastMoveRatio(0.f),
+	_groundDatas(this->_buildGroundDatas())
 {
 	if (CHUNK_SIZEF < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -179,7 +189,8 @@ void						OpenGLUI::draw(IGame const &game)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	this->_put_grid();
-
+	this->_putGround();
+	
 	// Drawing blocks
 	glLoadIdentity();
 	for (auto const *v : game.getBlocks())
@@ -275,6 +286,11 @@ float				getPhaseLoop(
 	float fullTime /*= 10.f*/, float selfDelta /*= 0.f*/)
 {
 	return (fmod(glfwGetTime() + selfDelta, fullTime) / fullTime);
+}
+
+float				randf(int m /*= 256*/)
+{
+	return (static_cast<float>(std::rand() % m) / static_cast<float>(m));
 }
 
 std::deque<std::pair<int, int>>	customSnake(void)

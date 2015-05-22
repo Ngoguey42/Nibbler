@@ -1,3 +1,14 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   OpenGLUI.class.hpp                                 :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/05/22 14:51:58 by ngoguey           #+#    #+#             //
+//   Updated: 2015/05/22 15:52:22 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef OPENGLUI_CLASS_HPP
 # define OPENGLUI_CLASS_HPP
@@ -44,9 +55,8 @@ public:
 	
 protected:
 private:
-	// * MEMBER FUNCTIONS / METHODS * //
+	// *** DRAW MEMBER FUNCTIONS **** //
 	void						_put_grid(void) const;
-	void						_put_lol(void) const;
 	void						_put_block(std::pair<int, int> const &pos,
 										   IBlock::Type type) const;
 	void						_put_head(
@@ -59,6 +69,7 @@ private:
 		std::pair<int, int> const &nextPos,
 		float phase, float frontThickness = 1.f, float rearThickness = 1.f
 		) const;
+	void						_putGround(void) const;
 
 	// * ATTRIBUTES ***************** //
 	GLFWwindow						*_win;
@@ -71,7 +82,12 @@ private:
 	float							_phase;
 	float							_deathTime;
 	float							_lastMoveRatio;
-	
+
+	typedef std::tuple<float, float, float, float>				t_colorDeltas;
+	typedef std::tuple<float, float, t_color, t_colorDeltas>	t_groundData;
+	typedef std::vector<std::vector<t_groundData>>				t_groundDatas;
+	t_groundDatas const											_groundDatas;
+	t_groundDatas								_buildGroundDatas(void) const;
 	
 /*
 Todo:

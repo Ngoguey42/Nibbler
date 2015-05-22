@@ -1,3 +1,14 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   draw_items.cpp                                     :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/05/22 14:52:05 by ngoguey           #+#    #+#             //
+//   Updated: 2015/05/22 16:13:21 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "OpenGLUI.class.hpp"
 #include <cmath>
@@ -92,13 +103,16 @@ static constexpr t_apple			buildStem(void)
 
 static inline void			putColor(IBlock::Type type, unsigned int &seed)
 {
-	std::array<t_byte, 9> const								&scheme =
-		OpenGLUI::blocksSchemes.find(type)->second;
+	auto const it = OpenGLUI::blocksSchemes.find(type);
 
-	glColor3ub(
-		rand_r(&seed) % scheme[0] * scheme[1] + scheme[2],
-		rand_r(&seed) % scheme[3] * scheme[4] + scheme[5],
-		rand_r(&seed) % scheme[6] * scheme[7] + scheme[8]);
+	if (it != OpenGLUI::blocksSchemes.end())
+	{
+		auto const &scheme = OpenGLUI::blocksSchemes.find(type)->second;
+		glColor3ub(
+			rand_r(&seed) % scheme[0] * scheme[1] + scheme[2],
+			rand_r(&seed) % scheme[3] * scheme[4] + scheme[5],
+			rand_r(&seed) % scheme[6] * scheme[7] + scheme[8]);
+	}
 	return ;
 }
 
@@ -108,6 +122,15 @@ static inline void			putApple(std::pair<int, int> const &topLeft,
 	constexpr t_apple	apple(buildApple());
 	constexpr t_apple	stem(buildStem());
 
+	glRotatef(
+		getPhaseLoop() * 360.f *
+		(-1.f + 2.f * static_cast<float>((topLeft.first + topLeft.second) % 2)),
+		0, 0, 1);
+	glTranslatef(
+		0.f, 0.f,
+		getPhase(3.f, static_cast<float>(topLeft.first + topLeft.second)) * 0.45f
+		);
+	glScalef(0.9f, 0.9f, 0.9f);
 	for (auto const &w : apple)
 	{
 		unsigned int seed = topLeft.first * topLeft.second;
@@ -135,7 +158,7 @@ static inline void			putApple(std::pair<int, int> const &topLeft,
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
 void                        OpenGLUI::_put_block(std::pair<int, int> const &topLeft,
-											   IBlock::Type type) const
+												 IBlock::Type type) const
 {
 	glLoadIdentity();
 	glTranslatef(topLeft.first * CHUNK_SIZEF + SCREEN_PADDINGF
@@ -150,16 +173,13 @@ void                        OpenGLUI::_put_block(std::pair<int, int> const &topL
 		glColor3ub(200, 200, 200);
 		glVertex3f(0.f, -0.5f, 0.f);
 		glVertex3f(-0.5f, 0.5f, 0.f);
-		glVertex3f(0.f, 0.f, 0.f);
+		glVertex3f(0.f, 0.f, 1.f);
 		glVertex3f(0.5f, 0.5f, 0.f);
 		glVertex3f(0.f, -0.5f, 0.f);
 		glEnd();
 	}
 	else
 	{
-	glRotatef(glfwGetTime() * 40.f *
-			  (-1.f + 2.f * static_cast<float>(topLeft.first * topLeft.second % 2)),
-			  0, 0, 1);
 		putApple(topLeft, type);
 	}
 	return ;
