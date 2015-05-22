@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/21 18:22:14 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/22 15:37:55 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,13 @@ template <size_t S1 = MAX_POINTS_PER_GROUP,
 	size_t S5 = MAX_POINTS_PER_GROUP,
 	size_t S6 = MAX_POINTS_PER_GROUP>
 	class CornerPoints;
-class Window;
+class OpenGLUI;
 
-std::pair<int, int>  buildDelta(std::pair<int, int> const &a,
+std::pair<int, int>	buildDelta(std::pair<int, int> const &a,
 								std::pair<int, int> const &b);
+float               getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f);
+float              	getPhase(float fullTime = 3.f, float selfDelta = 0.f);
+float				randf(int m = 256);
 
 typedef ftce::Array<ftce::Vertex, MAX_POINTS_PER_APPLE_STRIP>	t_appleStrip;
 typedef ftce::Array<t_appleStrip, NUM_APPLE_STRIP>				t_apple;

@@ -1,41 +1,39 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Window.class.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/04/30 10:55:52 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/21 19:21:23 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   OpenGLUI.class.cpp                                 :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
+//   Updated: 2015/05/22 15:40:31 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include <cmath>
-#include "Window.class.hpp"
+#include "OpenGLUI.class.hpp"
 #include "IGame.hpp"
 #include "ISnake.hpp"
 #include "IBlock.hpp"
 
 // #define TMP_PADDING ((int)10)
 
-float				getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f);
-float				getPhase(float fullTime = 3.f, float selfDelta = 0.f);
 std::deque<std::pair<int, int>>		customSnake(void);
 
 // * STATICS **************************************************************** //
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
-constexpr ftce::Array<size_t, 6>		Window::sinSize;
+constexpr ftce::Array<size_t, 6>		OpenGLUI::sinSize;
 constexpr ftce::Array<
-	CornerPoints<TEMPLATE_SIZE(Window::sinSize)>, NUM_PRECALC_POINTS
-	>									Window::sinPoints;
-constexpr ftce::Array<size_t, 6>		Window::dexSize;
+	CornerPoints<TEMPLATE_SIZE(OpenGLUI::sinSize)>, NUM_PRECALC_POINTS
+	>									OpenGLUI::sinPoints;
+constexpr ftce::Array<size_t, 6>		OpenGLUI::dexSize;
 constexpr ftce::Array<
-	CornerPoints<TEMPLATE_SIZE(Window::dexSize)>, NUM_PRECALC_POINTS
-	>									Window::dexPoints;
+	CornerPoints<TEMPLATE_SIZE(OpenGLUI::dexSize)>, NUM_PRECALC_POINTS
+	>									OpenGLUI::dexPoints;
 #undef TEMPLATE_SIZE
 
-std::queue<EventType>					Window::pendingEvents;
-std::map<t_glfwevent, EventType> const	Window::eventsMap{
+std::queue<EventType>					OpenGLUI::pendingEvents;
+std::map<t_glfwevent, EventType> const	OpenGLUI::eventsMap{
 	{GLFW_KEY_UP, EventType::EVENT_UP},
 	{GLFW_KEY_LEFT, EventType::EVENT_LEFT},
 	{GLFW_KEY_RIGHT, EventType::EVENT_RIGHT},
@@ -47,6 +45,12 @@ std::map<t_glfwevent, EventType> const	Window::eventsMap{
 	{GLFW_KEY_3, EventType::EVENT_3},
 	{GLFW_KEY_4, EventType::EVENT_4},
 		};
+std::map<IBlock::Type, std::array<t_byte, 9> > const  OpenGLUI::blocksSchemes{
+	{IBlock::GROW, {{4, 15, 200, 1, 0, 15, 1, 0, 0}}},
+	{IBlock::BONUS, {{8, 25, 5, 1, 0, 0, 1, 0, 0}}},
+	{IBlock::WALL, {{1, 0, 0, 1, 0, 60, 1, 0, 0}}},
+	{IBlock::WALL_SPAWN, {{1, 0, 0, 1, 0, 60, 1, 0, 0}}},
+};
 
 // * OPENGL CALLBACKS ******************************************************* //
 static void error_callback(int error, const char* description)
@@ -62,16 +66,16 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		else
 		{
-			auto it = Window::eventsMap.find(key);
+			auto it = OpenGLUI::eventsMap.find(key);
 
-			if (it != Window::eventsMap.end())
-				Window::pendingEvents.push(it->second);
+			if (it != OpenGLUI::eventsMap.end())
+				OpenGLUI::pendingEvents.push(it->second);
 		}
 	}
 }
 
 // * CONSTRUCTORS *********************************************************** //
-Window::Window(std::pair<int, int> gridSize) :
+OpenGLUI::OpenGLUI(std::pair<int, int> gridSize) :
 	_win(nullptr),
 	_tmpGridSize(gridSize),
 	_winSize(std::make_pair(gridSize.first * CHUNK_SIZE + SCREEN_PADDING2,
@@ -80,7 +84,8 @@ Window::Window(std::pair<int, int> gridSize) :
 	_lastTime(0.0f),
 	_phase(0.f),
 	_deathTime(-1.f),
-	_lastMoveRatio(0.f)
+	_lastMoveRatio(0.f),
+	_groundDatas(this->_buildGroundDatas())
 {
 	if (CHUNK_SIZEF < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -105,31 +110,31 @@ Window::Window(std::pair<int, int> gridSize) :
 }
 
 // * DESTRUCTORS ************************************************************ //
-Window::~Window()
+OpenGLUI::~OpenGLUI()
 {
 	glfwDestroyWindow(_win);
 	glfwTerminate();
-	while (!Window::pendingEvents.empty())
-		Window::pendingEvents.pop();
-	std::cout << "[Window]() Dtor called" << std::endl;
+	while (!OpenGLUI::pendingEvents.empty())
+		OpenGLUI::pendingEvents.pop();
+	std::cout << "[OpenGLUI]() Dtor called" << std::endl;
 	return ;
 }
 
 // * UI MEMBER FUNCTIONS **************************************************** //
-EventType					Window::getEvent(void)
+EventType					OpenGLUI::getEvent(void)
 {
 	auto ev = EventType::EVENT_NOPE;
 
 	glfwPollEvents();
-	if (!Window::pendingEvents.empty())
+	if (!OpenGLUI::pendingEvents.empty())
 	{
-		ev = Window::pendingEvents.front();
-		Window::pendingEvents.pop();
+		ev = OpenGLUI::pendingEvents.front();
+		OpenGLUI::pendingEvents.pop();
 	}
 	return (ev);
 }
 
-void						Window::draw(IGame const &game)
+void						OpenGLUI::draw(IGame const &game)
 {
 	ISnake const		&snake = game.getSnake();
 	float const			elapsed = glfwGetTime() - this->_lastTime;
@@ -177,27 +182,20 @@ void						Window::draw(IGame const &game)
 			rateTranslation * static_cast<float>(_winSize.second), 0.f);
 		glScalef(rateScale, rateScale, rateScale);
 	}
-	glRotatef(getPhaseLoop(3.f) * 50.f + .35f
-	, 1.f, 0.f, 0.f);
+// 	glRotatef(getPhaseLoop(3.f) * 50.f + .35f
+// 	, 1.f, 0.f, 0.f);
 	glRotatef(25.f, 1.f, 0.f, 0.f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	this->_put_grid();
+	this->_putGround();
 	
+	// Drawing blocks
 	glLoadIdentity();
 	for (auto const *v : game.getBlocks())
-	{
-		// if (v->getType() == IBlock::GROW)
 		this->_put_block(std::make_pair(v->getX(), v->getY()), v->getType());
-		// 					 std::make_tuple(1.f, 0.5f, 0.f));
-		// else if (v->getType() == IBlock::BONUS)
-		// 	this->_put_block(std::make_pair(v->getX(), v->getY()),
-		// 					 std::make_tuple(0.5f, 0.5f, 0.99f));
-		// else
-		// 	this->_put_block(std::make_pair(v->getX(), v->getY()),
-		// 					 std::make_tuple(0.f, 0.5f, 0.f));
-	}
+
 	curPhase = this->_phase - PHASE_PER_CHUNK * static_cast<float>(q.size());
 	// Outputing tail
 	if (q.size() < 4 || (buildDelta(*it, *(it + 1)).first != 0) !=
@@ -243,13 +241,13 @@ void						Window::draw(IGame const &game)
 	this->_lastTime += elapsed;
 	return ;
 }
-bool						Window::windowShouldClose(void) const
+bool						OpenGLUI::windowShouldClose(void) const
 {
 	return (glfwWindowShouldClose(_win));
 }
 
 // * DEBUG FUNCTIONS ******************************************************** //
-void				Window::_put_grid(void) const
+void				OpenGLUI::_put_grid(void) const
 {
 	int		i;
 
@@ -288,6 +286,11 @@ float				getPhaseLoop(
 	float fullTime /*= 10.f*/, float selfDelta /*= 0.f*/)
 {
 	return (fmod(glfwGetTime() + selfDelta, fullTime) / fullTime);
+}
+
+float				randf(int m /*= 256*/)
+{
+	return (static_cast<float>(std::rand() % m) / static_cast<float>(m));
 }
 
 std::deque<std::pair<int, int>>	customSnake(void)

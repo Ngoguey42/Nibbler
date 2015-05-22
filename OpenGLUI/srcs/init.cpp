@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #include "nibbler.h"
-#include "Window.class.hpp"
+#include "OpenGLUI.class.hpp"
 
 extern "C"
 {
 
-Window			*INIT_FUNCTION(std::pair<int, int> gridSize)
+OpenGLUI			*INIT_FUNCTION(std::pair<int, int> gridSize)
 {
-	return (new Window(gridSize));
+	return (new OpenGLUI(gridSize));
 }
 
 }
