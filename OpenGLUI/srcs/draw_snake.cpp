@@ -1,16 +1,5 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   Window.draw.cpp                                    :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/04/30 08:24:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/21 19:22:52 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
 
-#include "Window.class.hpp"
+#include "OpenGLUI.class.hpp"
 #include <cmath>
 #include <cfenv>
 
@@ -145,7 +134,7 @@ void				putVertices(
 }
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
-void						Window::_putSnakeChunk(
+void						OpenGLUI::_putSnakeChunk(
 	std::pair<int, int> const &selfPos,
 	std::pair<int, int> const &prevPos,
 	std::pair<int, int> const &nextPos,
@@ -167,7 +156,7 @@ void						Window::_putSnakeChunk(
 			(prevDelta.first > 0 && nextDelta.second < 0) ||
 			(prevDelta.first < 0 && nextDelta.second > 0))
 		{	// Sinistro
-			auto const	&points = Window::sinPoints[
+			auto const	&points = OpenGLUI::sinPoints[
 				std::lrint(
 					ftce::fmod(phase, 1.f) * NUM_PRECALC_POINTSF - 0.5f)];
 
@@ -180,7 +169,7 @@ void						Window::_putSnakeChunk(
 		}
 		else
 		{	// Dextro
-			auto const	&points = Window::dexPoints[
+			auto const	&points = OpenGLUI::dexPoints[
 				std::lrint(
 					ftce::fmod(phase, 1.f) * NUM_PRECALC_POINTSF - 0.5f)];
 	
@@ -197,151 +186,10 @@ void						Window::_putSnakeChunk(
 	return ;
 }
 
-static constexpr t_appleStrip		buildAppleStrip(
-	float bottomZ, float bottomRadius, float bottomStartAngle,
-	float topZ, float topRadius, float topStartAngle,
-	float bottomXDeviation = 0.f, float bottomYDeviation = 0.f,
-	float topXDeviation = 0.f, float topYDeviation = 0.f)
-{
-	t_appleStrip	strip;
-
-	for (int i = 0; i <= NUM_POINTS_PER_APPLE_SLICE; i++)
-	{
-		strip[i * 2] = ftce::Vertex(
-			ftce::cos(bottomStartAngle) * bottomRadius + bottomXDeviation,
-			ftce::sin(bottomStartAngle) * bottomRadius + bottomYDeviation,
-			bottomZ);
-		strip[i * 2 + 1] = ftce::Vertex(
-			ftce::cos(topStartAngle) * topRadius + topXDeviation,
-			ftce::sin(topStartAngle) * topRadius + topYDeviation,
-			topZ);
-		bottomStartAngle += APPLE_POINTS_DELTA_RAD;
-		topStartAngle += APPLE_POINTS_DELTA_RAD;
-	}
-	return (strip);
-}
-
-static constexpr t_apple			buildApple(void)
-{
-	t_apple		apple;
-	float		phase = 0.f;
-
-#define APPLE_ROTATION (APPLE_POINTS_DELTA_RAD / 3.f)
-#define HA0 0.03f
-#define HA1 (HA0 + 0.29f)
-#define HA2 (HA1 + 0.29f)
-#define HA3 (HA2 + 0.26f)
-#define HA4 (HA3 + 0.04f)
-#define HA5 (HA4 - 0.03f)
-#define HA6 (HA5 - 0.1f)
-	apple[0] = buildAppleStrip(
-		HA0, 0.64f / 2.f, phase,
-		HA1, 0.99f / 2.f, phase + APPLE_ROTATION);
-	phase += APPLE_ROTATION;
-	apple[1] = buildAppleStrip(
-		HA1, 0.99f / 2.f, phase,
-		HA2, 0.99f / 2.f, phase + APPLE_ROTATION);
-	phase += APPLE_ROTATION;
-	apple[2] = buildAppleStrip(
-		HA2, 0.99f / 2.f, phase,
-		HA3, 0.60f / 2.f, phase + APPLE_ROTATION);
-	phase += APPLE_ROTATION;
-	apple[3] = buildAppleStrip(
-		HA3, 0.60f / 2.f, phase,
-		HA4, 0.37f / 2.f, phase + APPLE_ROTATION);
-	phase += APPLE_ROTATION;
-	apple[4] = buildAppleStrip(
-		HA4, 0.37f / 2.f, phase,
-		HA5, 0.27f / 2.f, phase + APPLE_ROTATION);
-	phase += APPLE_ROTATION;
-	apple[5] = buildAppleStrip(
-		HA5, 0.27f / 2.f, phase,
-		HA6, 0.f / 2.f, phase + APPLE_ROTATION);
-	phase += APPLE_ROTATION;
-	return (apple);
-}
-
-static constexpr t_apple			buildStem(void)
-{
-	t_apple		stem;
-	float		phase = 0.f;
-
-#define STEM_ROTATION (APPLE_POINTS_DELTA_RAD / 2.f)
-#define HS0 (HA6)
-#define HS1 (HS0 + 0.29f)
-#define HS2 (HS1 + 0.29f)
-	stem[0] = buildAppleStrip(
-		HS0, 0.05f / 2.f, phase,
-		HS1, 0.10f / 2.f, phase + APPLE_ROTATION,
-		0.f, 0.f, 0.05f, -0.05f);
-	phase += STEM_ROTATION;
-	stem[1] = buildAppleStrip(
-		HS1, 0.10f / 2.f, phase,
-		HS2, 0.14f / 2.f, phase + APPLE_ROTATION,
-		0.05f, -0.05f, 0.1f, -0.1f);
-	phase += STEM_ROTATION;
-#undef STEM_ROTATION
-	return (stem);
-}
-
-void                        Window::_put_block(std::pair<int, int> const &topLeft,
-											   IBlock::Type type) const
-{
-	constexpr t_apple	apple(buildApple());
-	constexpr t_apple	stem(buildStem());
-	
-	glLoadIdentity();
-	glTranslatef(topLeft.first * CHUNK_SIZEF + SCREEN_PADDINGF
-				 , topLeft.second * CHUNK_SIZEF + SCREEN_PADDINGF
-				 , -0.0f);
-	glScalef(CHUNK_SIZEF, CHUNK_SIZEF, CHUNK_SIZEF);
-	// glScalef(5.f, 5.f, 5.f);
-	glTranslatef(0.5f, 0.5f, 0.f);
-	glRotatef(glfwGetTime() * 40.f *
-			  (-1.f + 2.f * static_cast<float>(topLeft.first * topLeft.second % 2)),
-			  0, 0, 1);
-	for (auto const &w : apple)
-	{
-		unsigned int seed = topLeft.first * topLeft.second;
-		
-		glBegin(GL_TRIANGLE_STRIP);
-		for (auto const &v : w)
-		{
-			if (type == IBlock::GROW)
-				glColor3f(static_cast<float>(rand_r(&seed) % 4 * 15 + 200) /
-						  256.f, 0.f, 0.f);
-			else if (type == IBlock::BONUS)
-				glColor3f(static_cast<float>(rand_r(&seed) % 8 * 25 + 5) /
-						  256.f, 0.f, 0.f);
-			glVertex3f(v.x, v.y, v.z);
-		}
-		glEnd();
-	}	
-	glColor3f(87.f / 256.f, 45.f / 256.f, 9.f / 256.f);
-	for (auto const &w : stem)
-	{		
-		glBegin(GL_TRIANGLE_STRIP);
-		for (auto const &v : w)
-		{
-			glVertex3f(v.x, v.y, v.z);
-		}
-		glEnd();
-	}	
-
-	// glVertex3f(0.5f * CHUNK_SIZEF, 0.f * CHUNK_SIZEF, 0.f);
-	// glColor3f(std::get<0>(c) * 0.8f, std::get<1>(c) * 0.8f, std::get<2>(c) * 0.8f);
-	// glVertex3f(0.f * CHUNK_SIZEF, 1.f * CHUNK_SIZEF, 0.f);
-	// glColor3f(std::get<0>(c) * 0.6f, std::get<1>(c) * 0.6f, std::get<2>(c) * 0.6f);
-	// glVertex3f(0.5f * CHUNK_SIZEF, 0.5f * CHUNK_SIZEF, CHUNK_SIZEF);
-	// glColor3f(std::get<0>(c) * 0.4f, std::get<1>(c) * 0.4f, std::get<2>(c) * 0.4f);
-	// glVertex3f(1.f * CHUNK_SIZEF, 1.f * CHUNK_SIZEF, 0.f);
-	// glColor3f(std::get<0>(c) * 1.f, std::get<1>(c) * 1.f, std::get<2>(c) * 1.f);
-	// glVertex3f(0.5f * CHUNK_SIZEF, 0.f * CHUNK_SIZEF, 0.f);
-	return ;
-}
 
 
-void                 Window::_put_head(
+
+void                 OpenGLUI::_put_head(
 	std::pair<int, int> const &selfPos,
 	std::pair<int, int> const &prevPos,
 	float phase, float ratio) const

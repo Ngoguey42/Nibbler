@@ -1,17 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Window.class.hpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/04/30 10:20:38 by ngoguey           #+#    #+#             */
-//   Updated: 2015/05/21 19:22:40 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
 
-#ifndef WINDOW_CLASS_HPP
-# define WINDOW_CLASS_HPP
+#ifndef OPENGLUI_CLASS_HPP
+# define OPENGLUI_CLASS_HPP
 
 # include <utility>
 # include <iostream>
@@ -31,20 +20,22 @@
 
 typedef std::tuple<float, float, float>	t_color;
 typedef decltype(GLFW_KEY_DOWN)			t_glfwevent;
+typedef unsigned char					t_byte;
 
-class Window : public IUI
+class OpenGLUI : public IUI
 {
-	Window() = delete;
-	Window(Window const &src) = delete;
-	Window						&operator=(Window const &rhs) = delete;
+	OpenGLUI() = delete;
+	OpenGLUI(OpenGLUI const &src) = delete;
+	OpenGLUI						&operator=(OpenGLUI const &rhs) = delete;
 public:
 	// * STATICS ******************** //
-	static std::queue<EventType>					pendingEvents;
-	static std::map<t_glfwevent, EventType> const	eventsMap;
-	
+	static std::queue<EventType>								pendingEvents;
+	static std::map<t_glfwevent, EventType> const				eventsMap;
+	static std::map<IBlock::Type, std::array<t_byte, 9> > const	blocksSchemes;
+
 	// * CTORS / DTORS ************** //
-	Window(std::pair<int, int> gridSize);
-	virtual ~Window();
+	OpenGLUI(std::pair<int, int> gridSize);
+	virtual ~OpenGLUI();
 
 	// * MEMBER FUNCTIONS / METHODS * //
 	EventType					getEvent(void);
@@ -73,7 +64,7 @@ private:
 	GLFWwindow						*_win;
 	std::pair<int, int> const		_tmpGridSize;	// Grid size (Ctor)
 	
-	std::pair<int, int> const		_winSize;		// Window size
+	std::pair<int, int> const		_winSize;		// OpenGLUI size
 	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
 
 	float							_lastTime;
@@ -102,6 +93,6 @@ Narrow Z in neck's angle
 		{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};	
 #undef TEMPLATE_SIZE
 };
-//std::ostream					&operator<<(std::ostream &o, Window const &rhs);
+//std::ostream					&operator<<(std::ostream &o, OpenGLUI const &rhs);
 
-#endif // ************************************************** WINDOW_CLASS_HPP //
+#endif // ************************************************** OPENGLUI_CLASS_HPP //

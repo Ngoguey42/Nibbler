@@ -78,7 +78,7 @@ template <size_t S1 = MAX_POINTS_PER_GROUP,
 	size_t S5 = MAX_POINTS_PER_GROUP,
 	size_t S6 = MAX_POINTS_PER_GROUP>
 	class CornerPoints;
-class Window;
+class OpenGLUI;
 
 std::pair<int, int>  buildDelta(std::pair<int, int> const &a,
 								std::pair<int, int> const &b);
