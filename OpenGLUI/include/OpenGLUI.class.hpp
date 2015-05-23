@@ -91,6 +91,7 @@ private:
 	
 /*
 Todo:
+fmod on straight snake chunk to greatly reduce holes in snake
 Narrow Z in neck's angle
 Tongue
 Obstacles
