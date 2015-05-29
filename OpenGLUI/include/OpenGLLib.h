@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/29 15:30:26 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/29 17:24:42 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@
 #define NUM_PRECALC_POINTS 110			// Integer, array size
 #define NUM_POINTS_PER_APPLE_SLICE 16	// Integer
 #define NUM_APPLE_STRIP 6				// Integer, array size
+// = BACKGROUND = //
+#define BG_POINTS_PADDING 100			// Integer, pixels
+#define BG_POINTS_RAND_RANGE 30			// Integer, pixels
+#define BG_PERCENT_GREY 33				// Integer, percent
+#define BG_MAIN_GREY ftce::Color<>(150, 150, 150)	//Color
+#define BG_MAIN_PINK ftce::Color<>(225, 0, 200)	//Color
+#define BG_DELTA_PINK ftce::Color<>(50, 0, 20) 	//color
 
 // =========== CONVERSIONS ========== //
 #define CHUNK_SIZEF static_cast<float>(CHUNK_SIZE)
@@ -47,6 +54,8 @@
 #define SCREEN_PADDINGF static_cast<float>(SCREEN_PADDING)
 #define NUM_PRECALC_POINTSF static_cast<float>(NUM_PRECALC_POINTS)
 #define NUM_POINTS_PER_APPLE_SLICEF static_cast<float>(NUM_POINTS_PER_APPLE_SLICE)
+#define BG_POINTS_PADDINGF static_cast<float>(BG_POINTS_PADDING)
+#define BG_POINTS_RAND_RANGEF static_cast<float>(BG_POINTS_RAND_RANGE)
 
 // ======= CALCULATED VALUES ======== //
 // == SCREEN ==== //
@@ -69,6 +78,11 @@
 #define MAX_POINTS_PER_GROUP 40
 /* #define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f) */
 // #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
+
+// = BACKGROUND = //
+#define BG_POINTS_RAND_RANGEHALFF (BG_POINTS_RAND_RANGEF / 2.f)
+/* #define BG_DELTA_PINKHALF (BG_DELTA_PINK / 2u) */
+#define BG_PINK_PLUS_HALFDELTA (BG_MAIN_PINK + BG_DELTA_PINK / 2u)
 
 class AngledSnakePoints;
 template <size_t S1 = MAX_POINTS_PER_GROUP,

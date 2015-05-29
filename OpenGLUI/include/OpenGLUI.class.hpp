@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:51:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/22 18:15:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 16:45:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,6 +28,8 @@
 # include "OpenGLLib.h"
 # include "IUI.hpp"
 # include "AngledSnakePoints.class.hpp"
+# include "ftconstexpr/Vertex.hpp"
+# include "ftconstexpr/VtsColor.hpp"
 
 typedef std::tuple<float, float, float>	t_color;
 typedef decltype(GLFW_KEY_DOWN)			t_glfwevent;
@@ -70,7 +72,8 @@ private:
 		float phase, float frontThickness = 1.f, float rearThickness = 1.f
 		) const;
 	void						_putGround(void) const;
-
+	void						_putBackground(void) const;
+	
 	// * ATTRIBUTES ***************** //
 	GLFWwindow						*_win;
 	std::pair<int, int> const		_tmpGridSize;	// Grid size (Ctor)
@@ -88,6 +91,12 @@ private:
 	typedef std::vector<std::vector<t_groundData>>				t_groundDatas;
 	t_groundDatas const											_groundDatas;
 	t_groundDatas								_buildGroundDatas(void) const;
+
+	typedef ftce::VtsColor<3u, float, 2u>						bg_point;
+	typedef std::vector<bg_point>								bg_points;
+	bg_points const												_bgDatas;
+	bg_points									_buildBgDatas(void) const;
+	
 	
 /*
 Todo:

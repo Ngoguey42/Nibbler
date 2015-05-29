@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/22 15:40:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 17:23:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -85,7 +85,8 @@ OpenGLUI::OpenGLUI(std::pair<int, int> gridSize) :
 	_phase(0.f),
 	_deathTime(-1.f),
 	_lastMoveRatio(0.f),
-	_groundDatas(this->_buildGroundDatas())
+	_groundDatas(this->_buildGroundDatas()),
+	_bgDatas(this->_buildBgDatas())
 {
 	if (CHUNK_SIZEF < 3.f || gridSize.first < 1 || gridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -164,13 +165,22 @@ void						OpenGLUI::draw(IGame const &game)
 	{
 		if (this->_deathTime < 0.f)
 			this->_deathTime = glfwGetTime();		
-	}	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
+	}
+	
+	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
 			-CHUNK_SIZEF * 1000.f, CHUNK_SIZEF * 1000.f);
+
+	glMatrixMode(GL_MODELVIEW);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	this->_putBackground();
+
+
+	glMatrixMode(GL_PROJECTION);
 	if (snake.isDie())
 	{
 		float const		rateScale = 1.f /
@@ -186,11 +196,15 @@ void						OpenGLUI::draw(IGame const &game)
 // 	, 1.f, 0.f, 0.f);
 	glRotatef(25.f, 1.f, 0.f, 0.f);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	this->_put_grid();
-	this->_putGround();
 	
+	// glClear(GL_DEPTH_BUFFER_BIT);
+	// glLoadIdentity();
+	// this->_put_grid();
+
+	glMatrixMode(GL_MODELVIEW);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	this->_putGround();
+
 	// Drawing blocks
 	glLoadIdentity();
 	for (auto const *v : game.getBlocks())
