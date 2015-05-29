@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/22 15:37:55 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/05/29 15:30:26 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 #define M_PIF 3.14159265358979323846f
 
 # include "ftconstexpr/ConstexprMath.hpp"
-# include "ftconstexpr/Array.class.hpp"
-# include "ftconstexpr/Vertex.class.hpp"
+# include "ftconstexpr/Array.hpp"
+# include "ftconstexpr/Vertex.hpp"
 
 // ============= VALUES ============= //
 #define CHUNK_SIZE 30                   // Pixels integer
@@ -86,7 +86,7 @@ float               getPhaseLoop(float fullTime = 10.f, float selfDelta = 0.f);
 float              	getPhase(float fullTime = 3.f, float selfDelta = 0.f);
 float				randf(int m = 256);
 
-typedef ftce::Array<ftce::Vertex, MAX_POINTS_PER_APPLE_STRIP>	t_appleStrip;
+typedef ftce::Array<ftce::Vertex<>, MAX_POINTS_PER_APPLE_STRIP>	t_appleStrip;
 typedef ftce::Array<t_appleStrip, NUM_APPLE_STRIP>				t_apple;
 
 #endif

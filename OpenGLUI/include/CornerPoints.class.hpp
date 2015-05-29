@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 09:07:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 09:07:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 15:33:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,8 +19,8 @@
 #include <iostream>
 
 # include "OpenGLLib.h"
-# include "ftconstexpr/Vertex.class.hpp"
-# include "ftconstexpr/Array.class.hpp"
+# include "ftconstexpr/Vertex.hpp"
+# include "ftconstexpr/Array.hpp"
 # include "AngledSnakePoints.class.hpp"
 
 // template <size_t S1 = MAX_POINTS_PER_GROUP,
@@ -52,12 +52,12 @@ public:
 	constexpr float				init(float ratio, bool sinistro);
 	
 	// * ATTRIBUTES ***************** //
-	ftce::Array<ftce::Vertex, S1>	leftStrip1;
-	ftce::Array<ftce::Vertex, S2>	leftFan;
-	ftce::Array<ftce::Vertex, S3>	leftStrip2;
-	ftce::Array<ftce::Vertex, S4>	rightStrip1;
-	ftce::Array<ftce::Vertex, S5>	rightFan;
-	ftce::Array<ftce::Vertex, S6>	rightStrip2;
+	ftce::Array<ftce::Vertex<>, S1>	leftStrip1;
+	ftce::Array<ftce::Vertex<>, S2>	leftFan;
+	ftce::Array<ftce::Vertex<>, S3>	leftStrip2;
+	ftce::Array<ftce::Vertex<>, S4>	rightStrip1;
+	ftce::Array<ftce::Vertex<>, S5>	rightFan;
+	ftce::Array<ftce::Vertex<>, S6>	rightStrip2;
 	
 protected:
 private:

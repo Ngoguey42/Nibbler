@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 09:07:00 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/18 12:38:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 15:33:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,8 +44,8 @@ constexpr DY_CLASS		&DY_CLASS::operator=(DY_CLASS const &rhs)
 
 template <size_t S>
 static constexpr int		savePoints(
-	size_t limiterIndex, ftce::Vertex intersection, float z1, float z2,
-	ftce::Array<ftce::Vertex, S>		&dest,
+	size_t limiterIndex, ftce::Vertex<> intersection, float z1, float z2,
+	ftce::Array<ftce::Vertex<>, S>		&dest,
 	AngledSnakePoints::t_snakepoints	const &array1,
 	AngledSnakePoints::t_snakepoints	const &array2
 	)
@@ -68,8 +68,8 @@ static constexpr int		savePoints(
 
 template <size_t S>
 static constexpr int		savePoints(
-	size_t limiterIndex, bool, ftce::Vertex intersection, float z1, float z2,
-	ftce::Array<ftce::Vertex, S>		&dest,
+	size_t limiterIndex, bool, ftce::Vertex<> intersection, float z1, float z2,
+	ftce::Array<ftce::Vertex<>, S>		&dest,
 	AngledSnakePoints::t_snakepoints	const &array1,
 	AngledSnakePoints::t_snakepoints	const &array2
 	)
@@ -92,10 +92,10 @@ static constexpr int		savePoints(
 
 template <size_t S>
 static constexpr int		savePoints(
-	ftce::Array<ftce::Vertex, S>		&dest,
-	size_t startIndex1, size_t limiterIndex1, ftce::Vertex intersection1,
+	ftce::Array<ftce::Vertex<>, S>		&dest,
+	size_t startIndex1, size_t limiterIndex1, ftce::Vertex<> intersection1,
 	float z1, AngledSnakePoints::t_snakepoints	const &array1,
-	size_t startIndex2, int limiterIndex2, ftce::Vertex intersection2,
+	size_t startIndex2, int limiterIndex2, ftce::Vertex<> intersection2,
 	float z2, AngledSnakePoints::t_snakepoints	const &array2
 	)
 {

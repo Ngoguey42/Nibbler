@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/11 08:56:31 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 09:10:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 15:32:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,8 +22,8 @@
 #include <array>
 
 # include "OpenGLLib.h"
-# include "ftconstexpr/Vertex.class.hpp"
-# include "ftconstexpr/Array.class.hpp"
+# include "ftconstexpr/Vertex.hpp"
+# include "ftconstexpr/Array.hpp"
 
 #define ARRAY_CUSTOM_SIZE												\
 	ftce::Array<CornerPoints<S1,S2,S3,S4,S5,S6>, NUM_PRECALC_POINTS>
@@ -51,7 +51,7 @@ public:
 
 	constexpr int		init(float const initRatio, bool sinistro);
 
-	typedef ftce::Vertex                        t_vertexf;
+	typedef ftce::Vertex<>                        t_vertexf;
 	typedef ftce::Array<t_vertexf, MAX_POINTS_BEFORE_ANGLE>  t_snakepoints;
 
 	t_vertexf           leftBranchIntersection;

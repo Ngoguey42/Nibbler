@@ -33,7 +33,7 @@ CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14 -g
 LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lglfw3 -lGLEW -framework OpenGL
 
 # Clang++ include flags
-CPP_HEADS := -Iinclude -I../shared -I ~/.brew/include
+CPP_HEADS := -Iinclude -I../shared -I../extern -I ~/.brew/include
 
 NICE_OUTPUT := 0
 
