@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:52:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/22 16:13:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 15:33:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,11 +24,11 @@ static constexpr t_appleStrip		buildAppleStrip(
 
 	for (int i = 0; i <= NUM_POINTS_PER_APPLE_SLICE; i++)
 	{
-		strip[i * 2] = ftce::Vertex(
+		strip[i * 2] = ftce::Vertex<>(
 			ftce::cos(bottomStartAngle) * bottomRadius + bottomXDeviation,
 			ftce::sin(bottomStartAngle) * bottomRadius + bottomYDeviation,
 			bottomZ);
-		strip[i * 2 + 1] = ftce::Vertex(
+		strip[i * 2 + 1] = ftce::Vertex<>(
 			ftce::cos(topStartAngle) * topRadius + topXDeviation,
 			ftce::sin(topStartAngle) * topRadius + topYDeviation,
 			topZ);
