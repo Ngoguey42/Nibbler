@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:51:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/29 16:45:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/05/29 17:30:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,6 +54,7 @@ public:
 	EventType					getEvent(void);
 	void						draw(IGame const &game);
 	bool						windowShouldClose(void) const;
+	void                    	init(void){}; //todo
 	
 protected:
 private:
