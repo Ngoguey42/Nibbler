@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:49 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/07 13:19:34 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:42:11 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ class	NcursesUI : public IUI
 public:
 	NcursesUI(std::pair<int, int> gameSize);
 	virtual ~NcursesUI(void);
+
+	virtual void				init(void);
 
 	virtual EventType			getEvent(void);
 

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 13:42:40 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:43:11 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ SfmlUI::SfmlUI(std::pair<int, int> gameSize)
 		sf::Sprite(_sprites, sf::IntRect(64, 64, SPRITES_SIZE, SPRITES_SIZE)),
 		sf::Sprite(_sprites, sf::IntRect(192, 64, SPRITES_SIZE, SPRITES_SIZE))
 	}
+{
+}
+
+SfmlUI::~SfmlUI(void)
+{
+}
+
+void				SfmlUI::init(void)
 {
 	if (!_sprites.loadFromFile(SPRITES_LOCATION))
 		throw std::runtime_error("Cannot load sprites");
@@ -62,10 +70,6 @@ SfmlUI::SfmlUI(std::pair<int, int> gameSize)
 	_events[sf::Keyboard::Num5] = EVENT_5;
 	_events[sf::Keyboard::Num6] = EVENT_6;
 	_events[sf::Keyboard::Num7] = EVENT_7;
-}
-
-SfmlUI::~SfmlUI(void)
-{
 }
 
 EventType			SfmlUI::getEvent(void)

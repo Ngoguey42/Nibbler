@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/15 18:05:47 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:44:51 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	: _gameSize(gameSize), _shouldClose(false)
 {
 	initscr();
+}
+
+NcursesUI::~NcursesUI(void)
+{
+	erase();
+	refresh();
+	endwin();
+}
+
+void				NcursesUI::init(void)
+{
 	cbreak();
 	timeout(0);
 	keypad(stdscr, TRUE);
@@ -55,13 +66,6 @@ NcursesUI::NcursesUI(std::pair<int, int> gameSize)
 	_events[KEY_DOWN] = EVENT_DOWN;
 	_events[KEY_LEFT] = EVENT_LEFT;
 	_updateSize();
-}
-
-NcursesUI::~NcursesUI(void)
-{
-	erase();
-	refresh();
-	endwin();
 }
 
 EventType		NcursesUI::getEvent(void)
