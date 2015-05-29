@@ -62,23 +62,23 @@ all: $(LIBS)
 $(NAME): $(O_FILES)
 	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && $(MSG_END) || $(MSG_1) $@
 
-o/srcs/OpenGLUI.class.o: srcs/OpenGLUI.class.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h include/ftconstexpr/ConstexprMath.hpp include/ftconstexpr/Array.class.hpp include/ftconstexpr/Array.class.tpp include/ftconstexpr/Vertex.class.hpp include/ftconstexpr/Vertex.class.tpp ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/OpenGLUI.class.o: srcs/OpenGLUI.class.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/draw_items.o: srcs/draw_items.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h include/ftconstexpr/ConstexprMath.hpp include/ftconstexpr/Array.class.hpp include/ftconstexpr/Array.class.tpp include/ftconstexpr/Vertex.class.hpp include/ftconstexpr/Vertex.class.tpp ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/draw_items.o: srcs/draw_items.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/draw_ground.o: srcs/draw_ground.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h include/ftconstexpr/ConstexprMath.hpp include/ftconstexpr/Array.class.hpp include/ftconstexpr/Array.class.tpp include/ftconstexpr/Vertex.class.hpp include/ftconstexpr/Vertex.class.tpp ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/draw_ground.o: srcs/draw_ground.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/draw_snake.o: srcs/draw_snake.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h include/ftconstexpr/ConstexprMath.hpp include/ftconstexpr/Array.class.hpp include/ftconstexpr/Array.class.tpp include/ftconstexpr/Vertex.class.hpp include/ftconstexpr/Vertex.class.tpp ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/draw_snake.o: srcs/draw_snake.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/init.o: srcs/init.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h include/ftconstexpr/ConstexprMath.hpp include/ftconstexpr/Array.class.hpp include/ftconstexpr/Array.class.tpp include/ftconstexpr/Vertex.class.hpp include/ftconstexpr/Vertex.class.tpp ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/init.o: srcs/init.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 

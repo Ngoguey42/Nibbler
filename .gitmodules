@@ -1,0 +1,3 @@
+[submodule "extern/ftconstexpr"]
+	path = extern/ftconstexpr
+	url = https://github.com/Ngoguey42/ftconstexpr
