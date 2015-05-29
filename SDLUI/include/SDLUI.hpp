@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/20 19:14:35 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 19:41:42 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:42:01 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,11 @@ public:
 	SDLUI(std::pair<int, int> gameSize);
 	virtual ~SDLUI(void);
 
+	virtual void			init(void);
+
 	virtual EventType		getEvent(void);
 
 	virtual void			draw(IGame const &game);
-
-	virtual void			_drawBackground(void);
-	virtual void			_drawGrid(void);
-	virtual void			_drawBlocks(std::list<IBlock*> const &blocks);
-	virtual void			_drawSnake(ISnake const &snake);
-	virtual void			_drawHeader(IGame const &game);
 
 	virtual bool			windowShouldClose(void) const;
 
@@ -60,6 +56,12 @@ protected:
 	SDL_Surface				*_surface;
 
 	bool					_shouldClose;
+
+	virtual void			_drawBackground(void);
+	virtual void			_drawGrid(void);
+	virtual void			_drawBlocks(std::list<IBlock*> const &blocks);
+	virtual void			_drawSnake(ISnake const &snake);
+	virtual void			_drawHeader(IGame const &game);
 
 private:
 	SDLUI(SDLUI const &src);

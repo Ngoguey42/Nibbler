@@ -6,33 +6,41 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/18 12:45:11 by jaguillo          #+#    #+#              #
-#    Updated: 2015/05/22 15:53:26 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/05/29 16:52:39 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = nibbler
+NAME := nibbler
 
-RULES = clean fclean re
+SUB_PREFIX := sub_
 
-all: _all $(NAME)
+EXTERN := extern/ftconstexpr
 
-$(NAME):
-	@ln -s Core/$@ $@
+BREW := SFML SDL2 glfw3
 
-_all:
-	@make -C Core
-	@make -C NcursesUI
-	@make -C OpenGLUI
-	@make -C SfmlUI
-	@make -C SDLUI
-	@make -C SfmlAudio
+all: $(NAME)
 
-$(RULES):
-	@make -C Core $@
-	@make -C NcursesUI $@
-	@make -C OpenGLUI $@
-	@make -C SfmlUI $@
-	@make -C SDLUI $@
-	@make -C SfmlAudio $@
+$(NAME): $(BREW) $(EXTERN) $(SUB_PREFIX)all
+	@ln -fs Core/$@ $@
 
-.PHONY: all _all $(RULES)
+clean: $(SUB_PREFIX)clean
+
+fclean: $(SUB_PREFIX)fclean
+
+re: fclean all
+
+$(EXTERN):
+	@git submodule update --init "$@"
+
+$(BREW):
+	@brew list "$@" &> /dev/null || brew install "$@"
+
+$(SUB_PREFIX)%:
+	@make -C Core $(subst $(SUB_PREFIX),,$@)
+	@make -C NcursesUI $(subst $(SUB_PREFIX),,$@)
+	@make -C OpenGLUI $(subst $(SUB_PREFIX),,$@)
+	@make -C SfmlUI $(subst $(SUB_PREFIX),,$@)
+	@make -C SDLUI $(subst $(SUB_PREFIX),,$@)
+	@make -C SfmlAudio $(subst $(SUB_PREFIX),,$@)
+
+.PHONY: all clean fclean re $(SUB_PREFIX)% $(EXTERN) $(BREW)

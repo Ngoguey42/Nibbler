@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:37 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 13:41:57 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:41:34 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ class	SfmlUI : public sf::RenderWindow, public IUI
 public:
 	SfmlUI(std::pair<int, int> gameSize);
 	virtual ~SfmlUI(void);
+
+	virtual void				init(void);
 
 	virtual EventType			getEvent(void);
 

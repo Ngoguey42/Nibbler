@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/20 19:14:38 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/21 19:44:05 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:49:50 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,21 @@
 SDLUI::SDLUI(std::pair<int, int> gameSize)
 	: _gameSize(gameSize), _shouldClose(false)
 {
+}
+
+SDLUI::~SDLUI(void)
+{
+	if (_window != NULL)
+		SDL_DestroyWindow(_window);
+	SDL_Quit();
+}
+
+void				SDLUI::init(void)
+{
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		throw std::runtime_error("Cannot init SDL");
 	_window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		gameSize.first * CHUNK_SIZE, gameSize.second * CHUNK_SIZE + OFFSET_TOP, SDL_WINDOW_SHOWN);
+		_gameSize.first * CHUNK_SIZE, _gameSize.second * CHUNK_SIZE + OFFSET_TOP, SDL_WINDOW_SHOWN);
 	if (_window == NULL)
 		throw std::runtime_error("Cannot open window");
 	_surface = SDL_GetWindowSurface(_window);
@@ -39,13 +50,6 @@ SDLUI::SDLUI(std::pair<int, int> gameSize)
 	_events[SDLK_5] = EVENT_5;
 	_events[SDLK_6] = EVENT_6;
 	_events[SDLK_7] = EVENT_7;
-}
-
-SDLUI::~SDLUI(void)
-{
-	if (_window != NULL)
-		SDL_DestroyWindow(_window);
-	SDL_Quit();
 }
 
 EventType			SDLUI::getEvent(void)
