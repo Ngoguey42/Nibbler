@@ -54,65 +54,51 @@ public:
 	EventType					getEvent(void);
 	void						draw(IGame const &game);
 	bool						windowShouldClose(void) const;
-	void                    	init(void){}; //todo
-	
-protected:
+	void                    	init(void);
+
 private:
-	// *** DRAW MEMBER FUNCTIONS **** //
-	void						_put_grid(void) const;
-	void						_put_block(std::pair<int, int> const &pos,
-										   IBlock::Type type) const;
-	void						_put_head(
+	// * DRAW MEMBER FUNCTIONS ****** //
+	void							_put_grid(void) const;
+	void							_put_block(std::pair<int, int> const &pos,
+											   IBlock::Type type) const;
+	void							_put_head(
 		std::pair<int, int> const &selfPos,
 		std::pair<int, int> const &prevPos,
 		float phase, float ratio) const;
-	void						_putSnakeChunk(
+	void							_putSnakeChunk(
 		std::pair<int, int> const &selfPos,
 		std::pair<int, int> const &prevPos,
 		std::pair<int, int> const &nextPos,
 		float phase, float frontThickness = 1.f, float rearThickness = 1.f
 		) const;
-	void						_putGround(void) const;
-	void						_putBackground(void) const;
-	
-	// * ATTRIBUTES ***************** //
-	GLFWwindow						*_win;
-	std::pair<int, int> const		_tmpGridSize;	// Grid size (Ctor)
-	
-	std::pair<int, int> const		_winSize;		// OpenGLUI size
-	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
+	void							_putGround(void) const;
+	void							_putBackground(void) const;
 
-	float							_lastTime;
-	float							_phase;
-	float							_deathTime;
-	float							_lastMoveRatio;
-
+	// * NESTED OBJECTS ************* //
 	typedef std::tuple<float, float, float, float>				t_colorDeltas;
 	typedef std::tuple<float, float, t_color, t_colorDeltas>	t_groundData;
 	typedef std::vector<std::vector<t_groundData>>				t_groundDatas;
-	t_groundDatas const											_groundDatas;
-	t_groundDatas								_buildGroundDatas(void) const;
-
 	typedef ftce::VtsColor<3u, float, 2u>						bg_point;
 	typedef std::vector<bg_point>								bg_points;
-	bg_points const												_bgDatas;
-	bg_points									_buildBgDatas(void) const;
+
+	// * PRECALC MEMBER FUNCTIONS *** //
+	t_groundDatas					_buildGroundDatas(void) const;
+	bg_points						_buildBgDatas(void) const;
 	
-	
-/*
-Todo:
-fmod on straight snake chunk to greatly reduce holes in snake
-Narrow Z in neck's angle
-Tongue
-Obstacles
-plane lean
-apple's color
-plane thickness
-texts
-overlays pause/death
-background
-*/
-	
+	// * ATTRIBUTES ***************** //
+	GLFWwindow						*_win;			// Window PTR
+	std::pair<int, int> const		_tmpGridSize;	// Grid size (Ctor)
+
+	std::pair<int, int> const		_winSize;		// Pixels size
+	std::pair<float, float> const	_topLeftCell;	// Top left cell coords
+
+	float							_lastTime;		// Last render time
+	float							_phase;			// Current phase at the tail
+	float							_deathTime;
+	float							_lastMoveRatio;	// Used to smooth undulations.
+	t_groundDatas const				_groundDatas;	// Ground colors/vertices
+	bg_points const					_bgDatas;		// Background colors/vertices
+
 	// * STATICS ******************** //
 #define TEMPLATE_SIZE(S) S[0], S[1], S[2], S[3], S[4], S[5]
 	static constexpr ftce::Array<size_t, 6>							sinSize
@@ -124,9 +110,20 @@ background
 		{AngledSnakePoints::calcPointsArraySize(false)};
 	static constexpr ftce::Array<
 		CornerPoints<TEMPLATE_SIZE(dexSize)>, NUM_PRECALC_POINTS>	dexPoints
-		{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};	
+		{AngledSnakePoints::buildPointsArray<TEMPLATE_SIZE(dexSize)>(false)};
 #undef TEMPLATE_SIZE
 };
-//std::ostream					&operator<<(std::ostream &o, OpenGLUI const &rhs);
 
+/*
+Todo:
+fmod on straight snake chunk to greatly reduce holes in snake
+Narrow Z in neck's angle
+Tongue
+Obstacles
+plane lean
+apple's color
+plane thickness
+texts
+overlays pause/death
+*/
 #endif // ************************************************** OPENGLUI_CLASS_HPP //
