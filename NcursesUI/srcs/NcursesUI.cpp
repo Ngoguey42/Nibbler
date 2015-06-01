@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/05/29 16:44:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 16:41:14 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ void				NcursesUI::init(void)
 	_events['5'] = EVENT_5;
 	_events['6'] = EVENT_6;
 	_events['7'] = EVENT_7;
+	_events[265] = EVENT_1;
+	_events[266] = EVENT_2;
+	_events[267] = EVENT_3;
+	_events[268] = EVENT_4;
+	_events[269] = EVENT_5;
+	_events[270] = EVENT_6;
+	_events[271] = EVENT_7;
 	_events['r'] = EVENT_R;
 	_events[' '] = EVENT_SPACE;
 	_events[KEY_UP] = EVENT_UP;
@@ -67,6 +74,8 @@ void				NcursesUI::init(void)
 	_events[KEY_LEFT] = EVENT_LEFT;
 	_updateSize();
 }
+
+#include <iostream>
 
 EventType		NcursesUI::getEvent(void)
 {
@@ -77,6 +86,8 @@ EventType		NcursesUI::getEvent(void)
 		_shouldClose = true;
 	else if (c != ERR && _events.find(c) != _events.end())
 		return (_events[c]);
+	if (c != -1)
+		std::cerr << "LOL: " << (int)c << std::endl;
 	_updateSize();
 	return (EVENT_NOPE);
 }

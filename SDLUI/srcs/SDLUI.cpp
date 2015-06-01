@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/20 19:14:38 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/06/01 15:24:19 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 16:34:53 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ void				SDLUI::init(void)
 	_events[SDLK_5] = EVENT_5;
 	_events[SDLK_6] = EVENT_6;
 	_events[SDLK_7] = EVENT_7;
+	_events[SDLK_F1] = EVENT_1;
+	_events[SDLK_F2] = EVENT_2;
+	_events[SDLK_F3] = EVENT_3;
+	_events[SDLK_F4] = EVENT_4;
+	_events[SDLK_F5] = EVENT_5;
+	_events[SDLK_F6] = EVENT_6;
+	_events[SDLK_F7] = EVENT_7;
 }
 
 EventType			SDLUI::getEvent(void)

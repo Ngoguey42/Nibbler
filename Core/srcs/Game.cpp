@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/06/01 15:42:58 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 16:33:36 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ Game::~Game(void)
 	{
 		delete _ui;
 		dlclose(_uiLib);
+	}
+	if (_audio != NULL)
+	{
+		delete _audio;
+		dlclose(_audioLib);
 	}
 	_destroyGame();
 }

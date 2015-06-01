@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/12 17:49:28 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/29 16:43:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 16:32:35 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,13 @@ void				SfmlUI::init(void)
 	_events[sf::Keyboard::Num5] = EVENT_5;
 	_events[sf::Keyboard::Num6] = EVENT_6;
 	_events[sf::Keyboard::Num7] = EVENT_7;
+	_events[sf::Keyboard::F1] = EVENT_1;
+	_events[sf::Keyboard::F2] = EVENT_2;
+	_events[sf::Keyboard::F3] = EVENT_3;
+	_events[sf::Keyboard::F4] = EVENT_4;
+	_events[sf::Keyboard::F5] = EVENT_5;
+	_events[sf::Keyboard::F6] = EVENT_6;
+	_events[sf::Keyboard::F7] = EVENT_7;
 }
 
 EventType			SfmlUI::getEvent(void)
