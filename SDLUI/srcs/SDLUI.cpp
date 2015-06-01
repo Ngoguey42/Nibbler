@@ -6,11 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/20 19:14:38 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/29 16:49:50 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 13:41:42 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdexcept>
+#include <string>
 #include "SDLUI.hpp"
 #include "IBlock.hpp"
 #include "IGame.hpp"
@@ -25,18 +26,24 @@ SDLUI::~SDLUI(void)
 {
 	if (_window != NULL)
 		SDL_DestroyWindow(_window);
+	if (_font != NULL)
+		TTF_CloseFont(_font);
 	SDL_Quit();
+	TTF_Quit();
 }
 
 void				SDLUI::init(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0 || TTF_Init() < 0)
 		throw std::runtime_error("Cannot init SDL");
 	_window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		_gameSize.first * CHUNK_SIZE, _gameSize.second * CHUNK_SIZE + OFFSET_TOP, SDL_WINDOW_SHOWN);
 	if (_window == NULL)
 		throw std::runtime_error("Cannot open window");
 	_surface = SDL_GetWindowSurface(_window);
+	_font = TTF_OpenFont(FONT_LOCATION, FONT_SIZE);
+	if (_font == NULL)
+		throw std::runtime_error("Cannot open font");
 	_events[SDLK_UP] = EVENT_UP;
 	_events[SDLK_RIGHT] = EVENT_RIGHT;
 	_events[SDLK_DOWN] = EVENT_DOWN;
@@ -139,8 +146,36 @@ void				SDLUI::_drawSnake(ISnake const &snake)
 	}
 }
 
-void				SDLUI::_drawHeader(IGame const &)
+void				SDLUI::_drawHeader(IGame const &game)
 {
+	int					x = _gameSize.first * 2;
+	int					y;
+
+	y = CHUNK_SIZE / 2;
+	_drawText(x, y, std::string("Score: ") += std::to_string(game.getScore()));
+	y += CHUNK_SIZE;
+	_drawText(x, y, std::string("Time: ") += std::to_string(game.getPlayTime()));
+	y += CHUNK_SIZE;
+	if (game.isPaused())
+		_drawText(CHUNK_SIZE, CHUNK_SIZE * 3.5, std::string(
+			game.getSnake().isDie() ? "[[ GAME OVER ]]"
+				: "[[ PAUSE ]]"));
+}
+
+void				SDLUI::_drawText(int x, int y, std::string const &str)
+{
+	SDL_Surface			*surface;
+	SDL_Rect			dst;
+
+	surface = TTF_RenderText_Solid(_font, str.c_str(), {C_TEXT, 0});
+	if (surface == NULL)
+		return ;
+	dst.x = x;
+	dst.y = y;
+	dst.w = surface->w;
+	dst.h = surface->h;
+	SDL_BlitSurface(surface, NULL, _surface, &dst);
+	SDL_FreeSurface(surface);
 }
 
 bool				SDLUI::windowShouldClose(void) const
