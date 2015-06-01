@@ -12,23 +12,18 @@ static void					rotateChunk(std::pair<int, int> const &prevDelta)
 		{
 			glRotatef(-90.f, 0, 0, 1);
 			glTranslatef(-CHUNK_SIZE, 0.f, 0.f);
+			return ;
 		}
-		else
-		{
-			glRotatef(90.f, 0, 0, 1);
-			glTranslatef(0.f, -CHUNK_SIZE, 0.f);
-		}
+		glRotatef(90.f, 0, 0, 1);
+		glTranslatef(0.f, -CHUNK_SIZE, 0.f);
 	}
 	else
 	{	// y changes
 		if (prevDelta.second > 0)
 			return ;
-		else
-		{
-			glRotatef(180.f, 0, 0, 1);
-			glTranslatef(0.f, -CHUNK_SIZE, 0.f);
-			glTranslatef(-CHUNK_SIZE, 0.f, 0.f);
-		}
+		glRotatef(180.f, 0, 0, 1);
+		glTranslatef(0.f, -CHUNK_SIZE, 0.f);
+		glTranslatef(-CHUNK_SIZE, 0.f, 0.f);
 	}
 	return ;
 }

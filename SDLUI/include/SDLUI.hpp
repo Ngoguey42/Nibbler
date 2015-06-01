@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/20 19:14:35 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/06/01 13:32:53 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 15:24:49 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ protected:
 	void					_drawText(int x, int y, std::string const &str);
 
 private:
+	SDLUI(void);
 	SDLUI(SDLUI const &src);
 	SDLUI					&operator=(SDLUI const &rhs);
 };

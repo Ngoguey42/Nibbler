@@ -57,18 +57,14 @@ static void error_callback(int error, const char* description)
 
 static void key_callback(GLFWwindow* window, int key, int, int action, int)
 {
-	if (action == GLFW_PRESS)
-	{
-		if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
-			glfwSetWindowShouldClose(window, GL_TRUE);
-		else
-		{
-			auto it = OpenGLUI::eventsMap.find(key);
+	if (action != GLFW_PRESS)
+		return ;
+	auto it = OpenGLUI::eventsMap.find(key);
 
-			if (it != OpenGLUI::eventsMap.end())
-				OpenGLUI::pendingEvents.push(it->second);
-		}
-	}
+	if (it != OpenGLUI::eventsMap.end())
+		OpenGLUI::pendingEvents.push(it->second);
+	if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
+		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
 // * CONSTRUCTORS *********************************************************** //

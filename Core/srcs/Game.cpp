@@ -6,19 +6,19 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/29 16:40:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 15:42:58 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <dlfcn.h>
 #include <string>
 #include <utility>
-#include <iostream>
 #include <chrono>
-#include <cmath>
 #include <cstdlib>
+
 #include "nibbler.h"
 #include "Game.hpp"
+
 #include "IUI.hpp"
 #include "Event.hpp"
 #include "IBlock.hpp"
@@ -34,7 +34,6 @@ Game::Game(int argc, char **argv) throw(std::exception)
 	_settings(argc, argv),
 	_paused(false), _fps(0), _snake()
 {
-	// Init
 	srand(time(NULL));
 	reset();
 }

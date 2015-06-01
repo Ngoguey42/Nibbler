@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/27 15:15:41 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/22 17:44:53 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 15:32:35 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int				main(int argc, char **argv)
 	try
 	{
 		Game	game(argc, argv);
+
 		try
 		{
 			game.changeAudio(AUDIO_1);
