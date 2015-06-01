@@ -6,11 +6,9 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 08:02:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/15 09:41:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 16:05:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
-
-// #include "AngledSnakePoints.class.hpp"
 
 constexpr ftce::Array<size_t, 6>    AngledSnakePoints::calcPointsArraySize(
 	bool sinistro)
@@ -118,7 +116,6 @@ constexpr int				AngledSnakePoints::init(float const initRatio,
 
 	(void)sinistro;
 	// Setting this->leftBranchInPoints		//
-	// curphase = ;
 	if (sinistro)
 	{
 		for (int j = 0; j < MAX_POINTS_BEFORE_ANGLE; j++)
@@ -221,20 +218,15 @@ constexpr AngledSnakePoints::t_vertexf				AngledSnakePoints::calcIntersection(
 	size_t &inLastIndex, size_t &outLastIndex)
 {
 	float	bestDistance = CHUNK_SIZEF;
-	// int		i = 0, j = 0;
 
-	// for (auto const &w : inPoints)
 	for (size_t i = 0; i <= inPoints.getLastIndex(); i++)
 	{
 		auto const &w = inPoints[i];
-		// j = 0;
-		// for (auto const &x : outPoints)
 		for (size_t j = 0; j <= outPoints.getLastIndex(); j++)
 		{
 			auto const &x = outPoints[j];
 			float const	dx = w.x - x.x;
 			float const	dy = w.y - x.y;
-			// float const	distance = ftce::sqrt(dx * dx + dy * dy);
 			float const	distance = dx * dx + dy * dy;
 			
 			if (bestDistance > distance)
@@ -243,9 +235,7 @@ constexpr AngledSnakePoints::t_vertexf				AngledSnakePoints::calcIntersection(
 				inLastIndex = i;
 				outLastIndex = j;
 			}
-			// j++;
 		}
-		// i++;
 	}
 	return (setBranchIntersection(inPoints[inLastIndex],
 								  outPoints[outLastIndex]));

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/15 09:07:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/29 15:33:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 16:05:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -42,6 +42,7 @@ public:
 	// * STATICS ******************** //
 	// * CTORS / DTORS ************** //
 	constexpr CornerPoints();
+	~CornerPoints() = default;
 	
 	// * OPERATORS ****************** //
 	constexpr CornerPoints			&operator=(CornerPoints const &rhs);

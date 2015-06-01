@@ -1,6 +1,0 @@
-sfml/ncurses
-opengl (glfw) OK
-
-cinder could not compile
-Qt too heavy
-gtk (gtkmm) internal loop ?

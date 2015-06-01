@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/06/01 12:21:27 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/06/01 16:06:35 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,10 @@
 #define MAX_POINTS_PER_APPLE_STRIP (NUM_POINTS_PER_APPLE_SLICE * 2 + 2)
 #define MAX_POINTS_PER_APPLE_STRIPF static_cast<float>(MAX_POINTS_PER_APPLE_STRIP)
 #define APPLE_POINTS_DELTA_RAD (M_PIF * 2.f / NUM_POINTS_PER_APPLE_SLICE)
-	
-//todo
 #define MAX_POINTS_BEFORE_ANGLE (POINTS_PER_SIDE + 1)
 #define MAX_POINTS_PER_GROUP 40
-/* #define MAX_POINTS_BEFORE_ANGLEF ftce::floor(POINTS_PER_SIDEF * SNAKE_WIDTH_INV + 1.f) */
-// #define MAX_POINTS_BEFORE_ANGLE static_cast<int>(MAX_POINTS_BEFORE_ANGLEF)
-
 // = BACKGROUND = //
 #define BG_POINTS_RAND_RANGEHALFF (BG_POINTS_RAND_RANGEF / 2.f)
-/* #define BG_DELTA_PINKHALF (BG_DELTA_PINK / 2u) */
 #define BG_PINK_PLUS_HALFDELTA (BG_MAIN_PINK + BG_DELTA_PINK / 2u)
 
 class AngledSnakePoints;
