@@ -30,7 +30,7 @@ LD_CC := clang++
 CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
 # Linking flags
-LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lsdl2
+LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lSDL2 -lSDL2_ttf
 
 # Clang++ include flags
 CPP_HEADS := -I../shared -Iinclude -I ~/.brew/include

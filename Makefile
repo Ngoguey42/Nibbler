@@ -6,7 +6,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/18 12:45:11 by jaguillo          #+#    #+#              #
-#    Updated: 2015/05/29 16:52:39 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/06/01 14:08:15 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SUB_PREFIX := sub_
 
 EXTERN := extern/ftconstexpr
 
-BREW := SFML SDL2 glfw3
+BREW := SFML SDL2 glfw3 SDL2_ttf ftgl
 
 all: $(NAME)
 
