@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/29 17:23:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 12:20:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -103,7 +103,7 @@ OpenGLUI::~OpenGLUI()
 }
 
 // * INTERFACE METHODS ****************************************************** //
-bool						OpenGLUI::init(void) const
+void						OpenGLUI::init(void)
 {
 	if (_tmpGridSize.first < 1 || _tmpGridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
@@ -124,7 +124,7 @@ bool						OpenGLUI::init(void) const
 	glfwSetKeyCallback(_win, key_callback);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
-	return true;
+	return ;
 }
 
 EventType					OpenGLUI::getEvent(void)

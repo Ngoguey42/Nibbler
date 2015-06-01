@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/11 08:52:25 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/05/29 17:24:42 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/06/01 12:21:27 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@
 #define BG_POINTS_RAND_RANGE 30			// Integer, pixels
 #define BG_PERCENT_GREY 33				// Integer, percent
 #define BG_MAIN_GREY ftce::Color<>(150, 150, 150)	//Color
-#define BG_MAIN_PINK ftce::Color<>(225, 0, 200)	//Color
-#define BG_DELTA_PINK ftce::Color<>(50, 0, 20) 	//color
+#define BG_MAIN_PINK ftce::Color<>(140, 212, 202)	//Color
+#define BG_DELTA_PINK ftce::Color<>(10, 10, 52) 	//color
 
 // =========== CONVERSIONS ========== //
 #define CHUNK_SIZEF static_cast<float>(CHUNK_SIZE)
