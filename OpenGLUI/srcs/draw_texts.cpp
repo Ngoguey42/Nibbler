@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/06/01 13:31:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/06/01 14:22:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 14:28:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -35,14 +35,17 @@ void                        OpenGLUI::_putTexts(IGame const &game)
 		 += std::to_string(game.getPlayTime() % 60)).c_str(),
 		-1, FTPoint(static_cast<double>(_winSize.first) - timeWidth - padding,
 					padding));
-	if (game.isPaused())
+	if (game.getSnake().isDie())
+	{
+		this->_font.Render(
+			std::string("Death!!").c_str(), -1,
+			FTPoint(pausePadding, static_cast<double>(_winSize.second) / 2.));		
+	}
+	else if (game.isPaused())
 	{
 		this->_font.Render(
 			std::string("Paused").c_str(), -1,
 			FTPoint(pausePadding, static_cast<double>(_winSize.second) / 2.));
 	}
-
-
-
 	return ;
 }
