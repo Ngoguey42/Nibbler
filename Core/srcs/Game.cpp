@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:38:15 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/06/01 15:42:58 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/06/01 16:23:37 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void						Game::start(void)
 			lastFPS = tmp;
 			frames = 0;
 		}
-		_ui->draw(*this);
 		frames++;
 		_update(tmp - lastUpdate);
 		lastUpdate = tmp;
+		_ui->draw(*this);
 	}
 }
 

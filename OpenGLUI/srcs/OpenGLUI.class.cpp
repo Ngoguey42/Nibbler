@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/06/01 14:36:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 16:31:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,6 +41,10 @@ std::map<t_glfwevent, EventType> const	OpenGLUI::eventsMap{
 	{GLFW_KEY_2, EventType::EVENT_2},
 	{GLFW_KEY_3, EventType::EVENT_3},
 	{GLFW_KEY_4, EventType::EVENT_4},
+	{GLFW_KEY_F1, EventType::EVENT_1},
+	{GLFW_KEY_F2, EventType::EVENT_2},
+	{GLFW_KEY_F3, EventType::EVENT_3},
+	{GLFW_KEY_F4, EventType::EVENT_4},
 };
 std::map<IBlock::Type, std::array<t_byte, 9> > const  OpenGLUI::blocksSchemes{
 	{IBlock::GROW, {{4, 15, 200, 1, 0, 15, 1, 0, 0}}},
@@ -92,7 +96,6 @@ OpenGLUI::~OpenGLUI()
 	glfwTerminate();
 	while (!OpenGLUI::pendingEvents.empty())
 		OpenGLUI::pendingEvents.pop();
-	std::cout << "[OpenGLUI]() Dtor called" << std::endl;
 	return ;
 }
 
