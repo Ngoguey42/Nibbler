@@ -1,20 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   OpenGLUI.class.cpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/06/01 15:27:53 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   OpenGLUI.class.cpp                                 :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
+//   Updated: 2015/06/01 14:36:12 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include <cmath>
 #include "OpenGLUI.class.hpp"
-#include "IGame.hpp"
-#include "ISnake.hpp"
-#include "IBlock.hpp"
 
 // #define TMP_PADDING ((int)10)
 
@@ -73,6 +70,7 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 // * CONSTRUCTORS *********************************************************** //
 OpenGLUI::OpenGLUI(std::pair<int, int> gridSize) :
 	_win(nullptr),
+	_font("OpenGLUI/misc/font.ttf"),
 	_tmpGridSize(gridSize),
 	_winSize(std::make_pair(gridSize.first * CHUNK_SIZE + SCREEN_PADDING2,
 							gridSize.second * CHUNK_SIZE + SCREEN_PADDING2)),
@@ -103,6 +101,8 @@ void						OpenGLUI::init(void)
 {
 	if (_tmpGridSize.first < 1 || _tmpGridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
+	if(this->_font.Error())
+		throw std::runtime_error("Could not init ftgl font");
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
 		throw std::runtime_error("Could not init glfw");
@@ -175,19 +175,19 @@ void						OpenGLUI::draw(IGame const &game)
 		if (this->_deathTime < 0.f)
 			this->_deathTime = glfwGetTime();
 	}
-	// #1/4		Resetting Projection matrix.
+	// #1/5		Resetting Projection matrix.
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(.0f, static_cast<float>(_winSize.first),
 			static_cast<float>(_winSize.second), .0f,
 			-CHUNK_SIZEF * 1000.f, CHUNK_SIZEF * 1000.f);
-	// #2/4		Resetting Modelview matrix
+	// #2/5		Resetting Modelview matrix
 	//			Cleaning screen with 'this->_putBackground()'
 	glMatrixMode(GL_MODELVIEW);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	this->_putBackground();
-	// #3/4		Updating Projection matrix with the right effect.
+	// #3/5		Updating Projection matrix with the right effect.
 	glMatrixMode(GL_PROJECTION);
 	if (snake.isDie())
 	{
@@ -201,7 +201,7 @@ void						OpenGLUI::draw(IGame const &game)
 		glScalef(rateScale, rateScale, rateScale);
 	}
 	glRotatef(25.f, 1.f, 0.f, 0.f);
-	// #4/4		Drawing Game.
+	// #4/5		Drawing Game.
 	glMatrixMode(GL_MODELVIEW);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	// ##	Drawing ground.
@@ -247,6 +247,8 @@ void						OpenGLUI::draw(IGame const &game)
 	// ##	Drawing snake (head).
 	this->_put_head(*q.begin(), *++q.begin(), curPhase,
 					snake.getMoveRatio());
+	// #5/5		Drawing text.
+	this->_putTexts(game);
 	glfwSwapBuffers(_win);
 	return ;
 }
