@@ -72,10 +72,10 @@ void						Game::start(void)
 			lastFPS = tmp;
 			frames = 0;
 		}
-		_ui->draw(*this);
 		frames++;
 		_update(tmp - lastUpdate);
 		lastUpdate = tmp;
+		_ui->draw(*this);
 	}
 }
 

@@ -27,15 +27,13 @@ CPP_CC := clang++
 LD_CC := clang++
 
 # Clang++ flags
-CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14 -g
+CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
 # Linking flags
 LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lglfw3 -lftgl -lGLEW -framework OpenGL
 
 # Clang++ include flags
 CPP_HEADS := -Iinclude -I../shared -I../extern -I ~/.brew/include -I ~/.brew/include/freetype2/
-
-NICE_OUTPUT := 0
 
 #
 # Internal
@@ -49,9 +47,9 @@ O_FILES := o/srcs/draw_items.o \
 	o/srcs/init.o \
 	o/srcs/draw_background.o
 
-MSG_0 := printf '\033[0;32m%s\033[0;0m\n'
-MSG_1 := printf '\033[0;31m%s\033[0;0m\n'
-MSG_END := true
+MSG_0 := printf '\033[0;32m%-24.24s\033[0;0m\r'
+MSG_1 := printf '\033[0;31m%-24.24s\033[0;0m\n'
+MSG_END := printf '\n'
 
 .SILENT:
 
