@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   AngledSnakePoints.class.hpp                        :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/05/11 08:56:31 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/29 15:32:51 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   AngledSnakePoints.class.hpp                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/05/11 08:56:31 by ngoguey           #+#    #+#             */
+/*   Updated: 2015/06/01 15:31:14 by jaguillo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef ANGLEDSNAKEPOINTS_CLASS_HPP
 # define ANGLEDSNAKEPOINTS_CLASS_HPP
@@ -44,6 +44,7 @@ public:
 	constexpr AngledSnakePoints			&operator=(AngledSnakePoints const &rhs);
 	constexpr operator bool() { return true; } //debug
 	constexpr operator bool() const { return true; } //debug
+	~AngledSnakePoints(void) = default;
 	
 	
 	// typedef std::pair<float, float>                         t_vertexf;

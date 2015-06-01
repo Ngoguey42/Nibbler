@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   OpenGLUI.class.cpp                                 :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/06/01 12:20:13 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   OpenGLUI.class.cpp                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             */
+/*   Updated: 2015/06/01 15:27:53 by jaguillo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <cmath>
 #include "OpenGLUI.class.hpp"
@@ -60,18 +60,14 @@ static void error_callback(int error, const char* description)
 
 static void key_callback(GLFWwindow* window, int key, int, int action, int)
 {
-	if (action == GLFW_PRESS)
-	{
-		if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
-			glfwSetWindowShouldClose(window, GL_TRUE);
-		else
-		{
-			auto it = OpenGLUI::eventsMap.find(key);
+	if (action != GLFW_PRESS)
+		return ;
+	auto it = OpenGLUI::eventsMap.find(key);
 
-			if (it != OpenGLUI::eventsMap.end())
-				OpenGLUI::pendingEvents.push(it->second);
-		}
-	}
+	if (it != OpenGLUI::eventsMap.end())
+		OpenGLUI::pendingEvents.push(it->second);
+	if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
+		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
 // * CONSTRUCTORS *********************************************************** //

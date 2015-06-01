@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/20 19:14:38 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/06/01 13:41:42 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 15:24:19 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ EventType			SDLUI::getEvent(void)
 		_shouldClose = true;
 	else if (e.type == SDL_KEYDOWN)
 	{
-		if (_events.find(e.key.keysym.sym) != _events.end())
-			return (_events[e.key.keysym.sym]);
-		else if (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE)
+		auto it = _events.find(e.key.keysym.sym);
+		if (it != _events.end())
+			return (it->second);
+		if (e.key.keysym.sym == SDLK_q || e.key.keysym.sym == SDLK_ESCAPE)
 			_shouldClose = true;
 	}
 	return (EVENT_NOPE);
@@ -158,8 +159,8 @@ void				SDLUI::_drawHeader(IGame const &game)
 	y += CHUNK_SIZE;
 	if (game.isPaused())
 		_drawText(CHUNK_SIZE, CHUNK_SIZE * 3.5, std::string(
-			game.getSnake().isDie() ? "[[ GAME OVER ]]"
-				: "[[ PAUSE ]]"));
+			game.getSnake().isDie() ? "GAME OVER"
+				: "PAUSE"));
 }
 
 void				SDLUI::_drawText(int x, int y, std::string const &str)

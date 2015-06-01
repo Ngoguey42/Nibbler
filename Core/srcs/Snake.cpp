@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/01 15:54:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/05/22 17:40:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/01 15:37:20 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,14 +135,8 @@ void							Snake::_move(Game &game)
 	newChunk.second += _direction.second;
 	if (game.getSettings().wallThrough)
 	{
-		if (newChunk.first < 0)
-			newChunk.first = game.getGameWidth() - 1;
-		if (newChunk.first >= game.getGameWidth())
-			newChunk.first = 0;
-		if (newChunk.second < 0)
-			newChunk.second = game.getGameHeight() - 1;
-		if (newChunk.second >= game.getGameHeight())
-			newChunk.second = 0;
+		newChunk.first = (newChunk.first + game.getGameWidth()) % game.getGameWidth();
+		newChunk.second = (newChunk.second + game.getGameHeight()) % game.getGameHeight();
 	}
 	_chunks.emplace_front(newChunk);
 	_collide(game);
