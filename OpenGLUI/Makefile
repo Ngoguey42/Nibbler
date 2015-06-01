@@ -27,7 +27,7 @@ CPP_CC := clang++
 LD_CC := clang++
 
 # Clang++ flags
-CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14 -g
+CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14
 
 # Linking flags
 LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lglfw3 -lftgl -lGLEW -framework OpenGL
