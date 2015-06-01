@@ -6,7 +6,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/18 12:45:11 by jaguillo          #+#    #+#              #
-#    Updated: 2015/06/01 14:41:33 by ngoguey          ###   ########.fr        #
+#    Updated: 2015/06/01 16:49:39 by ngoguey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SUB_PREFIX := sub_
 
 EXTERN := extern/ftconstexpr
 
-BREW := SFML SDL2 glfw3 SDL2_ttf ftgl freetype
+BREW := SFML SDL2 homebrew/versions/glfw3 SDL2_ttf ftgl freetype
 
 all: $(NAME)
 
