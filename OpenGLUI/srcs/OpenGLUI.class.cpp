@@ -6,15 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:52:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/06/01 12:20:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 13:44:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <cmath>
 #include "OpenGLUI.class.hpp"
-#include "IGame.hpp"
-#include "ISnake.hpp"
-#include "IBlock.hpp"
 
 // #define TMP_PADDING ((int)10)
 
@@ -77,6 +74,7 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
 // * CONSTRUCTORS *********************************************************** //
 OpenGLUI::OpenGLUI(std::pair<int, int> gridSize) :
 	_win(nullptr),
+	_font("OpenGLUI/misc/font.ttf"),
 	_tmpGridSize(gridSize),
 	_winSize(std::make_pair(gridSize.first * CHUNK_SIZE + SCREEN_PADDING2,
 							gridSize.second * CHUNK_SIZE + SCREEN_PADDING2)),
@@ -107,6 +105,8 @@ void						OpenGLUI::init(void)
 {
 	if (_tmpGridSize.first < 1 || _tmpGridSize.second < 1)
 		throw std::invalid_argument("Grid attributes invalid");
+	if(this->_font.Error())
+		throw std::runtime_error("Could not init ftgl font");
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
 		throw std::runtime_error("Could not init glfw");
@@ -251,6 +251,8 @@ void						OpenGLUI::draw(IGame const &game)
 	// ##	Drawing snake (head).
 	this->_put_head(*q.begin(), *++q.begin(), curPhase,
 					snake.getMoveRatio());
+	// #5/5		Drawing text.
+	this->_putTexts(game);
 	glfwSwapBuffers(_win);
 	return ;
 }

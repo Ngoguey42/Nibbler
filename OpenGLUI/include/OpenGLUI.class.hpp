@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/05/22 14:51:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/05/29 17:30:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/06/01 13:44:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,11 +22,14 @@
 # include <map>
 
 # include <GLFW/glfw3.h>
+# include <FTGL/ftgl.h>
 
 # include "nibbler.h"
 # include "IBlock.hpp"
-# include "OpenGLLib.h"
 # include "IUI.hpp"
+# include "IGame.hpp"
+# include "ISnake.hpp"
+# include "OpenGLLib.h"
 # include "AngledSnakePoints.class.hpp"
 # include "ftconstexpr/Vertex.hpp"
 # include "ftconstexpr/VtsColor.hpp"
@@ -73,6 +76,7 @@ private:
 		) const;
 	void							_putGround(void) const;
 	void							_putBackground(void) const;
+	void							_putTexts(IGame const &game);
 
 	// * NESTED OBJECTS ************* //
 	typedef std::tuple<float, float, float, float>				t_colorDeltas;
@@ -87,6 +91,7 @@ private:
 	
 	// * ATTRIBUTES ***************** //
 	GLFWwindow						*_win;			// Window PTR
+	FTGLPixmapFont					_font;
 	std::pair<int, int> const		_tmpGridSize;	// Grid size (Ctor)
 
 	std::pair<int, int> const		_winSize;		// Pixels size

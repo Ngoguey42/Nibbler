@@ -30,14 +30,12 @@ LD_CC := clang++
 CPP_FLAGS := -Wall -Wextra -Werror -O2 -std=c++14 -g
 
 # Linking flags
-LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lglfw3 -lGLEW -framework OpenGL
+LD_FLAGS := -fPIC -shared -L ~/.brew/lib -lglfw3 -lftgl -lGLEW -framework OpenGL
 
 # Clang++ include flags
-CPP_HEADS := -Iinclude -I../shared -I../extern -I ~/.brew/include
+CPP_HEADS := -Iinclude -I../shared -I../extern -I ~/.brew/include -I ~/.brew/Cellar/freetype/2.5.5/include/freetype2
 
 NICE_OUTPUT := 0
-
-MAKEMAKE_TMP := tmp_makemake.py
 
 #
 # Internal
@@ -45,6 +43,7 @@ MAKEMAKE_TMP := tmp_makemake.py
 
 O_FILES := o/srcs/draw_items.o \
 	o/srcs/OpenGLUI.class.o \
+	o/srcs/draw_texts.o \
 	o/srcs/draw_snake.o \
 	o/srcs/draw_ground.o \
 	o/srcs/init.o \
@@ -63,27 +62,31 @@ all: $(LIBS)
 $(NAME): $(O_FILES)
 	@$(MSG_0) $@ ; $(LD_CC) -o $@ $(O_FILES) $(LD_FLAGS) && $(MSG_END) || $(MSG_1) $@
 
-o/srcs/draw_items.o: srcs/draw_items.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
+o/srcs/draw_items.o: srcs/draw_items.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/OpenGLUI.class.o: srcs/OpenGLUI.class.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/OpenGLUI.class.o: srcs/OpenGLUI.class.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/draw_snake.o: srcs/draw_snake.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/draw_texts.o: srcs/draw_texts.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/draw_ground.o: srcs/draw_ground.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/draw_snake.o: srcs/draw_snake.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/init.o: srcs/init.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/draw_ground.o: srcs/draw_ground.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
-o/srcs/draw_background.o: srcs/draw_background.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp include/OpenGLLib.h ../shared/IUI.hpp include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp ../shared/IGame.hpp ../shared/ISnake.hpp
+o/srcs/init.o: srcs/init.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
+	@mkdir -p o/srcs 2> /dev/null || true
+	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
+
+o/srcs/draw_background.o: srcs/draw_background.cpp include/OpenGLUI.class.hpp ../shared/nibbler.h ../shared/IBlock.hpp ../shared/IUI.hpp ../shared/IGame.hpp ../shared/ISnake.hpp include/OpenGLLib.h include/AngledSnakePoints.class.hpp include/CornerPoints.class.hpp include/CornerPoints.class.tpp include/AngledSnakePoints.class.tpp
 	@mkdir -p o/srcs 2> /dev/null || true
 	@$(MSG_0) $< ; clang++ $(CPP_FLAGS) $(CPP_HEADS) -c -o $@ $< || ($(MSG_1) $< && false)
 
@@ -102,9 +105,3 @@ fclean: clean
 
 re: fclean all
 .PHONY: re
-
-make: fclean
-	@curl -f https://raw.githubusercontent.com/Julow/makemake/master/makemake.py > $(MAKEMAKE_TMP)
-	@python $(MAKEMAKE_TMP)
-	@rm -f $(MAKEMAKE_TMP)
-.PHONY: make
