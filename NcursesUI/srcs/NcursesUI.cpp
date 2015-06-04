@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 20:58:30 by juloo             #+#    #+#             */
-/*   Updated: 2015/06/01 16:41:14 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/06/04 16:45:24 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,8 @@ void			NcursesUI::draw(IGame const &game)
 		auto &head = *(game.getSnake().getChunks().begin());
 		_drawChunk(head.first, head.second, 3, 'x');
 	}
-	// Draw UI
-	for (int x = _gameSize.first - 1; x >= 0; --x)
-		_drawChunk(x, -1, 1, ' ');
-	_startText(1, -1);
+	attron(COLOR_PAIR(1));
+	move(0, 0);
 	printw("Score: %-3d Time: %-3d Length: %-3d FPS: %d",
 		game.getScore(), game.getPlayTime(),
 		game.getSnake().getChunks().size(), game.getFPS());
@@ -124,14 +122,6 @@ void			NcursesUI::draw(IGame const &game)
 	else if (game.isPaused())
 		printw("  [[ PAUSE ]]");
 	refresh();
-}
-
-void			NcursesUI::_startText(int x, int y)
-{
-	x = x * _chunkWidth + _offset.first;
-	y = y * _chunkHeight + _offset.second;
-	move(x, y);
-	attron(COLOR_PAIR(1));
 }
 
 void			NcursesUI::_drawChunk(int x, int y, int color, char c)
@@ -153,10 +143,10 @@ void			NcursesUI::_updateSize(void)
 	_winSize.first = width;
 	_winSize.second = height;
 	_chunkWidth = std::max(2, std::min(width / _gameSize.first,
-		height / (_gameSize.second + 1) * 2));
+		height / (_gameSize.second) * 2));
 	_chunkHeight = _chunkWidth / 2;
 	_offset = std::make_pair((width - (_chunkWidth * _gameSize.first)) / 2,
-		(height - (_chunkHeight * _gameSize.second)) / 2 + 1);
+		(height - (_chunkHeight * _gameSize.second)) / 2);
 }
 
 bool			NcursesUI::windowShouldClose(void) const
