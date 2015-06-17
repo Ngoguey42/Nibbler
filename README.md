@@ -26,11 +26,11 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 
 #####Our work:
 - [X] Deep exploration of C++11 and C++14
+- [X] A 4th GUI
 - [X] 3 basic GUI: SFML(using sprites), Ncurses, SDL2
 - [X] 1 polished GUI: OpenGL 2.0 (glfw3, ftgl)
 - [X] 1 Sound Interface: SFMLaudio
-- [X] Fine makefile and file tree organization
-- [X] A 4th GUI
+- [X] A fine makefile and file tree organization
 
 #####Install:
 ```sh
