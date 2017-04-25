@@ -1,20 +1,22 @@
 # Project #13 NIBBLER, May 2015
 >>>>> #####Multiple UI game. (group project)
 
-#####Grade ``(109/100)`` ``(109/125)*``
+##### Grade ``(109/100)`` ``(109/125)*``
 --------  -----------------------
 
 Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngoguey42).
 <BR>
 
-#####Goals:
+![./gif.gif](./gif.gif)
+
+##### Goals:
 - [X] Implement a 'snake game'
 - [X] Build 1 core program and 3 standalone GUI loaded as dynamic libraries
 ![diagram](./diagram.png)
 - [X] Bind keys to dynamically load another GUI while playing.
 - [X] Core's main loop mustn't lose control (exit QT and so on)
 
-#####Recommended bonuses:
+##### Recommended bonuses:
 - [X] A scoring system
 - [X] Bonus of food appears for a short period of time
 - [X] The head section looks different from the others sections
@@ -24,7 +26,7 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 - [ ] Multiplayer
 - [ ] Multiplayer through network
 
-#####Our work:
+##### Our work:
 - [X] Deep exploration of C++11 and C++14
 - [X] A 4th GUI
 - [X] 3 basic GUI: SFML(using sprites), Ncurses, SDL2
@@ -32,7 +34,7 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 - [X] 1 Sound Interface: SFMLaudio
 - [X] A fine makefile and file tree organization
 
-#####Install:
+##### Install:
 ```sh
 #repare brew:
 rm -rf ~/Library/Caches/Homebrew/ && brew update && brew upgrade --all && mkdir ~/Library/Caches/Homebrew/
